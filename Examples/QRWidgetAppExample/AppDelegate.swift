@@ -20,16 +20,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let window = UIWindow()
 
         let analyticsEnvironment = AnalyticsEnvironment.unimplemented
-        var purchasesEnvironment = PurchasesEnvironment.unimplemented
+        let purchasesEnvironment = PurchasesEnvironment.unimplemented
         let walletPassEnvironment = WalletPassEnvironment.unimplemented
-
-        purchasesEnvironment.offerings = {
-            let products = [QRProduct(id: "1", isPopular: true, title: "Forever", priceInfo: "$15", type: .oneTime, purchase: {
-                Fail(error: PurchasesError.custom("Purchase func is not implemented")).eraseToAnyPublisher()
-            })]
-            return Just(products).setFailureType(to: Error.self).eraseToAnyPublisher()
-        }
-
+        
         let appEnviroment = AppEnvironment(
             analyticsEnvironment: analyticsEnvironment,
             paymentEnvironment: purchasesEnvironment,
