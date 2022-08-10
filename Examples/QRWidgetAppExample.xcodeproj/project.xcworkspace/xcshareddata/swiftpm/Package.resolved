@@ -1,0 +1,32 @@
+{
+  "pins" : [
+    {
+      "identity" : "haptica",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/efremidze/Haptica",
+      "state" : {
+        "revision" : "e03932406d2f36f10beefd31717730b2c2fa9014",
+        "version" : "3.0.3"
+      }
+    },
+    {
+      "identity" : "lottie-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/airbnb/lottie-ios",
+      "state" : {
+        "branch" : "master",
+        "revision" : "25f6a430c589e821ce1d06599fa74d8688d04b81"
+      }
+    },
+    {
+      "identity" : "simpletoast",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/sanzaru/SimpleToast.git",
+      "state" : {
+        "revision" : "1bc531af60fc0a1494fdc02a52f03662aa9a183a",
+        "version" : "0.6.2"
+      }
+    }
+  ],
+  "version" : 2
+}

@@ -17,9 +17,9 @@
 /* Begin PBXFileReference section */
 		9B8E0C9A28A3D48A00129E2C /* QRWidgetAppExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QRWidgetAppExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B8E0CA128A3D48B00129E2C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		9B8E0CAB28A3D4A600129E2C /* QRWidgetApp */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = QRWidgetApp; path = ../QRWidgetApp; sourceTree = "<group>"; };
 		9B8E0CB328A3D4DF00129E2C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9B8E0CB528A3D99900129E2C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		9BCB69E028A3E13700E1CA3D /* QRWidgetApp */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = QRWidgetApp; path = ..; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,7 +39,7 @@
 		9B8E0C9128A3D48A00129E2C = {
 			isa = PBXGroup;
 			children = (
-				9B8E0CAB28A3D4A600129E2C /* QRWidgetApp */,
+				9BCB69DF28A3E13700E1CA3D /* Packages */,
 				9B8E0C9C28A3D48A00129E2C /* QRWidgetAppExample */,
 				9B8E0C9B28A3D48A00129E2C /* Products */,
 				9B8E0CAC28A3D4BA00129E2C /* Frameworks */,
@@ -69,6 +69,14 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9BCB69DF28A3E13700E1CA3D /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				9BCB69E028A3E13700E1CA3D /* QRWidgetApp */,
+			);
+			name = Packages;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -290,7 +298,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -318,7 +326,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
