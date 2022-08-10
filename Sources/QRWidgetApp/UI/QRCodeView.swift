@@ -51,7 +51,7 @@ struct QRCodeDataView: View {
                 Text(url.absoluteString)
                     .multilineTextAlignment(.leading)
                     .lineLimit(2)
-                    .foregroundColor(Color(UIColor.primaryColor))
+                    .foregroundColor(Color.primaryColor)
             })
 
         case let .rawText(text):

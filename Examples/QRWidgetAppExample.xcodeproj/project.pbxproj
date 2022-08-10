@@ -39,7 +39,7 @@
 		9B8E0C9128A3D48A00129E2C = {
 			isa = PBXGroup;
 			children = (
-				9BCB69DF28A3E13700E1CA3D /* Packages */,
+				9BCB69E028A3E13700E1CA3D /* QRWidgetApp */,
 				9B8E0C9C28A3D48A00129E2C /* QRWidgetAppExample */,
 				9B8E0C9B28A3D48A00129E2C /* Products */,
 				9B8E0CAC28A3D4BA00129E2C /* Frameworks */,
@@ -69,14 +69,6 @@
 			children = (
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		9BCB69DF28A3E13700E1CA3D /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-				9BCB69E028A3E13700E1CA3D /* QRWidgetApp */,
-			);
-			name = Packages;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

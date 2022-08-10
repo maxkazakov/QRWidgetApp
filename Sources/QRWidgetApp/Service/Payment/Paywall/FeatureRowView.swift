@@ -19,11 +19,11 @@ struct FeatureView: View {
                 Text(name)
                     .font(Font.system(.body))
                     .fontWeight(.semibold)
-                    .foregroundColor(featured ? Color(UIColor.yellowOnboarding) : .white)
+                    .foregroundColor(featured ? Color.yellowOnboarding : .white)
 
                 Text(subtitle)
                     .font(Font.system(.callout))
-                    .foregroundColor(featured ? Color(UIColor.yellowOnboarding) : .white)
+                    .foregroundColor(featured ? Color.yellowOnboarding : .white)
             }
         } icon: {
             if let iconName = icon {
@@ -33,7 +33,7 @@ struct FeatureView: View {
                     .frame(width: 20, height: 20)
                     .foregroundColor(.white)
             } else {
-                Image(uiImage: UIImage(named: "checkmark")!)
+                Image(uiImage: Asset.checkmark.image)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 20, height: 20)

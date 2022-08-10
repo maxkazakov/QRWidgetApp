@@ -58,15 +58,15 @@ struct SubscriptionInfoView: View {
                 .cornerRadius(8)
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
-                        .stroke(isSelected ? Color(UIColor.yellowOnboarding) : dividerColor, lineWidth: 2)
+                        .stroke(isSelected ? Color.yellowOnboarding : dividerColor, lineWidth: 2)
                 )
 
                 if isPopular {
                     Text(L10n.Paywall.popular)
                         .font(Font.system(size: 12, weight: .semibold, design: .default))
                         .padding(.horizontal)
-                        .background(Color(UIColor.yellowOnboarding))
-                        .foregroundColor(Color(UIColor.primaryColor))
+                        .background(Color.yellowOnboarding)
+                        .foregroundColor(Color.primaryColor)
                         .clipShape(Capsule(style: .circular))
                         .offset(y: -6)
                 }

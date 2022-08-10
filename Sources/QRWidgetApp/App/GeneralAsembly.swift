@@ -86,7 +86,9 @@ class GeneralAssembly {
                                          qrRepository: self.qrCodesRepository,
                                          options: options,
                                          sendAnalytics: appEnvironment.analyticsEnvironment.sendAnalyticsEvent)
-        let view = DetailsView(viewModel: viewModel).anyView
+        let view = DetailsView(viewModel: viewModel)
+            .environment(\.sendAnalyticsEvent, appEnvironment.analyticsEnvironment.sendAnalyticsEvent)
+            .anyView
         return Module(router: viewModel.router, view: view)
     }
 
@@ -125,6 +127,7 @@ class GeneralAssembly {
                                                       codes: codes,
                                                       onClose: onClose)
         let view = MutlipleQRRecognizedView(viewModel: viewModel)
+            .environment(\.sendAnalyticsEvent, appEnvironment.analyticsEnvironment.sendAnalyticsEvent)
         let controller = UIHostingController(rootView: view)
         controller.view.backgroundColor = UIColor.clear
         return Module(router: viewModel.router, controller: controller)
@@ -144,7 +147,9 @@ class GeneralAssembly {
         let beautifyViewModel = BeautifyQRViewModel(qrModel: qrModel,
                                                     qrCodesService: qrCodesService,
                                                     sendAnalytics: appEnvironment.analyticsEnvironment.sendAnalyticsEvent)
-        let beautifyView = BeautifyQRView(viewModel: beautifyViewModel).anyView
+        let beautifyView = BeautifyQRView(viewModel: beautifyViewModel)
+            .environment(\.sendAnalyticsEvent, appEnvironment.analyticsEnvironment.sendAnalyticsEvent)
+            .anyView
         return Module(router: beautifyViewModel.router, view: beautifyView)
     }
 

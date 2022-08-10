@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MainButtonStyle: ButtonStyle {
     
-    init(titleColor: UIColor = .white, backgroundColor: UIColor = .primaryColor) {
+    init(titleColor: UIColor = .white, backgroundColor: UIColor = Asset.primaryColor.color) {
         self.titleColor = titleColor
         self.backgroundColor = backgroundColor
     }
@@ -33,7 +33,7 @@ struct BorderButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.system(size: 18, weight: .semibold, design: .default))
-            .foregroundColor(configuration.isPressed ? Color(UIColor.primaryColor.withAlphaComponent(0.6)) : Color.primaryColor)
+            .foregroundColor(configuration.isPressed ? Color(Asset.primaryColor.color.withAlphaComponent(0.6)) : Color.primaryColor)
             .frame(minHeight: 50)
             .padding(.horizontal, 16)
             .overlay(Capsule().stroke(lineWidth: 3).foregroundColor(Color.primaryColor))

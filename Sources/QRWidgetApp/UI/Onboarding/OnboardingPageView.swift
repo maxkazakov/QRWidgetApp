@@ -34,7 +34,7 @@ struct OnboardingPageView<CenterImage: View>: View {
                         onTapContinue()
                     }
             })
-                .buttonStyle(MainButtonStyle(titleColor: .primaryColor, backgroundColor: .white))
+                .buttonStyle(MainButtonStyle())
                 .padding(.bottom, 22)
         }
         .padding(.top, 40)

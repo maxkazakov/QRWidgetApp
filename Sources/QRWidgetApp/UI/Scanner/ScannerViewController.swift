@@ -134,11 +134,7 @@ extension CodeScannerView {
         let fallbackVideoCaptureDevice = AVCaptureDevice.default(for: .video)
 
         private lazy var viewFinder: UIImageView? = {
-            guard let image = UIImage(named: "viewfinder", in: .main, with: nil) else {
-                return nil
-            }
-
-            let imageView = UIImageView(image: image)
+            let imageView = UIImageView(image: Asset.viewfinder.image)
             imageView.translatesAutoresizingMaskIntoConstraints = false
             return imageView
         }()

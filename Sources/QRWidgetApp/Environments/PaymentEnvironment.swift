@@ -51,7 +51,7 @@ public extension PurchasesEnvironment {
         proActivatedPublisher: { Just(true).eraseToAnyPublisher() },
         isProActivated: { true },
         purchase: { _ in fatalError("purchase not implemented") },
-        offerings: { fatalError("offerings not implemented") },
+        offerings: { Just([]).setFailureType(to: Error.self).eraseToAnyPublisher() },
         restore: { fatalError("restore not implemented") }
     )
 }

@@ -8,14 +8,9 @@
 import UIKit
 import SwiftUI
 
-extension UIColor {
-    static let primaryColor = UIColor(named: "OnboardingColor")!
-    static let yellowOnboarding = UIColor(named: "yellowOnboarding")!
-}
-
 extension Color {
-    static let primaryColor = Color(UIColor.primaryColor)
-    static let yellowOnboarding = Color(UIColor.yellowOnboarding)
+    static let primaryColor = Color(Asset.primaryColor.color)
+    static let yellowOnboarding = Color(Asset.yellowOnboarding.color)
 }
 
 extension LinearGradient {

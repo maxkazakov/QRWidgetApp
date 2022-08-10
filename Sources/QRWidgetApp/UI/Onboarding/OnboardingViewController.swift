@@ -13,10 +13,6 @@ enum OnboardingPage: Int, Identifiable {
     var id: Int {
         return self.rawValue
     }
-
-//    case qrOnMainScreen
-//    case walletPass
-//    case allQrInOnePlace
     case paywall
 
     static let orderedPages: [OnboardingPage] = [.paywall]
@@ -41,7 +37,6 @@ class OnboardingViewController: UIPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         sendAnalytics(.showOnboarding, nil)
-//        AnimationsCache.shared.cacheAnimations()
 
         createViewControllers()
         if let firstViewController = onboardingPageViewControllers.first {
@@ -62,40 +57,6 @@ class OnboardingViewController: UIPageViewController {
     @ViewBuilder
     func pageView(page: OnboardingPage) -> some View {
         switch page {
-//        case .qrOnMainScreen:
-//            OnboardingPageView(titleText: L10n.Onboarding.qrOnMainScreen, image: {
-//                Image(uiImage: UIImage(named: "QrImageOnboarding")!)
-//                    .resizable()
-//                    .aspectRatio(contentMode: .fit)
-//                    .frame(maxWidth: 250)
-//            }, onTapContinue: { [weak self] in
-//                Haptic.impact(.medium).generate()
-//                self?.sendAnalytics(.tapContinueOnQrOnMainOnboarding, nil)
-//                self?.goToNextPage()
-//            })
-//
-//        case .walletPass:
-//            OnboardingPageView(titleText: L10n.QrDetails.appleWalletPass, image: {
-//                LottieView(name: "wallet")
-//                    .aspectRatio(contentMode: .fit)
-//                    .frame(maxWidth: 230)
-//            }, onTapContinue: { [weak self] in
-//                self?.sendAnalytics(.tapContinueOnAppleWalletPassOnboarding, nil)
-//                Haptic.impact(.medium).generate()
-//                self?.goToNextPage()
-//            })
-//
-//        case .allQrInOnePlace:
-//            OnboardingPageView(titleText: L10n.Onboarding.allQRCodesInOnePlace, image: {
-//                LottieView(name: "sittingOnPhone")
-//                    .aspectRatio(contentMode: .fit)
-//                    .frame(maxWidth: 300)
-//            }, onTapContinue: { [weak self] in
-//                self?.sendAnalytics(.tapContinueOnAllQRInOncePlaceOnboarding, nil)
-//                Haptic.impact(.medium).generate()
-//                self?.goToNextPage()
-//            })
-
         case .paywall:
             generalAssembly.makePaywallView(
                 sourceScreen: .onboarding,

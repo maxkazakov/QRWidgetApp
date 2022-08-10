@@ -61,7 +61,7 @@ struct QRCodeTileView: View {
 
             if viewModel.isLoading, viewModel.coloredQrImage == nil {
                 ZStack {
-                    Image("placeholder")
+                    Image(uiImage: Asset.placeholder.image)
                         .renderingMode(.template)
                         .resizable()
                         .scaledToFit()

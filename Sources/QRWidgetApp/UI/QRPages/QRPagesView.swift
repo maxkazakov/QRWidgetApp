@@ -56,13 +56,13 @@ struct QRPagesView: View {
             .padding()
             .background(
                 Capsule()
-                    .foregroundColor(Color(UIColor.primaryColor))
+                    .foregroundColor(Color.primaryColor)
             )
             .foregroundColor(Color.white)
         }
         .onAppear(perform: {
             viewModel.onAppear()
-            UIPageControl.appearance().currentPageIndicatorTintColor = .primaryColor
+            UIPageControl.appearance().currentPageIndicatorTintColor = Asset.primaryColor.color
             UIPageControl.appearance().pageIndicatorTintColor = UIColor.gray
         })
     }

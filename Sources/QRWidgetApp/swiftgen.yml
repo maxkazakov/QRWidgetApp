@@ -17,6 +17,15 @@ strings:
      - templateName: structured-swift5
        output: Generated/Strings+Generated.swift
 
+xcassets:
+  inputs:
+    - Resources/Assets.xcassets    
+  outputs:
+    - templateName: swift5
+      params:
+        forceProvidesNamespaces: true
+      output: Generated/XCAssets+Generated.swift
+
 
 ## Generate constants for your Assets Catalogs, including constants for images, colors, ARKit resources, etc.
 ##   This example also shows how to provide additional parameters to your template to customize the output.

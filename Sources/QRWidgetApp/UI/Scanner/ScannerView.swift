@@ -103,13 +103,13 @@ struct ScannerView: View {
 
                 Group {
                     if isTorchOn {
-                        Image("flashOn")
+                        Image(uiImage: Asset.flashOn.image)
                             .renderingMode(.template)
                             .resizable()
                             .frame(width: 24, height: 24)
                             .foregroundColor(.white)
                     } else {
-                        Image("flashOff")
+                        Image(uiImage: Asset.flashOff.image)
                             .renderingMode(.template)
                             .resizable()
                             .frame(width: 24, height: 24)
@@ -130,7 +130,7 @@ struct ScannerView: View {
             ZStack {
                 Circle()
                     .foregroundColor(Color(UIColor.black.withAlphaComponent(0.5)))
-                Image("gallery")
+                Image(uiImage: Asset.gallery.image)
                     .resizable()
                     .frame(width: 44, height: 44)
             }

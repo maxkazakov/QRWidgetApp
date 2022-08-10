@@ -10,7 +10,7 @@ import SwiftUI
 struct NoQRView: View {
     var body: some View {
         VStack(spacing: 12) {
-            Image("fav")
+            Image(uiImage: Asset.emptyFav.image)
             VStack(spacing: 8) {
                 Text(L10n.Favorites.Empty.title)
                     .font(.title3)
@@ -31,7 +31,7 @@ struct NoQRView: View {
 struct NoHistoryView: View {
     var body: some View {
         VStack(spacing: 12) {
-            Image("emptyHistory")
+            Image(uiImage: Asset.emptyHistory.image)
             VStack(spacing: 8) {
                 Text(L10n.History.Empty.title)
                     .font(.title3)

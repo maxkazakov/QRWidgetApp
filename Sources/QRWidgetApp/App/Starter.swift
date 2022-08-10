@@ -11,6 +11,7 @@ import Combine
 import StoreKit
 #if !os(watchOS)
 import WidgetKit
+import Lottie
 #endif
 
 public class Starter {
@@ -205,7 +206,7 @@ public class Starter {
     }
 
     func setupAppearance() {
-        UIPageControl.appearance().currentPageIndicatorTintColor = .primaryColor
+        UIPageControl.appearance().currentPageIndicatorTintColor = Asset.primaryColor.color
         UIPageControl.appearance().pageIndicatorTintColor = UIColor.black.withAlphaComponent(0.2)
         UIScrollView.appearance().keyboardDismissMode = .onDrag
 

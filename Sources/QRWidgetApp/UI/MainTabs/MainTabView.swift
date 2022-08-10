@@ -48,7 +48,7 @@ struct MainTabView: View {
                 }
                 .tag(Tab.settings)
         }
-        .accentColor(Color(UIColor.primaryColor))
+        .accentColor(Color.primaryColor)
         .tabViewStyle(.automatic)
     }
 }

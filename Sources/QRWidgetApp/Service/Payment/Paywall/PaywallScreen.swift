@@ -61,7 +61,7 @@ struct PaywallScreen: View {
 
                         VStack(spacing: 8) {
                             HStack(alignment: .center) {
-                                Image(uiImage: UIImage(named: "star")!)
+                                Image(uiImage: Asset.star.image)
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 28, height: 28)
@@ -140,7 +140,7 @@ struct PaywallScreen: View {
                 }, label: {
                     Text(L10n.continue)
                 })
-                .buttonStyle(MainButtonStyle(titleColor: .primaryColor, backgroundColor: .white))
+                .buttonStyle(MainButtonStyle(titleColor: Asset.primaryColor.color, backgroundColor: .white))
             }
 
             HStack(spacing: 16) {
