@@ -9,22 +9,23 @@ import SwiftUI
 
 struct SingleCodeRowView: View {
 
+    let model: SingleCodeRowUIModel
     @StateObject var viewModel: SingleCodeRowViewModel
 
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
             Image(systemName: "qrcode")
             VStack(alignment: .leading, spacing: 8) {
-                if !viewModel.model.label.isEmpty {
-                    Text(viewModel.model.label)
+                if !model.label.isEmpty {
+                    Text(model.label)
                         .multilineTextAlignment(.leading)
                         .font(.body)
                 }
 
-                QRCodeView(type: viewModel.model.qrData)
+                QRCodeView(type: model.qrData)
                     .allowsHitTesting(false)
             }
-            if viewModel.model.isFavorite {
+            if viewModel.isFavorite {
                 Image(systemName: "star.fill")
                     .imageScale(.small)
                     .foregroundColor(Color.yellow)

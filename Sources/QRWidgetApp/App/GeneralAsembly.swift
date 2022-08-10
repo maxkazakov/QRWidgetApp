@@ -194,4 +194,9 @@ class GeneralAssembly {
         let view = ShareMenuView(qrModel: qrModel, customButton: customButton, viewModel: viewModel)
         return view
     }
+
+    func makeSingleQRRowView(model: SingleCodeRowUIModel) -> some View {
+        SingleCodeRowView(model: model,
+                          viewModel: SingleCodeRowViewModel(id: model.id, favoritesService: self.favoritesService))
+    }
 }

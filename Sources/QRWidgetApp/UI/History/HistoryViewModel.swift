@@ -68,7 +68,7 @@ class HistoryViewModel: ViewModel, HistoryViewModelProtocol {
     }
 
     func rowView(item: SingleCodeRowUIModel) -> some View {
-        SingleCodeRowView(viewModel: SingleCodeRowViewModel(model: item, favoritesService: self.favoritesService))
+        generalAssembly.makeSingleQRRowView(model: item)
     }
 
     // MARK: - Private

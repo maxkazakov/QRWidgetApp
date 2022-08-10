@@ -11,17 +11,16 @@ import SwiftUI
 class SingleCodeRowViewModel: ViewModel {
 
     private let favoritesService: FavoritesService
-    @Published var model: SingleCodeRowUIModel
+    @Published var isFavorite = false
 
-    init(model: SingleCodeRowUIModel, favoritesService: FavoritesService) {
+    init(id: UUID, favoritesService: FavoritesService) {
         self.favoritesService = favoritesService
-        self.model = model
         super.init()
 
         favoritesService.favorites
-            .map { $0.contains(model.id) }
+            .map { $0.contains(id) }
             .sink(receiveValue: { [weak self] in
-                self?.model.isFavorite = $0
+                self?.isFavorite = $0
         })
         .store(in: &cancellableSet)
     }
