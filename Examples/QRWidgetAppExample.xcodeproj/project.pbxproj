@@ -12,13 +12,74 @@
 		9B8E0CB028A3D4BA00129E2C /* QRWidgetApp in Frameworks */ = {isa = PBXBuildFile; productRef = 9B8E0CAF28A3D4BA00129E2C /* QRWidgetApp */; };
 		9B8E0CB228A3D4BA00129E2C /* QRWidgetCore in Frameworks */ = {isa = PBXBuildFile; productRef = 9B8E0CB128A3D4BA00129E2C /* QRWidgetCore */; };
 		9B8E0CB428A3D4DF00129E2C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B8E0CB328A3D4DF00129E2C /* AppDelegate.swift */; };
+		9BBDE01928A41246009F5BE0 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BBDE01828A41246009F5BE0 /* WidgetKit.framework */; };
+		9BBDE01B28A41246009F5BE0 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BBDE01A28A41246009F5BE0 /* SwiftUI.framework */; };
+		9BBDE01E28A41246009F5BE0 /* QRWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BBDE01D28A41246009F5BE0 /* QRWidget.swift */; };
+		9BBDE02128A41247009F5BE0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9BBDE02028A41247009F5BE0 /* Assets.xcassets */; };
+		9BBDE02728A41247009F5BE0 /* QRWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 9BBDE01728A41246009F5BE0 /* QRWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		9BBDE03428A413AE009F5BE0 /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BBDE03328A413AE009F5BE0 /* Intents.framework */; };
+		9BBDE03728A413AE009F5BE0 /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BBDE03628A413AE009F5BE0 /* IntentHandler.swift */; };
+		9BBDE03B28A413AE009F5BE0 /* QRWidgetIntent.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 9BBDE03228A413AE009F5BE0 /* QRWidgetIntent.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		9BBDE04028A413EB009F5BE0 /* DynamicQRIntents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 9BBDE03F28A413EB009F5BE0 /* DynamicQRIntents.intentdefinition */; };
+		9BBDE04128A41402009F5BE0 /* QREntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BBDE02C28A4130E009F5BE0 /* QREntry.swift */; };
+		9BBDE04228A41443009F5BE0 /* DynamicQRIntents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 9BBDE03F28A413EB009F5BE0 /* DynamicQRIntents.intentdefinition */; };
+		9BBDE04428A414D8009F5BE0 /* QRGenerator in Frameworks */ = {isa = PBXBuildFile; productRef = 9BBDE04328A414D8009F5BE0 /* QRGenerator */; };
+		9BBDE04628A414D8009F5BE0 /* QRWidgetApp in Frameworks */ = {isa = PBXBuildFile; productRef = 9BBDE04528A414D8009F5BE0 /* QRWidgetApp */; };
+		9BBDE04828A414DC009F5BE0 /* QRWidgetApp in Frameworks */ = {isa = PBXBuildFile; productRef = 9BBDE04728A414DC009F5BE0 /* QRWidgetApp */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9BBDE02528A41247009F5BE0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9B8E0C9228A3D48A00129E2C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9BBDE01628A41246009F5BE0;
+			remoteInfo = QRWidgetExtension;
+		};
+		9BBDE03928A413AE009F5BE0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9B8E0C9228A3D48A00129E2C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9BBDE03128A413AE009F5BE0;
+			remoteInfo = QRWidgetIntent;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		9BBDE02828A41247009F5BE0 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				9BBDE02728A41247009F5BE0 /* QRWidgetExtension.appex in Embed App Extensions */,
+				9BBDE03B28A413AE009F5BE0 /* QRWidgetIntent.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		9B8E0C9A28A3D48A00129E2C /* QRWidgetAppExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QRWidgetAppExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B8E0CA128A3D48B00129E2C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9B8E0CB328A3D4DF00129E2C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9B8E0CB528A3D99900129E2C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		9BBDE01728A41246009F5BE0 /* QRWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = QRWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		9BBDE01828A41246009F5BE0 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		9BBDE01A28A41246009F5BE0 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		9BBDE01D28A41246009F5BE0 /* QRWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRWidget.swift; sourceTree = "<group>"; };
+		9BBDE02028A41247009F5BE0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9BBDE02228A41247009F5BE0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9BBDE02C28A4130E009F5BE0 /* QREntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QREntry.swift; sourceTree = "<group>"; };
+		9BBDE03228A413AE009F5BE0 /* QRWidgetIntent.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = QRWidgetIntent.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		9BBDE03328A413AE009F5BE0 /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
+		9BBDE03628A413AE009F5BE0 /* IntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentHandler.swift; sourceTree = "<group>"; };
+		9BBDE03828A413AE009F5BE0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9BBDE03F28A413EB009F5BE0 /* DynamicQRIntents.intentdefinition */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.intentdefinition; path = DynamicQRIntents.intentdefinition; sourceTree = "<group>"; };
+		9BBDE04928A41849009F5BE0 /* QRWidgetIntent.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = QRWidgetIntent.entitlements; sourceTree = "<group>"; };
+		9BBDE04A28A41ABA009F5BE0 /* QRWidgetAppExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QRWidgetAppExample.entitlements; sourceTree = "<group>"; };
+		9BBDE04B28A41ACB009F5BE0 /* QRWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QRWidgetExtension.entitlements; sourceTree = "<group>"; };
 		9BCB69E028A3E13700E1CA3D /* QRWidgetApp */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = QRWidgetApp; path = ..; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -33,14 +94,37 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9BBDE01428A41246009F5BE0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9BBDE04428A414D8009F5BE0 /* QRGenerator in Frameworks */,
+				9BBDE01B28A41246009F5BE0 /* SwiftUI.framework in Frameworks */,
+				9BBDE01928A41246009F5BE0 /* WidgetKit.framework in Frameworks */,
+				9BBDE04628A414D8009F5BE0 /* QRWidgetApp in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9BBDE02F28A413AE009F5BE0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9BBDE03428A413AE009F5BE0 /* Intents.framework in Frameworks */,
+				9BBDE04828A414DC009F5BE0 /* QRWidgetApp in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		9B8E0C9128A3D48A00129E2C = {
 			isa = PBXGroup;
 			children = (
+				9BBDE04B28A41ACB009F5BE0 /* QRWidgetExtension.entitlements */,
 				9BCB69E028A3E13700E1CA3D /* QRWidgetApp */,
 				9B8E0C9C28A3D48A00129E2C /* QRWidgetAppExample */,
+				9BBDE01C28A41246009F5BE0 /* QRWidget */,
+				9BBDE03528A413AE009F5BE0 /* QRWidgetIntent */,
 				9B8E0C9B28A3D48A00129E2C /* Products */,
 				9B8E0CAC28A3D4BA00129E2C /* Frameworks */,
 			);
@@ -50,6 +134,8 @@
 			isa = PBXGroup;
 			children = (
 				9B8E0C9A28A3D48A00129E2C /* QRWidgetAppExample.app */,
+				9BBDE01728A41246009F5BE0 /* QRWidgetExtension.appex */,
+				9BBDE03228A413AE009F5BE0 /* QRWidgetIntent.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -57,6 +143,7 @@
 		9B8E0C9C28A3D48A00129E2C /* QRWidgetAppExample */ = {
 			isa = PBXGroup;
 			children = (
+				9BBDE04A28A41ABA009F5BE0 /* QRWidgetAppExample.entitlements */,
 				9B8E0CB528A3D99900129E2C /* Info.plist */,
 				9B8E0CB328A3D4DF00129E2C /* AppDelegate.swift */,
 				9B8E0CA128A3D48B00129E2C /* Assets.xcassets */,
@@ -67,8 +154,33 @@
 		9B8E0CAC28A3D4BA00129E2C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9BBDE01828A41246009F5BE0 /* WidgetKit.framework */,
+				9BBDE01A28A41246009F5BE0 /* SwiftUI.framework */,
+				9BBDE03328A413AE009F5BE0 /* Intents.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9BBDE01C28A41246009F5BE0 /* QRWidget */ = {
+			isa = PBXGroup;
+			children = (
+				9BBDE01D28A41246009F5BE0 /* QRWidget.swift */,
+				9BBDE02028A41247009F5BE0 /* Assets.xcassets */,
+				9BBDE02228A41247009F5BE0 /* Info.plist */,
+				9BBDE02C28A4130E009F5BE0 /* QREntry.swift */,
+			);
+			path = QRWidget;
+			sourceTree = "<group>";
+		};
+		9BBDE03528A413AE009F5BE0 /* QRWidgetIntent */ = {
+			isa = PBXGroup;
+			children = (
+				9BBDE04928A41849009F5BE0 /* QRWidgetIntent.entitlements */,
+				9BBDE03F28A413EB009F5BE0 /* DynamicQRIntents.intentdefinition */,
+				9BBDE03628A413AE009F5BE0 /* IntentHandler.swift */,
+				9BBDE03828A413AE009F5BE0 /* Info.plist */,
+			);
+			path = QRWidgetIntent;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -81,10 +193,13 @@
 				9B8E0C9628A3D48A00129E2C /* Sources */,
 				9B8E0C9728A3D48A00129E2C /* Frameworks */,
 				9B8E0C9828A3D48A00129E2C /* Resources */,
+				9BBDE02828A41247009F5BE0 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				9BBDE02628A41247009F5BE0 /* PBXTargetDependency */,
+				9BBDE03A28A413AE009F5BE0 /* PBXTargetDependency */,
 			);
 			name = QRWidgetAppExample;
 			packageProductDependencies = (
@@ -95,6 +210,47 @@
 			productName = QRWidgetAppExample;
 			productReference = 9B8E0C9A28A3D48A00129E2C /* QRWidgetAppExample.app */;
 			productType = "com.apple.product-type.application";
+		};
+		9BBDE01628A41246009F5BE0 /* QRWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9BBDE02B28A41247009F5BE0 /* Build configuration list for PBXNativeTarget "QRWidgetExtension" */;
+			buildPhases = (
+				9BBDE01328A41246009F5BE0 /* Sources */,
+				9BBDE01428A41246009F5BE0 /* Frameworks */,
+				9BBDE01528A41246009F5BE0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = QRWidgetExtension;
+			packageProductDependencies = (
+				9BBDE04328A414D8009F5BE0 /* QRGenerator */,
+				9BBDE04528A414D8009F5BE0 /* QRWidgetApp */,
+			);
+			productName = QRWidgetExtension;
+			productReference = 9BBDE01728A41246009F5BE0 /* QRWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		9BBDE03128A413AE009F5BE0 /* QRWidgetIntent */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9BBDE03C28A413AE009F5BE0 /* Build configuration list for PBXNativeTarget "QRWidgetIntent" */;
+			buildPhases = (
+				9BBDE02E28A413AE009F5BE0 /* Sources */,
+				9BBDE02F28A413AE009F5BE0 /* Frameworks */,
+				9BBDE03028A413AE009F5BE0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = QRWidgetIntent;
+			packageProductDependencies = (
+				9BBDE04728A414DC009F5BE0 /* QRWidgetApp */,
+			);
+			productName = QRWidgetIntent;
+			productReference = 9BBDE03228A413AE009F5BE0 /* QRWidgetIntent.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -107,6 +263,12 @@
 				LastUpgradeCheck = 1330;
 				TargetAttributes = {
 					9B8E0C9928A3D48A00129E2C = {
+						CreatedOnToolsVersion = 13.3.1;
+					};
+					9BBDE01628A41246009F5BE0 = {
+						CreatedOnToolsVersion = 13.3.1;
+					};
+					9BBDE03128A413AE009F5BE0 = {
 						CreatedOnToolsVersion = 13.3.1;
 					};
 				};
@@ -125,6 +287,8 @@
 			projectRoot = "";
 			targets = (
 				9B8E0C9928A3D48A00129E2C /* QRWidgetAppExample */,
+				9BBDE01628A41246009F5BE0 /* QRWidgetExtension */,
+				9BBDE03128A413AE009F5BE0 /* QRWidgetIntent */,
 			);
 		};
 /* End PBXProject section */
@@ -135,6 +299,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				9B8E0CA228A3D48B00129E2C /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9BBDE01528A41246009F5BE0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9BBDE02128A41247009F5BE0 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9BBDE03028A413AE009F5BE0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -149,7 +328,39 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9BBDE01328A41246009F5BE0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9BBDE01E28A41246009F5BE0 /* QRWidget.swift in Sources */,
+				9BBDE04228A41443009F5BE0 /* DynamicQRIntents.intentdefinition in Sources */,
+				9BBDE04128A41402009F5BE0 /* QREntry.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9BBDE02E28A413AE009F5BE0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9BBDE03728A413AE009F5BE0 /* IntentHandler.swift in Sources */,
+				9BBDE04028A413EB009F5BE0 /* DynamicQRIntents.intentdefinition in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9BBDE02628A41247009F5BE0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9BBDE01628A41246009F5BE0 /* QRWidgetExtension */;
+			targetProxy = 9BBDE02528A41247009F5BE0 /* PBXContainerItemProxy */;
+		};
+		9BBDE03A28A413AE009F5BE0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9BBDE03128A413AE009F5BE0 /* QRWidgetIntent */;
+			targetProxy = 9BBDE03928A413AE009F5BE0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		9B8E0CA628A3D48B00129E2C /* Debug */ = {
@@ -269,8 +480,10 @@
 		9B8E0CA928A3D48B00129E2C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = QRWidgetAppExample/QRWidgetAppExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = U8743T8Z48;
@@ -297,8 +510,10 @@
 		9B8E0CAA28A3D48B00129E2C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = QRWidgetAppExample/QRWidgetAppExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = U8743T8Z48;
@@ -319,6 +534,118 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		9BBDE02928A41247009F5BE0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = QRWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = U8743T8Z48;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = QRWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = QRWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ru.maxkazakov.QRWidgetAppExample.QRWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9BBDE02A28A41247009F5BE0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = QRWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = U8743T8Z48;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = QRWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = QRWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ru.maxkazakov.QRWidgetAppExample.QRWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		9BBDE03D28A413AE009F5BE0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = QRWidgetIntent/QRWidgetIntent.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = U8743T8Z48;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = QRWidgetIntent/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = QRWidgetIntent;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ru.maxkazakov.QRWidgetAppExample.QRWidgetIntent;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9BBDE03E28A413AE009F5BE0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = QRWidgetIntent/QRWidgetIntent.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = U8743T8Z48;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = QRWidgetIntent/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = QRWidgetIntent;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ru.maxkazakov.QRWidgetAppExample.QRWidgetIntent;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -343,6 +670,24 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		9BBDE02B28A41247009F5BE0 /* Build configuration list for PBXNativeTarget "QRWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9BBDE02928A41247009F5BE0 /* Debug */,
+				9BBDE02A28A41247009F5BE0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9BBDE03C28A413AE009F5BE0 /* Build configuration list for PBXNativeTarget "QRWidgetIntent" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9BBDE03D28A413AE009F5BE0 /* Debug */,
+				9BBDE03E28A413AE009F5BE0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -357,6 +702,18 @@
 		9B8E0CB128A3D4BA00129E2C /* QRWidgetCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = QRWidgetCore;
+		};
+		9BBDE04328A414D8009F5BE0 /* QRGenerator */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = QRGenerator;
+		};
+		9BBDE04528A414D8009F5BE0 /* QRWidgetApp */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = QRWidgetApp;
+		};
+		9BBDE04728A414DC009F5BE0 /* QRWidgetApp */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = QRWidgetApp;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
