@@ -27,7 +27,7 @@ struct PaywallOffersErrorView: View {
             }, label: {
                 Text(L10n.repeat)
             })
-                .buttonStyle(MainButtonStyle())
+            .buttonStyle(MainButtonStyle(titleColor: Asset.primaryColor.color, backgroundColor: .white))
         }
         .padding()        
     }

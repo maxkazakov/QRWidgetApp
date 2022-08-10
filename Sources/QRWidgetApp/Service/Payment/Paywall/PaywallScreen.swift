@@ -184,7 +184,6 @@ extension PaywallViewModel {
         viewModelStub.products = [
             .init(
                 id: "1",
-                skProduct: SKProduct(),
                 isPopular: false,
                 title: "7 days Free",
                 priceInfo: "Then $9.99 1 month",
@@ -193,7 +192,6 @@ extension PaywallViewModel {
             ),
             .init(
                 id: "2",
-                skProduct: SKProduct(),
                 isPopular: true,
                 title: "One time purchase",
                 priceInfo: "$29.99",
@@ -215,7 +213,6 @@ extension QRProduct {
     static func mock(id: String) -> QRProduct {
         QRProduct(
             id: id,
-            skProduct: SKProduct(),
             isPopular: true,
             title: "------------------------------------------------------------",
             priceInfo: "------------------------------------------------------------",

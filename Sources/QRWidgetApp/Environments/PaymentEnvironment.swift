@@ -36,13 +36,13 @@ public struct PurchasesEnvironment {
         self.restore = restore
     }
 
-    var getProVersionActivated: () -> AnyPublisher<Bool, Never>
-    var proActivatedPublisher: () -> AnyPublisher<Bool, Never>
-    var isProActivated: () -> Bool
+    public var getProVersionActivated: () -> AnyPublisher<Bool, Never>
+    public var proActivatedPublisher: () -> AnyPublisher<Bool, Never>
+    public var isProActivated: () -> Bool
 
-    var purchase: (_ product: SKProduct) -> AnyPublisher<Void, PurchasesError>
-    var offerings: () -> AnyPublisher<[QRProduct], Error>
-    var restore: () -> AnyPublisher<Void, Error>
+    public var purchase: (_ product: SKProduct) -> AnyPublisher<Void, PurchasesError>
+    public var offerings: () -> AnyPublisher<[QRProduct], Error>
+    public var restore: () -> AnyPublisher<Void, Error>
 }
 
 public extension PurchasesEnvironment {

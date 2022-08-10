@@ -35,7 +35,7 @@ struct SubscriptionAcivatedView: View {
             }, label: {
                 Text(L10n.continue)
             })
-                .buttonStyle(MainButtonStyle())
+            .buttonStyle(MainButtonStyle(titleColor: Asset.primaryColor.color, backgroundColor: .white))
         }
         .padding()
         .background(LinearGradient.vertical.ignoresSafeArea())

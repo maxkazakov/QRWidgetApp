@@ -15,9 +15,8 @@ public enum QRProductType: String {
 }
 
 public struct QRProduct: Equatable {
-    public init(id: String, skProduct: SKProduct, isPopular: Bool, title: String, priceInfo: String, type: QRProductType, purchase: @escaping () -> AnyPublisher<Void, PurchasesError>) {
+    public init(id: String, isPopular: Bool, title: String, priceInfo: String, type: QRProductType, purchase: @escaping () -> AnyPublisher<Void, PurchasesError>) {
         self.id = id
-        self.skProduct = skProduct
         self.isPopular = isPopular
         self.title = title
         self.priceInfo = priceInfo
@@ -26,7 +25,6 @@ public struct QRProduct: Equatable {
     }
 
     let id: String
-    let skProduct: SKProduct
     let isPopular: Bool
     let title: String
     let priceInfo: String
@@ -38,11 +36,20 @@ public struct QRProduct: Equatable {
     }
 }
 
-public enum PurchasesError: Error {
+public enum PurchasesError: LocalizedError {
     case unknown
     case noAvailablePackages
     case cancelled
     case custom(String)
+
+    public var errorDescription: String? {
+        switch self {
+        case .unknown: return "Unknown error"
+        case .noAvailablePackages: return "No available packages"
+        case .cancelled: return ""
+        case let .custom(errorMessage): return errorMessage
+        }
+    }
 }
 
 class PaywallViewModel: ViewModel {
