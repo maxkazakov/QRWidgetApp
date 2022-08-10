@@ -1,0 +1,57 @@
+//
+//  File.swift
+//  
+//
+//  Created by Максим Казаков on 08.08.2022.
+//
+
+import Foundation
+import Combine
+import StoreKit
+
+public enum PaywallSource: String {
+    case onboarding
+    case changeAppearance
+    case batchScan
+    case details
+    case addSecondQrCore
+    case appleWallet
+    case settings
+    case scan
+}
+
+public struct PurchasesEnvironment {
+    public init(getProVersionActivated: @escaping () -> AnyPublisher<Bool, Never>,
+                proActivatedPublisher: @escaping () -> AnyPublisher<Bool, Never>,
+                isProActivated: @escaping () -> Bool,
+                purchase: @escaping (_ product: SKProduct) -> AnyPublisher<Void, PurchasesError>,
+                offerings: @escaping () -> AnyPublisher<[QRProduct], Error>,
+                restore: @escaping () -> AnyPublisher<Void, Error>
+    ) {
+        self.getProVersionActivated = getProVersionActivated
+        self.proActivatedPublisher = proActivatedPublisher
+        self.isProActivated = isProActivated
+        self.purchase = purchase
+        self.offerings = offerings
+        self.restore = restore
+    }
+
+    var getProVersionActivated: () -> AnyPublisher<Bool, Never>
+    var proActivatedPublisher: () -> AnyPublisher<Bool, Never>
+    var isProActivated: () -> Bool
+
+    var purchase: (_ product: SKProduct) -> AnyPublisher<Void, PurchasesError>
+    var offerings: () -> AnyPublisher<[QRProduct], Error>
+    var restore: () -> AnyPublisher<Void, Error>
+}
+
+public extension PurchasesEnvironment {
+    static let unimplemented = PurchasesEnvironment(
+        getProVersionActivated: { Just(true).eraseToAnyPublisher() },
+        proActivatedPublisher: { Just(true).eraseToAnyPublisher() },
+        isProActivated: { true },
+        purchase: { _ in fatalError("purchase not implemented") },
+        offerings: { fatalError("offerings not implemented") },
+        restore: { fatalError("restore not implemented") }
+    )
+}
