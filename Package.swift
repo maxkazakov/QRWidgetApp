@@ -38,7 +38,7 @@ let package = Package(
                 .product(name: "Haptica", package: "Haptica"),
                 .product(name: "Lottie", package: "lottie-ios"),
             ],
-            exclude: ["swiftgen.yml"],
+            exclude: ["swiftgen.yml", "crowdin.yml"],
             resources: [.process("Resources/LottieAnimations")]
         ),
         .target(

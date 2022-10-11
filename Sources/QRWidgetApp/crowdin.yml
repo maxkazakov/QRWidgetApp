@@ -1,0 +1,3 @@
+files:
+  - source: /**/Resources/en*/*.strings
+    translation: /**/Resources/%osx_code%/%original_file_name%
