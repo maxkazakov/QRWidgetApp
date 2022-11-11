@@ -22,7 +22,6 @@ struct NoQRView: View {
                     .foregroundColor(.gray)
                     .multilineTextAlignment(.center)
             }
-
         }
         .padding(20)
     }

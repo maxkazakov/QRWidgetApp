@@ -32,9 +32,19 @@ struct QRCodeTileView: View {
         flipEnabled = false
     }
 
-    init(model: QRModel, proVersionActivated: Bool) {
+    init(
+        model: QRModel,
+        proVersionActivated: Bool,
+        forcedForegroundColor: UIColor? = nil
+    ) {
+        let foregroundColor: CGColor
+        if let forcedForegroundColor {
+            foregroundColor = forcedForegroundColor.cgColor
+        } else {
+            foregroundColor = model.foregroundColor(isProActivated: proVersionActivated)
+        }
         self.data = QRCodeTileViewData(qrData: model.qrData,
-                                       foreground: model.foregroundColor(isProActivated: proVersionActivated),
+                                       foreground: foregroundColor,
                                        background: model.backgroundColor(isProActivated: proVersionActivated),
                                        errorCorrectionLevel: model.errorCorrectionLevel)
         flipEnabled = proVersionActivated

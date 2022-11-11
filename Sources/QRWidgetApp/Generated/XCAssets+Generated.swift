@@ -21,6 +21,18 @@ internal typealias AssetImageTypeAlias = ImageAsset.Image
 
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
 internal enum Asset {
+  internal enum Backgrounds {
+    internal static let green = ImageAsset(name: "green")
+    internal static let lightGreen = ImageAsset(name: "light_green")
+    internal static let pink = ImageAsset(name: "pink")
+    internal static let purple = ImageAsset(name: "purple")
+    internal static let xmas = ImageAsset(name: "xmas")
+    internal static let xmaxBranches = ImageAsset(name: "xmax-branches")
+    internal static let yellow = ImageAsset(name: "yellow")
+  }
+  internal enum QRColor {
+    internal static let xmasBranches = ColorAsset(name: "xmas-branches")
+  }
   internal static let qrImageOnboarding = ImageAsset(name: "QrImageOnboarding")
   internal static let checkmark = ImageAsset(name: "checkmark")
   internal static let emptyFav = ImageAsset(name: "emptyFav")
@@ -28,10 +40,15 @@ internal enum Asset {
   internal static let flashOff = ImageAsset(name: "flashOff")
   internal static let flashOn = ImageAsset(name: "flashOn")
   internal static let gallery = ImageAsset(name: "gallery")
+  internal static let green1 = ImageAsset(name: "green 1")
+  internal static let lightGreen1 = ImageAsset(name: "light green 1")
+  internal static let pink2 = ImageAsset(name: "pink 2")
   internal static let placeholder = ImageAsset(name: "placeholder")
   internal static let primaryColor = ColorAsset(name: "primaryColor")
+  internal static let purple1 = ImageAsset(name: "purple 1")
   internal static let star = ImageAsset(name: "star")
   internal static let viewfinder = ImageAsset(name: "viewfinder")
+  internal static let yellow1 = ImageAsset(name: "yellow 1")
   internal static let yellowOnboarding = ColorAsset(name: "yellowOnboarding")
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name

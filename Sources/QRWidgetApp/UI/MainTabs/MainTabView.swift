@@ -48,7 +48,8 @@ struct MainTabView: View {
                 }
                 .tag(Tab.settings)
         }
-        .accentColor(Color.primaryColor)
+        .accentColor(.blue)
         .tabViewStyle(.automatic)
+        .colorScheme(viewModel.currentTab == .favorites ? .dark : .light)
     }
 }

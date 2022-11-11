@@ -219,5 +219,14 @@ public class Starter {
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().compactAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = transprentAppearance
+
+        let tabAppearance = UITabBarAppearance()
+        tabAppearance.configureWithDefaultBackground()
+
+        UITabBar.appearance().standardAppearance = tabAppearance
+
+        if #available(iOS 15.0, *) {
+            UITabBar.appearance().scrollEdgeAppearance = tabAppearance
+        }
     }
 }
