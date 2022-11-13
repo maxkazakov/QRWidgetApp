@@ -11,37 +11,48 @@ import SimpleToast
 struct QRPagesView: View {
 
     @StateObject var viewModel: QRPagesViewModel
-    
+    @Environment(\.sendAnalyticsEvent) var sendAnalyticsEvent
+
     var body: some View {
         ZStack {
-            Image(uiImage: Asset.Backgrounds.xmaxBranches.image)
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea()
+//            Image(uiImage: Asset.Backgrounds.xmaxBranches.image)
+//                .resizable()
+//                .scaledToFill()
+//                .ignoresSafeArea()
 
             if viewModel.qrCodesList.count > 0 {
-                VStack {
-                    Spacer()
-                    TabView(selection: $viewModel.selectedQr) {
-                        ForEach(viewModel.qrCodesList, id: \.id) { qrModel in
-                            QRPageItemView(
-                                model: qrModel,
-                                proVersionActivated: viewModel.isProActivated,
-                                forcedForegroundColor: Asset.QRColor.xmasBranches.color
-                            )
-                                .id(qrModel.id)
+                ZStack {
+                    VStack {
+                        Spacer()
+                        TabView(selection: $viewModel.selectedQr) {
+                            ForEach(viewModel.qrCodesList, id: \.id) { qrModel in
+                                QRPageItemView(
+                                    model: qrModel,
+                                    proVersionActivated: viewModel.isProActivated,
+                                    forcedForegroundColor: Asset.QRColor.xmasBranches.color
+                                )
                                 .tag(qrModel.id)
+                            }
+                            .padding(20)
+                        }
+                        .frame(height: 420)
+                        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
+                        .indexViewStyle(.page(backgroundDisplayMode: .always))
+                        .navigationBarTitleDisplayMode(.inline)
+                        .navigationViewStyle(.stack)
+
+                        Spacer()
+                        Spacer()
+                    }
+
+                    VStack {
+                        Spacer()
+                        HStack {
+                            Spacer()
+                            detailsButton
                         }
                         .padding(20)
                     }
-                    .frame(height: 420)
-                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
-                    .indexViewStyle(.page(backgroundDisplayMode: .always))
-                    .navigationBarTitleDisplayMode(.inline)
-                    .navigationViewStyle(.stack)
-
-                    Spacer()
-                    Spacer()
                 }
             }
             else {
@@ -73,6 +84,39 @@ struct QRPagesView: View {
             viewModel.onAppear()
             UIPageControl.appearance().currentPageIndicatorTintColor = Asset.primaryColor.color
             UIPageControl.appearance().pageIndicatorTintColor = UIColor.gray
+        })
+    }
+
+    @ViewBuilder
+    var detailsButton: some View {
+        Button(action: {
+            sendAnalyticsEvent(.openDetails, ["source": AnalyticsSource.OpenDetails.favorites.rawValue])
+            viewModel.showDetails()
+        }, label: {
+            ZStack {
+                Circle()
+                    .foregroundColor(Color(UIColor.white))
+                Image(systemName: "ellipsis")
+                    .imageScale(.large)
+                    .foregroundColor(Color.black)
+            }
+            .frame(width: 50, height: 50)
+        })
+    }
+
+    @ViewBuilder
+    var shareButton: some View {
+        Button(action: {
+
+        }, label: {
+            ZStack {
+                Circle()
+                    .foregroundColor(Color.white)
+                Image(systemName: "square.and.arrow.up")
+                    .imageScale(.large)
+                    .foregroundColor(Color.black)
+            }
+            .frame(width: 50, height: 50)
         })
     }
 }

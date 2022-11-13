@@ -64,7 +64,7 @@ class GeneralAssembly {
                                                     sendAnalyticsEvent: self.appEnvironment.analyticsEnvironment.sendAnalyticsEvent,
                                                     shownFromOnboarding: shownFromOnboarding,
                                                     onClose: onClose))
-        .environment(\.sendAnalyticsEvent, appEnvironment.analyticsEnvironment.sendAnalyticsEvent)
+        .injectAnalyticsSender(appEnvironment.analyticsEnvironment.sendAnalyticsEvent)
         .anyView
     }
 
@@ -73,7 +73,7 @@ class GeneralAssembly {
         let view = MainTabView(
             viewModel: MainTabViewModel(storage: self.userDefaultsStorage, sendAnalytics: self.appEnvironment.analyticsEnvironment.sendAnalyticsEvent)
         )
-            .environment(\.sendAnalyticsEvent, self.appEnvironment.analyticsEnvironment.sendAnalyticsEvent)
+            .injectAnalyticsSender(appEnvironment.analyticsEnvironment.sendAnalyticsEvent)
             .anyView
         return Module(router: Router(), view: view)
     }
@@ -87,7 +87,7 @@ class GeneralAssembly {
                                          options: options,
                                          sendAnalytics: appEnvironment.analyticsEnvironment.sendAnalyticsEvent)
         let view = DetailsView(viewModel: viewModel)
-            .environment(\.sendAnalyticsEvent, appEnvironment.analyticsEnvironment.sendAnalyticsEvent)
+            .injectAnalyticsSender(appEnvironment.analyticsEnvironment.sendAnalyticsEvent)
             .anyView
         return Module(router: viewModel.router, view: view)
     }
@@ -127,7 +127,7 @@ class GeneralAssembly {
                                                       codes: codes,
                                                       onClose: onClose)
         let view = MutlipleQRRecognizedView(viewModel: viewModel)
-            .environment(\.sendAnalyticsEvent, appEnvironment.analyticsEnvironment.sendAnalyticsEvent)
+            .injectAnalyticsSender(appEnvironment.analyticsEnvironment.sendAnalyticsEvent)
         let controller = UIHostingController(rootView: view)
         controller.view.backgroundColor = UIColor.clear
         return Module(router: viewModel.router, controller: controller)
@@ -148,7 +148,7 @@ class GeneralAssembly {
                                                     qrCodesService: qrCodesService,
                                                     sendAnalytics: appEnvironment.analyticsEnvironment.sendAnalyticsEvent)
         let beautifyView = BeautifyQRView(viewModel: beautifyViewModel)
-            .environment(\.sendAnalyticsEvent, appEnvironment.analyticsEnvironment.sendAnalyticsEvent)
+            .injectAnalyticsSender(appEnvironment.analyticsEnvironment.sendAnalyticsEvent)
             .anyView
         return Module(router: beautifyViewModel.router, view: beautifyView)
     }
@@ -198,5 +198,12 @@ class GeneralAssembly {
     func makeSingleQRRowView(model: SingleCodeRowUIModel) -> some View {
         SingleCodeRowView(model: model,
                           viewModel: SingleCodeRowViewModel(id: model.id, favoritesService: self.favoritesService))
+    }
+}
+
+private extension View {
+    func injectAnalyticsSender(_ sender: @escaping SendAnalyticsAction) -> some View {
+        self
+            .environment(\.sendAnalyticsEvent, sender)
     }
 }

@@ -9,16 +9,16 @@ import Foundation
 import Combine
 
 public class FavoritesService {
-    let favorites: CurrentValueSubject<Set<UUID>, Never>
+    let favorites: CurrentValueSubject<[UUID], Never>
     private let storage = UserDefaultsStorage()
     private var cancellableSet = Set<AnyCancellable>()
 
     public init() {
-        self.favorites = CurrentValueSubject<Set<UUID>, Never>(Set(storage.favoriteIds))
+        self.favorites = CurrentValueSubject<[UUID], Never>(storage.favoriteIds)
         self.favorites
             .dropFirst()
             .sink(receiveValue: {
-                self.storage.favoriteIds = Array($0)
+                self.storage.favoriteIds = $0
             })
             .store(in: &cancellableSet)
     }
@@ -27,19 +27,19 @@ public class FavoritesService {
         return favorites.value.contains(qrId)
     }
 
-    func setFavotites(ids: Set<UUID>) {
+    func setFavotites(ids: [UUID]) {
         favorites.send(ids)
     }
 
     func addSavorite(id: UUID) {
         var newFavoriteIds = favorites.value
-        newFavoriteIds.insert(id)
+        newFavoriteIds.append(id)
         favorites.send(newFavoriteIds)
     }
 
     func removeFavorite(id: UUID) {
         var newFavoriteIds = favorites.value
-        newFavoriteIds.remove(id)
+        newFavoriteIds.removeAll { $0 == id }
         favorites.send(newFavoriteIds)
     }
 }

@@ -157,7 +157,7 @@ public class Starter {
             return
         }
         let allIds = qrCodesRepository.qrCodes.map { $0.id }
-        favoritesService.setFavotites(ids: Set(allIds))
+        favoritesService.setFavotites(ids: allIds)
     }
 
     private func mirgateFromStateToUserDefaultsIfNeeded(state: AppStateDto) {

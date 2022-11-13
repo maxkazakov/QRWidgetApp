@@ -17,6 +17,7 @@ enum Tab: Int, Identifiable {
 }
 
 struct MainTabView: View {
+    @Environment(\.colorScheme) var colorScheme
     @StateObject var viewModel: MainTabViewModel
 
     var body: some View {
@@ -50,6 +51,6 @@ struct MainTabView: View {
         }
         .accentColor(.blue)
         .tabViewStyle(.automatic)
-        .colorScheme(viewModel.currentTab == .favorites ? .dark : .light)
+        .colorScheme(viewModel.currentTab == .favorites ? .dark : colorScheme)
     }
 }

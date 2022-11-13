@@ -24,22 +24,17 @@ class QRPagesViewModel: ViewModel {
                 self?.updateQrCodeList(qrCodes, isProActivated: isProActivated)
             })
             .store(in: &cancellableSet)
-
-        qrCodesService.selectedQRCodePublisher
-            .removeDuplicates()
-            .filter { $0 != nil }
-            .map { $0! }
-            .sink(receiveValue: { [weak self] selectedId in
-                self?.selectedQr = selectedId
-            })
-            .store(in: &cancellableSet)
     }
+
 
     @Published var showFlipTip = false
     @Published var showNeedToPaySubscription = false
     @Published var qrCodesList: [QRModel] = []
-    @Published var selectedQr: UUID = UUID() {
+
+    // This selectedQr updates randomly when list of QR codes is being updated
+    @Published var selectedQr: UUID = .zero {
         didSet {
+            print("selectedQr", selectedQr)
             qrCodesService.setSelectedQR(id: selectedQr)
         }
     }
@@ -55,6 +50,15 @@ class QRPagesViewModel: ViewModel {
         storage.isFlipTipWasShown = true
     }
 
+    func showDetails() {
+        guard let currentQrModel = qrCodesService.getQR(id: selectedQr) else {
+            return
+        }
+        generalAssembly.appRouter.route(route: .details(currentQrModel))
+    }
+
+    // MARK: - Private
+
     private func updateQrCodeList(_ qrCodes: [QRModel], isProActivated: Bool) {
         if qrCodes.count > 1, !isProActivated {
             let firstQrCode = qrCodes.first!
@@ -64,9 +68,18 @@ class QRPagesViewModel: ViewModel {
             self.showNeedToPaySubscription = false
             self.qrCodesList = qrCodes
         }
+
+        let selectedQRId = qrCodesService.selectedQRCodePublisher.value
+        if qrCodesList.contains(where: { $0.id == selectedQRId }) {
+            selectedQr = selectedQRId!
+        } else {
+            selectedQr = qrCodesList.first?.id ?? .zero
+        }
     }
 }
 
-private let unselectedId = UUID()
+extension UUID {
+    static let zero = UUID(uuidString: "00000000-0000-0000-0000-000000000000")!
+}
 
 
