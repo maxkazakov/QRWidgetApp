@@ -98,6 +98,36 @@ struct SettingsView: View {
                     header: {
                         Text(L10n.Settings.faq)
                     })
+
+                Section(
+                    content: {
+                        Button(
+                            action: {
+                                if let url = URL(string: "https://termify.io/eula/1635320461") {
+                                    UIApplication.shared.open(url)
+                                }
+                            },
+                            label: {
+                                Text(L10n.Paywall.termsOfUse)
+                                    .multilineTextAlignment(.leading)
+                            })
+                        .foregroundColor(Color.primary)
+
+                        Button(
+                            action: {
+                                if let url = URL(string: "https://termify.io/privacy-policy/1635319951") {
+                                    UIApplication.shared.open(url)
+                                }
+                            },
+                            label: {
+                                Text(L10n.Paywall.privacyPolicy)
+                                    .multilineTextAlignment(.leading)
+                            })
+                        .foregroundColor(Color.primary)
+                    },
+                    header: {
+                        Text("")
+                    })
             }
             .fullScreenCover(isPresented: $showPaywall) {
                 generalAssembly.makePaywallView(sourceScreen: .settings)

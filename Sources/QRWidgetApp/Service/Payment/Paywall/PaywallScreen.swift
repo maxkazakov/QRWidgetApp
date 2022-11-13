@@ -142,22 +142,6 @@ struct PaywallScreen: View {
                 })
                 .buttonStyle(MainButtonStyle(titleColor: Asset.primaryColor.color, backgroundColor: .white))
             }
-
-            HStack(spacing: 16) {
-                Link(destination: URL(string: "https://termify.io/eula/1635320461")!, label: {
-                    Text(L10n.Paywall.termsOfUse)
-                        .underline()
-                        .frame(maxWidth: .infinity)
-                })
-
-                Link(destination: URL(string: "https://termify.io/privacy-policy/1635319951")!, label: {
-                    Text(L10n.Paywall.privacyPolicy)
-                        .underline()
-                        .frame(maxWidth: .infinity)
-                })
-            }
-            .font(Font.footnote)
-            .foregroundColor(Color.white)
         }
     }
 }

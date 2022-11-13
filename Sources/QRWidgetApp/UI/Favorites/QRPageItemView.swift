@@ -32,6 +32,5 @@ struct QRPageItemView: View {
                 }
             }
         }
-
     }
 }
