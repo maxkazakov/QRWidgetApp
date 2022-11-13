@@ -17,10 +17,13 @@ struct QRPagesView: View {
         ZStack {
             if viewModel.qrCodesList.count > 0 {
                 ZStack {
-                    Image(uiImage: Asset.Backgrounds.xmaxBranches.image)
-                        .resizable()
-                        .scaledToFill()
-                        .ignoresSafeArea()
+                    GeometryReader { proxy in
+                        Image(uiImage: Asset.Backgrounds.xmaxBranches.image)
+                            .resizable()
+                            .scaledToFill()
+                            .ignoresSafeArea()
+                            .frame(width: proxy.size.width)
+                    }
 
                     VStack {
                         Spacer()

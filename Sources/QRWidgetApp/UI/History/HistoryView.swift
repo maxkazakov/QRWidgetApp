@@ -27,6 +27,9 @@ struct HistoryView<ViewModel: HistoryViewModelProtocol>: View {
                                 ForEach(section.items, id: \.id) { item in
                                     rowView(item: item)
                                 }
+                                .onDelete { indexSet in
+                                    viewModel.remove(indexSet, section: section)
+                                }
                             },
                             header: {
                                 Text(section.formattedDate)

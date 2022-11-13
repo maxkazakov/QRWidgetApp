@@ -31,6 +31,23 @@ class BatchCodesViewModel: ViewModel, HistoryViewModelProtocol {
         "Batch"
     }
 
+    func remove(_ indexSet: IndexSet, section: HistorySectionUIModel) {
+        var codesIds: Set<UUID> = []
+        for index in indexSet {
+            let item = section.items[index].data
+            switch item {
+            case let .single(single):
+                codesIds.insert(single.id)
+
+            case let .multiple(multiple):
+                for itemFromMultiple in multiple.codes {
+                    codesIds.insert(itemFromMultiple.id)
+                }
+            }
+        }
+        qrCodesRepository.remove(ids: codesIds)
+    }
+
     func onAppear() {
         guard !isAppeared else { return }
         isAppeared = true

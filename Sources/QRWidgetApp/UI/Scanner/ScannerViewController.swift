@@ -106,14 +106,28 @@ extension CodeScannerView {
             stackView.addArrangedSubview(label)
             stackView.addArrangedSubview(button)
 
-            view.addSubview(stackView)
+//            view.addSubview(stackView)
+
+            let image = Asset.qrTemplate.image
+            let imageView = UIImageView(image: image)
+            imageView.contentMode = .scaleAspectFill
+            imageView.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(imageView)
 
             NSLayoutConstraint.activate([
-                button.heightAnchor.constraint(equalToConstant: 50),
-                stackView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
-                stackView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
-                stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+                imageView.topAnchor.constraint(equalTo: view.topAnchor),
+                imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
             ])
+
+            addviewfinder()
+//            NSLayoutConstraint.activate([
+//                button.heightAnchor.constraint(equalToConstant: 50),
+//                stackView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+//                stackView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+//                stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+//            ])
         }
 
         override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -132,12 +146,6 @@ extension CodeScannerView {
         var captureSession: AVCaptureSession!
         var previewLayer: AVCaptureVideoPreviewLayer!
         let fallbackVideoCaptureDevice = AVCaptureDevice.default(for: .video)
-
-        private lazy var viewFinder: UIImageView? = {
-            let imageView = UIImageView(image: Asset.viewfinder.image)
-            imageView.translatesAutoresizingMaskIntoConstraints = false
-            return imageView
-        }()
 
         override public func viewDidLoad() {
             super.viewDidLoad()
@@ -225,19 +233,6 @@ extension CodeScannerView {
             }
         }
 
-        private func addviewfinder() {
-            guard showViewfinder, let imageView = viewFinder else { return }
-
-            view.addSubview(imageView)
-
-            NSLayoutConstraint.activate([
-                imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-                imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                imageView.widthAnchor.constraint(equalToConstant: 200),
-                imageView.heightAnchor.constraint(equalToConstant: 200),
-            ])
-        }
-
         override public func viewDidDisappear(_ animated: Bool) {
             super.viewDidDisappear(animated)
 
@@ -286,6 +281,24 @@ extension CodeScannerView {
         }
         
         #endif
+
+        private lazy var viewFinder: UIImageView? = {
+            let imageView = UIImageView(image: Asset.viewfinder.image)
+            imageView.translatesAutoresizingMaskIntoConstraints = false
+            return imageView
+        }()
+        private func addviewfinder() {
+            guard showViewfinder, let imageView = viewFinder else { return }
+
+            view.addSubview(imageView)
+
+            NSLayoutConstraint.activate([
+                imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+                imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                imageView.widthAnchor.constraint(equalToConstant: 200),
+                imageView.heightAnchor.constraint(equalToConstant: 200),
+            ])
+        }
         
         func updateViewController(isScanActive: Bool, isTorchOn: Bool, isGalleryPresented: Bool, shouldVibrateOnSuccess: Bool) {
             delegate?.isScanActive = isScanActive

@@ -21,7 +21,9 @@ protocol HistoryViewModelProtocol: ViewModelProtocol {
     func singleDetailsView(id: UUID) -> SingleDetailsView
     func mutlipleDetailsView(batchId: UUID) -> MultipleDetailsView
     func rowView(item: SingleCodeRowUIModel) -> SingleRowView
+    func remove(_ indexSet: IndexSet, section: HistorySectionUIModel)
 }
+
 
 class HistoryViewModel: ViewModel, HistoryViewModelProtocol {
 
@@ -40,7 +42,24 @@ class HistoryViewModel: ViewModel, HistoryViewModelProtocol {
     @Published var isLoading = false
 
     var title: String {
-        L10n.History.title        
+        L10n.History.title
+    }
+
+    func remove(_ indexSet: IndexSet, section: HistorySectionUIModel) {
+        var codesIds: Set<UUID> = []
+        for index in indexSet {
+            let item = section.items[index].data
+            switch item {
+            case let .single(single):
+                codesIds.insert(single.id)
+
+            case let .multiple(multiple):
+                for itemFromMultiple in multiple.codes {
+                    codesIds.insert(itemFromMultiple.id)
+                }
+            }
+        }
+        qrCodesRepository.remove(ids: codesIds)
     }
 
     func onAppear() {

@@ -97,6 +97,17 @@ class QRCodesRepository {
         removeFile(qrId: id)
     }
 
+    func remove(ids: Set<UUID>) {
+        var newCodes = qrCodesPublisher.value
+        newCodes.removeAll { code in
+            ids.contains(code.id)
+        }
+        qrCodesPublisher.send(newCodes)
+        for id in ids {
+            removeFile(qrId: id)
+        }
+    }
+
     // MARK: - Private
 
     private func createQRDirectory() {

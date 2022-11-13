@@ -95,7 +95,13 @@ class AppRouter {
         if #available(iOS 15.0, *), options.isPopup, let sheet = navigationController.sheetPresentationController {
             sheet.detents = [.medium(), .large()]
         }
-        router.routerController?.present(navigationController, animated: true, completion: nil)
+        guard let presentingController = router.routerController else { return }
+        let presentCall = { presentingController.present(navigationController, animated: true, completion: nil) }
+        if presentingController.presentedViewController != nil {
+            presentingController.dismiss(animated: false, completion: presentCall)
+        } else {
+            presentCall()
+        }
     }
 }
 
