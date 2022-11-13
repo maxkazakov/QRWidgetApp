@@ -15,13 +15,13 @@ struct QRPagesView: View {
 
     var body: some View {
         ZStack {
-//            Image(uiImage: Asset.Backgrounds.xmaxBranches.image)
-//                .resizable()
-//                .scaledToFill()
-//                .ignoresSafeArea()
-
             if viewModel.qrCodesList.count > 0 {
                 ZStack {
+                    Image(uiImage: Asset.Backgrounds.xmaxBranches.image)
+                        .resizable()
+                        .scaledToFill()
+                        .ignoresSafeArea()
+
                     VStack {
                         Spacer()
                         TabView(selection: $viewModel.selectedQr) {
@@ -32,6 +32,7 @@ struct QRPagesView: View {
                                     forcedForegroundColor: Asset.QRColor.xmasBranches.color
                                 )
                                 .tag(qrModel.id)
+                                .id(qrModel.id)
                             }
                             .padding(20)
                         }

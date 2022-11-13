@@ -9,6 +9,8 @@ import SwiftUI
 import QRWidgetCore
 
 struct QRCodeTileViewData: Equatable {
+
+    let id: UUID
     let qrData: String
     let foreground: CGColor
     let background: CGColor
@@ -24,8 +26,9 @@ struct QRCodeTileView: View {
     let data: QRCodeTileViewData
     let flipEnabled: Bool
 
-    init(qrData: String, foreground: CGColor = .qr.defaultForeground, background: CGColor = .qr.defaultBackground, errorCorrectionLevel: ErrorCorrection) {
-        self.data = QRCodeTileViewData(qrData: qrData,
+    init(id: UUID, qrData: String, foreground: CGColor = .qr.defaultForeground, background: CGColor = .qr.defaultBackground, errorCorrectionLevel: ErrorCorrection) {
+        self.data = QRCodeTileViewData(id: id,
+                                       qrData: qrData,
                                        foreground: foreground,
                                        background: background,
                                        errorCorrectionLevel: errorCorrectionLevel)
@@ -43,10 +46,13 @@ struct QRCodeTileView: View {
         } else {
             foregroundColor = model.foregroundColor(isProActivated: proVersionActivated)
         }
-        self.data = QRCodeTileViewData(qrData: model.qrData,
-                                       foreground: foregroundColor,
-                                       background: model.backgroundColor(isProActivated: proVersionActivated),
-                                       errorCorrectionLevel: model.errorCorrectionLevel)
+        self.data = QRCodeTileViewData(
+            id: model.id,
+            qrData: model.qrData,
+            foreground: foregroundColor,
+            background: model.backgroundColor(isProActivated: proVersionActivated),
+            errorCorrectionLevel: model.errorCorrectionLevel
+        )
         flipEnabled = proVersionActivated
             && (model.foregroundColor != nil || model.backgroundColor != nil)
     }
@@ -88,6 +94,8 @@ struct QRCodeTileView: View {
             self.viewModel.flipped.toggle()
         }
         .onAppear(perform: {
+            // onAppear sometimes is not called on tab pages
+            // Example: 3 Qr-s, 3-rd selected. 2-nd qr onAppear not called, that leads to no qr image is shown
             viewModel.update(data)
         })
         .onChange(of: data, perform: {

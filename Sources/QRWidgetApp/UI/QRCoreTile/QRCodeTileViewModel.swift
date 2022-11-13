@@ -41,7 +41,7 @@ class QRCodeTileViewModel: ViewModel {
             .store(in: &cancellableSet)
     }
 
-    func update(_ data: QRCodeTileViewData) {
+    func update(_ data: QRCodeTileViewData) {        
         prevData.send(data)
     }
 
