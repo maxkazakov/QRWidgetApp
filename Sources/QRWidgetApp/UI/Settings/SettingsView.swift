@@ -128,6 +128,32 @@ struct SettingsView: View {
                     header: {
                         Text("")
                     })
+
+                #if DEBUG
+                Section(
+                    content: {
+                        Button(
+                            action: {
+                                generalAssembly.debugHelper.makeMockQRCodes()
+                            },
+                            label: {
+                                Text("Make mock QR codes")
+                            })
+                        .foregroundColor(Color.primary)
+
+                        Button(
+                            action: {
+                                generalAssembly.debugHelper.removeAllQRs()
+                            },
+                            label: {
+                                Text("Remove all QR codes")
+                            })
+                        .foregroundColor(Color.primary)
+                    },
+                    header: {
+                        Text("Debug")
+                    })
+                #endif
             }
             .fullScreenCover(isPresented: $showPaywall) {
                 generalAssembly.makePaywallView(sourceScreen: .settings)

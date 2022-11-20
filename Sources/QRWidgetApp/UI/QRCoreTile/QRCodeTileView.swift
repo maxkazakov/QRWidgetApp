@@ -26,7 +26,11 @@ struct QRCodeTileView: View {
     let data: QRCodeTileViewData
     let flipEnabled: Bool
 
-    init(id: UUID, qrData: String, foreground: CGColor = .qr.defaultForeground, background: CGColor = .qr.defaultBackground, errorCorrectionLevel: ErrorCorrection) {
+    init(id: UUID,
+         qrData: String,
+         foreground: CGColor = .qr.defaultForeground,
+         background: CGColor = .qr.defaultBackground,
+         errorCorrectionLevel: ErrorCorrection) {
         self.data = QRCodeTileViewData(id: id,
                                        qrData: qrData,
                                        foreground: foreground,
@@ -38,7 +42,8 @@ struct QRCodeTileView: View {
     init(
         model: QRModel,
         proVersionActivated: Bool,
-        forcedForegroundColor: UIColor? = nil
+        forcedForegroundColor: UIColor? = nil,
+        forcedBackgroundColor: UIColor? = nil
     ) {
         let foregroundColor: CGColor
         if let forcedForegroundColor {
@@ -46,11 +51,19 @@ struct QRCodeTileView: View {
         } else {
             foregroundColor = model.foregroundColor(isProActivated: proVersionActivated)
         }
+
+        let backgroundColor: CGColor
+        if let forcedBackgroundColor {
+            backgroundColor = forcedBackgroundColor.cgColor
+        } else {
+            backgroundColor = model.backgroundColor(isProActivated: proVersionActivated)
+        }
+
         self.data = QRCodeTileViewData(
             id: model.id,
             qrData: model.qrData,
             foreground: foregroundColor,
-            background: model.backgroundColor(isProActivated: proVersionActivated),
+            background: backgroundColor,
             errorCorrectionLevel: model.errorCorrectionLevel
         )
         flipEnabled = proVersionActivated

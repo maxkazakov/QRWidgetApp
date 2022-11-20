@@ -199,6 +199,10 @@ class GeneralAssembly {
         SingleCodeRowView(model: model,
                           viewModel: SingleCodeRowViewModel(id: model.id, favoritesService: self.favoritesService))
     }
+
+    lazy var debugHelper = {
+        DebugHelper(qrService: qrCodesService, favoritesService: favoritesService, repository: qrCodesRepository)
+    }()
 }
 
 private extension View {

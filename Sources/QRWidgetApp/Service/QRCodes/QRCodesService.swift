@@ -53,6 +53,13 @@ class QRCodesService {
         return qrCode
     }
 
+    @discardableResult
+    func createManyQrCodes(qrModels: [QRModel]) {
+        for qr in qrModels {
+            repository.addNew(qr: qr)
+        }
+    }
+
     func changeQRLabel(id: UUID, newLabel: String) {
         guard var qrModel = repository.get(id: id) else {
             return

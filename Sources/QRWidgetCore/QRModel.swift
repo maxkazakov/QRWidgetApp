@@ -27,8 +27,8 @@ public struct QRModel: Identifiable, Equatable {
         self.batchId = batchId
     }
 
-    public let id: UUID
-    public let dateCreated: Date
+    public var id: UUID
+    public var dateCreated: Date
     public var qrData: String
     public var label: String = ""
     public var batchId: UUID?

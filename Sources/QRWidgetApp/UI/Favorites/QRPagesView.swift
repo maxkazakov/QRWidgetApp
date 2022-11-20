@@ -32,7 +32,9 @@ struct QRPagesView: View {
                                 QRPageItemView(
                                     model: qrModel,
                                     proVersionActivated: viewModel.isProActivated,
-                                    forcedForegroundColor: Asset.QRColor.xmasBranches.color
+                                    // This is test for screen with x-mas tree
+                                    forcedForegroundColor: Asset.QRColor.xmasBranches.color,
+                                    forcedBackgroundColor: UIColor.white
                                 )
                                 .tag(qrModel.id)
                                 .id(qrModel.id)

@@ -13,6 +13,7 @@ struct QRPageItemView: View {
     let proVersionActivated: Bool
     @Environment(\.sendAnalyticsEvent) var sendAnalyticsEvent
     var forcedForegroundColor: UIColor? = nil
+    var forcedBackgroundColor: UIColor? = nil
 
     var body: some View {
         ZStack {
@@ -26,7 +27,8 @@ struct QRPageItemView: View {
                     QRCodeTileView(
                         model: model,
                         proVersionActivated: proVersionActivated,
-                        forcedForegroundColor: forcedForegroundColor
+                        forcedForegroundColor: forcedForegroundColor,
+                        forcedBackgroundColor: forcedBackgroundColor
                     )
                     .padding(.horizontal, 12)
                 }
