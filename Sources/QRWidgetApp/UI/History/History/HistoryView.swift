@@ -7,11 +7,11 @@
 
 import SwiftUI
 import UIKit
-import AVFoundation
+import SwiftUINavigation
 
-struct HistoryView<ViewModel: HistoryViewModelProtocol>: View {
+struct HistoryView: View {
 
-    @StateObject var viewModel: ViewModel
+    @ObservedObject var viewModel: HistoryViewModel
     @State var selectedQRId: UUID?
     @Environment(\.sendAnalyticsEvent) var sendAnalyticsEvent
     
@@ -73,5 +73,31 @@ struct HistoryView<ViewModel: HistoryViewModelProtocol>: View {
                     .foregroundColor(Color.primary)
             }
         })
+//        NavigationLink(
+//            unwrapping: $selectedQRId,
+//            onNavigate: {
+//                self.selectedQRId = $0 ? item.id : nil
+//            },
+//            destination: { selectedQRId in
+//                switch item.data {
+//                case .single:
+//                    viewModel.singleDetailsView(id: item.id)
+//                case .multiple:
+//                    viewModel.mutlipleDetailsView(batchId: item.id)
+//                }
+//            },
+//            label: {
+//                switch item.data {
+//                case let .single(single):
+//                    viewModel.rowView(item: single)
+//                        .padding(.vertical, 12)
+//                        .foregroundColor(Color.primary)
+//                case let .multiple(multiple):
+//                    HistoryMultipleRowView(model: multiple)
+//                        .padding(.vertical, 12)
+//                        .foregroundColor(Color.primary)
+//                }
+//            }
+//        )
     }
 }

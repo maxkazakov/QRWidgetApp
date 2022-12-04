@@ -22,12 +22,6 @@ struct MainTabView: View {
 
     var body: some View {
         TabView(selection: $viewModel.currentTab) {
-            generalAssembly.makeQRCodePagesView()
-                .tabItem {
-                    Label(L10n.Tabs.favorites, systemImage: "star.fill")
-                }
-                .tag(Tab.favorites)
-
             generalAssembly.makeQRCodeScannerView()
                 .tabItem {
                     Label(L10n.Tabs.scan, systemImage: "qrcode.viewfinder")
@@ -35,7 +29,7 @@ struct MainTabView: View {
                 .tag(Tab.scan)
 
             NavigationView {
-                generalAssembly.makeHistoryView()
+                generalAssembly.makeAllCodesView()
             }
             .navigationViewStyle(.stack)
             .tabItem {

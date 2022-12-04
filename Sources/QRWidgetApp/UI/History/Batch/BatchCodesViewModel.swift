@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import QRWidgetCore
 
-class BatchCodesViewModel: ViewModel, HistoryViewModelProtocol {
+class BatchCodesViewModel: ViewModel {
 
     private let batchId: UUID
     private let qrCodesRepository: QRCodesRepository
@@ -24,26 +24,17 @@ class BatchCodesViewModel: ViewModel, HistoryViewModelProtocol {
     }
 
     // MARK: - HistoryViewModelProtocol
-    @Published var sections: [HistorySectionUIModel] = []
+    @Published var codes: [SingleCodeRowUIModel] = []
     @Published var isLoading = false
 
     var title: String {
         "Batch"
     }
 
-    func remove(_ indexSet: IndexSet, section: HistorySectionUIModel) {
+    func remove(_ indexSet: IndexSet) {
         var codesIds: Set<UUID> = []
         for index in indexSet {
-            let item = section.items[index].data
-            switch item {
-            case let .single(single):
-                codesIds.insert(single.id)
-
-            case let .multiple(multiple):
-                for itemFromMultiple in multiple.codes {
-                    codesIds.insert(itemFromMultiple.id)
-                }
-            }
+            codesIds.insert(codes[index].id)
         }
         qrCodesRepository.remove(ids: codesIds)
     }
@@ -68,10 +59,6 @@ class BatchCodesViewModel: ViewModel, HistoryViewModelProtocol {
         }
     }
 
-    func mutlipleDetailsView(batchId: UUID) -> some View {
-        EmptyView()
-    }
-
     func rowView(item: SingleCodeRowUIModel) -> some View {
         generalAssembly.makeSingleQRRowView(model: item)
     }
@@ -88,18 +75,11 @@ class BatchCodesViewModel: ViewModel, HistoryViewModelProtocol {
             let sortedCodes = codes
                 .sorted(by: { $0.dateCreated > $1.dateCreated })
                 .filter { $0.batchId == self.batchId }
-                .map { HistoryItemUIModel(data: .single(SingleCodeRowUIModel(model: $0, isFavorite: self.isInFavorite($0.id)))) }
-
-            var sections: [HistorySectionUIModel] = []
-            if let firstCode = sortedCodes.first {
-                let day = Calendar.current.numberOfDaysBetween(firstCode.date, and: Date(timeIntervalSince1970: 0))
-                let formattedDate = FormatsHelper.formatDay(firstCode.date)
-                sections.append(HistorySectionUIModel(day: day, formattedDate: formattedDate, items: sortedCodes))
-            }
+                .map { SingleCodeRowUIModel(model: $0, isFavorite: self.isInFavorite($0.id)) }
 
             DispatchQueue.main.async {
                 self.isLoading = false
-                self.sections = sections
+                self.codes = sortedCodes
             }
         }
     }

@@ -9,31 +9,17 @@ import Foundation
 import SwiftUI
 import QRWidgetCore
 
-protocol HistoryViewModelProtocol: ViewModelProtocol {
-    associatedtype SingleDetailsView: View
-    associatedtype MultipleDetailsView: View
-    associatedtype SingleRowView: View
-
-    var title: String { get }
-    var sections: [HistorySectionUIModel] { get }
-
-    func onAppear()
-    func singleDetailsView(id: UUID) -> SingleDetailsView
-    func mutlipleDetailsView(batchId: UUID) -> MultipleDetailsView
-    func rowView(item: SingleCodeRowUIModel) -> SingleRowView
-    func remove(_ indexSet: IndexSet, section: HistorySectionUIModel)
-}
-
-
-class HistoryViewModel: ViewModel, HistoryViewModelProtocol {
+class HistoryViewModel: ViewModel {
 
     private let qrCodesRepository: QRCodesRepository
     private let favoritesService: FavoritesService
+    private let showOnlyFavorites: Bool
     private var isAppeared = false
 
-    init(qrCodesRepository: QRCodesRepository, favoritesService: FavoritesService) {
+    init(qrCodesRepository: QRCodesRepository, favoritesService: FavoritesService, showOnlyFavorites: Bool = false) {
         self.qrCodesRepository = qrCodesRepository
         self.favoritesService = favoritesService
+        self.showOnlyFavorites = showOnlyFavorites
         super.init()
     }
 
@@ -100,6 +86,10 @@ class HistoryViewModel: ViewModel, HistoryViewModelProtocol {
         isLoading = true
         DispatchQueue.global(qos: .userInitiated).async {
             let sortedCodes = codes
+                .filter {
+                    guard self.showOnlyFavorites else { return true }
+                    return self.isInFavorite($0.id)
+                }
                 .sorted(by: { $0.dateCreated > $1.dateCreated })
 
             var sections = [HistorySectionUIModel]()

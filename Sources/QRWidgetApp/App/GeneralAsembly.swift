@@ -171,20 +171,31 @@ class GeneralAssembly {
     }
 
     // History
-    func makeHistoryView() -> some View {
-        let hisotryViewModel = HistoryViewModel(qrCodesRepository: self.qrCodesRepository,
-                                                favoritesService: self.favoritesService)
-        let historyView = HistoryView(viewModel: hisotryViewModel)
-        return historyView
+    func makeAllCodesView() -> some View {
+        let viewModel = AllCodesViewModel(
+            historyViewModel: HistoryViewModel(
+                qrCodesRepository: self.qrCodesRepository,
+                favoritesService: self.favoritesService
+            ),
+            favoritesViewModel: HistoryViewModel(
+                qrCodesRepository: self.qrCodesRepository,
+                favoritesService: self.favoritesService,
+                showOnlyFavorites: true
+            )
+        )
+        let view = AllCodesView(viewModel: viewModel)
+        return view
     }
 
     // History
     func makeBatchCodesView(batchId: UUID) -> some View {
-        let hisotryViewModel = BatchCodesViewModel(batchId: batchId,
-                                                   qrCodesRepository: qrCodesRepository,
-                                                   favoritesService: favoritesService)
-        let historyView = HistoryView(viewModel: hisotryViewModel)
-        return historyView
+        let batchViewModel = BatchCodesViewModel(
+            batchId: batchId,
+            qrCodesRepository: qrCodesRepository,
+            favoritesService: favoritesService
+        )
+        let batchView = BatchCodesView(viewModel: batchViewModel)
+        return batchView
     }
 
     // Main Details View

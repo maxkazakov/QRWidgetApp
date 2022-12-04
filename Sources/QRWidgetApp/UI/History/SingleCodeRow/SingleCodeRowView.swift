@@ -33,12 +33,3 @@ struct SingleCodeRowView: View {
         }
     }
 }
-
-//struct SingleCodeRowView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SingleCodeRowView(viewModel: SingleCodeRowUIModel(id: UUID(),
-//                                                             label: "Yandex Media",
-//                                                             qrData: .rawText("https://music.yandex.ru/home"), isFavorite: false, date: Date()))
-//        .padding(.all, 20)
-//    }
-//}

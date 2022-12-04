@@ -30,6 +30,7 @@ struct NoQRView: View {
 struct NoHistoryView: View {
     var body: some View {
         VStack(spacing: 12) {
+            Spacer()
             Image(uiImage: Asset.emptyHistory.image)
             VStack(spacing: 8) {
                 Text(L10n.History.Empty.title)
@@ -42,7 +43,7 @@ struct NoHistoryView: View {
                     .foregroundColor(.gray)
                     .multilineTextAlignment(.center)
             }
-
+            Spacer()
         }
         .padding(20)
     }

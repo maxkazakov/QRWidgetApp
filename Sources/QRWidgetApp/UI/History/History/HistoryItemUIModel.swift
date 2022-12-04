@@ -1,9 +1,3 @@
-//
-//  HistoryItemUIModel.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 14.06.2022.
-//
 
 import Foundation
 
