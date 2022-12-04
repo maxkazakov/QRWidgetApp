@@ -7,14 +7,14 @@ enum SelectedTab: Int {
 
 class AllCodesViewModel: ObservableObject {
     
-    init(selectedTab: SelectedTab = .favorites, historyViewModel: HistoryViewModel, favoritesViewModel: HistoryViewModel) {
+    init(selectedTab: SelectedTab = .favorites, historyViewModel: HistoryViewModel, favoritesViewModel: FavoritesViewModel) {
         self.selectedTab = selectedTab
         self.historyViewModel = historyViewModel
         self.favoritesViewModel = favoritesViewModel
     }
 
-    @Published var selectedTab: SelectedTab = .favorites
+    @Published var selectedTab: SelectedTab = .history
 
     let historyViewModel: HistoryViewModel
-    let favoritesViewModel: HistoryViewModel
+    let favoritesViewModel: FavoritesViewModel
 }

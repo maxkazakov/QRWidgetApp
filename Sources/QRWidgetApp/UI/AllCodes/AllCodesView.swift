@@ -13,10 +13,11 @@ struct AllCodesView: View {
 
             switch viewModel.selectedTab {
             case .favorites:
-                HistoryView(viewModel: viewModel.favoritesViewModel)
+                FavoritesView(viewModel: viewModel.favoritesViewModel)
             case .history:
                 HistoryView(viewModel: viewModel.historyViewModel)
             }
         }
+        .navigationTitle(L10n.History.title)
     }
 }

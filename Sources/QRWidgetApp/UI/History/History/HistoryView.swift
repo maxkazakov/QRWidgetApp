@@ -42,8 +42,7 @@ struct HistoryView: View {
                 .buttonStyle(PlainButtonStyle())
                 .listStyle(InsetGroupedListStyle())
             }
-        }
-        .navigationTitle(viewModel.title)
+        }        
         .onAppear(perform: { viewModel.onAppear() })
         .onChange(of: selectedQRId, perform: {
             if $0 != nil {

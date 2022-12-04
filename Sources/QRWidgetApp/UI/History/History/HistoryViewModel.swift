@@ -27,10 +27,6 @@ class HistoryViewModel: ViewModel {
     @Published var sections: [HistorySectionUIModel] = []
     @Published var isLoading = false
 
-    var title: String {
-        L10n.History.title
-    }
-
     func remove(_ indexSet: IndexSet, section: HistorySectionUIModel) {
         var codesIds: Set<UUID> = []
         for index in indexSet {

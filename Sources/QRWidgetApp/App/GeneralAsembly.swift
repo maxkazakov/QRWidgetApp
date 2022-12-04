@@ -115,12 +115,6 @@ class GeneralAssembly {
         return scannerView
     }
 
-    // QR Code pages
-    func makeQRCodePagesView() -> some View {
-        let qrPagesView = QRPagesView(viewModel: QRPagesViewModel(qrCodesService: self.qrCodesService, storage: self.userDefaultsStorage))
-        return qrPagesView
-    }
-
     func makeMultipleCodesRecognized(codes: [QRModel], onClose: @escaping EmptyBlock) -> Module {
         let viewModel = MutlipleQRRecognizedViewModel(favoritesService: favoritesService,
                                                       qrCodesRepository: qrCodesRepository,
@@ -177,10 +171,9 @@ class GeneralAssembly {
                 qrCodesRepository: self.qrCodesRepository,
                 favoritesService: self.favoritesService
             ),
-            favoritesViewModel: HistoryViewModel(
-                qrCodesRepository: self.qrCodesRepository,
-                favoritesService: self.favoritesService,
-                showOnlyFavorites: true
+            favoritesViewModel: FavoritesViewModel(
+                qrCodesService: qrCodesService,
+                favoritesSerice: favoritesService
             )
         )
         let view = AllCodesView(viewModel: viewModel)
