@@ -12,7 +12,7 @@ struct FavoritesView: View {
     var body: some View {
         ZStack {
             if viewModel.codes.isEmpty {
-                NoHistoryView()
+                NoFavoriteCodesView()
             } else {
                 List {
                     ForEach(viewModel.codes, id: \.id) { item in
@@ -26,12 +26,6 @@ struct FavoritesView: View {
                 .listStyle(InsetGroupedListStyle())
             }
         }
-//        .onAppear(perform: { viewModel.onAppear() })
-//        .onChange(of: selectedQRId, perform: {
-//            if $0 != nil {
-//                sendAnalyticsEvent(.tapHistoryItem, nil)
-//            }
-//        })
     }
 
     @ViewBuilder

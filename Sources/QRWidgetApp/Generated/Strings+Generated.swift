@@ -21,6 +21,13 @@ internal enum L10n {
   /// Save
   internal static let save = L10n.tr("Localizable", "save")
 
+  internal enum Allcodes {
+    internal enum Segment {
+      /// All
+      internal static let all = L10n.tr("Localizable", "allcodes.segment.all")
+    }
+  }
+
   internal enum AppleWallet {
     /// Failed to create QR for Apple Wallet
     internal static let failedToCreatePass = L10n.tr("Localizable", "appleWallet.failedToCreatePass")

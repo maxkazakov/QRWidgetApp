@@ -6,8 +6,8 @@ struct AllCodesView: View {
     var body: some View {
         VStack {
             Picker("", selection: $viewModel.selectedTab) {
-                Text("All").tag(SelectedTab.history)
-                Text("Favorites").tag(SelectedTab.favorites)
+                Text(L10n.Allcodes.Segment.all).tag(SelectedTab.history)
+                Text(L10n.Tabs.favorites).tag(SelectedTab.favorites)
             }
             .pickerStyle(.segmented)
 

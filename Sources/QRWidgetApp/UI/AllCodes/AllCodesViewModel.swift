@@ -7,8 +7,7 @@ enum SelectedTab: Int {
 
 class AllCodesViewModel: ObservableObject {
     
-    init(selectedTab: SelectedTab = .favorites, historyViewModel: HistoryViewModel, favoritesViewModel: FavoritesViewModel) {
-        self.selectedTab = selectedTab
+    init(historyViewModel: HistoryViewModel, favoritesViewModel: FavoritesViewModel) {        
         self.historyViewModel = historyViewModel
         self.favoritesViewModel = favoritesViewModel
     }

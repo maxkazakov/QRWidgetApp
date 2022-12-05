@@ -7,9 +7,10 @@
 
 import SwiftUI
 
-struct NoQRView: View {
+struct NoFavoriteCodesView: View {
     var body: some View {
         VStack(spacing: 12) {
+            Spacer()
             Image(uiImage: Asset.emptyFav.image)
             VStack(spacing: 8) {
                 Text(L10n.Favorites.Empty.title)
@@ -22,6 +23,7 @@ struct NoQRView: View {
                     .foregroundColor(.gray)
                     .multilineTextAlignment(.center)
             }
+            Spacer()
         }
         .padding(20)
     }
@@ -53,7 +55,7 @@ struct NoHistoryView: View {
 struct NoQRView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            NoQRView()
+            NoFavoriteCodesView()
             NoHistoryView()
         }
     }

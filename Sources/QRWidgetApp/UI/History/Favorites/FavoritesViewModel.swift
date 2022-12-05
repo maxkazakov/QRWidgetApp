@@ -8,6 +8,9 @@ class FavoritesViewModel: ViewModel {
     private let qrCodesService: QRCodesService
     private let favoritesSerice: FavoritesService
 
+    @Published var showNeedToPaySubscription = false
+    @Published var codes: [SingleCodeRowUIModel] = []
+
     init(qrCodesService: QRCodesService, favoritesSerice: FavoritesService) {
         self.qrCodesService = qrCodesService
         self.favoritesSerice = favoritesSerice
@@ -29,7 +32,7 @@ class FavoritesViewModel: ViewModel {
         }
     }
 
-    func remove(_ indexSet: IndexSet) {        
+    func remove(_ indexSet: IndexSet) {
         for index in indexSet {
             favoritesSerice.removeFavorite(id: codes[index].id)
         }
@@ -38,9 +41,6 @@ class FavoritesViewModel: ViewModel {
     func rowView(item: SingleCodeRowUIModel) -> some View {
         generalAssembly.makeSingleQRRowView(model: item)
     }
-
-    @Published var showNeedToPaySubscription = false
-    @Published var codes: [SingleCodeRowUIModel] = []
 
     // MARK: - Private
 

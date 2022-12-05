@@ -94,9 +94,9 @@ public class Starter {
             showTabsController()
         }
 
-        #if !DEBUG
+//        #if !DEBUG
         tryAskForReview(qrCount: qrCodesRepository.qrCodes.count)
-        #endif
+//        #endif
 
         Logger.debugLog(message: "App Starter: End")
         isAppStartedPublisher.send(true)
