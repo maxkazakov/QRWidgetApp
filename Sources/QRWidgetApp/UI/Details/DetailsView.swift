@@ -1,11 +1,6 @@
-//
-//  DetailsView.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 21.04.2022.
-//
 
 import SwiftUI
+import QRCodeUI
 
 struct DetailsView: View {
     @StateObject var viewModel: DetailsViewModel

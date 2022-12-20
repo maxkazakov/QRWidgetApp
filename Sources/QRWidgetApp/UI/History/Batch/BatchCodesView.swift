@@ -1,6 +1,5 @@
 import SwiftUI
 import UIKit
-import SwiftUINavigation
 
 struct BatchCodesView: View {
 

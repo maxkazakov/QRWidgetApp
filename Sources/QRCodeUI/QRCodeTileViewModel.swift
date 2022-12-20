@@ -1,25 +1,16 @@
-//
-//  QRCodeTileViewModel.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 24.04.2022.
-//
-
 import SwiftUI
 import Combine
 import QRGenerator
 
-class QRCodeTileViewModel: ViewModel {
+class QRCodeTileViewModel: ObservableObject {
     @Published var coloredQrImage: UIImage?
     @Published var blackAndWhiteQRImage: UIImage?
     @Published var flipped = false
     @Published var isLoading = false
 
     private var prevData = CurrentValueSubject<QRCodeTileViewData?, Never>(nil)
-
-    override init() {
-        super.init()
-
+    private var cancellableSet: Set<AnyCancellable> = []
+    init() {
         prevData
             .compactMap { $0 }
             .removeDuplicates()
@@ -41,7 +32,7 @@ class QRCodeTileViewModel: ViewModel {
             .store(in: &cancellableSet)
     }
 
-    func update(_ data: QRCodeTileViewData) {        
+    func update(_ data: QRCodeTileViewData) {
         prevData.send(data)
     }
 

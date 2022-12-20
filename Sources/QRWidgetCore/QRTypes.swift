@@ -1,12 +1,22 @@
-//
-//  QRTypes.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 23.02.2022.
-//
-
 import UIKit
 import Contacts
+
+public enum QRCodeType: Int, Identifiable, CaseIterable {
+    public var id: Int {
+        self.rawValue
+    }
+    case rawText = 0
+    case url
+
+    public var title: String {
+        switch self {
+        case .rawText:
+            return "Raw text"
+        case .url:
+            return "Website"
+        }
+    }
+}
 
 public enum QRCodeDataType {
     case rawText(String)
@@ -18,6 +28,15 @@ public enum QRCodeDataType {
         }
 
         return .rawText(string)
+    }
+
+    public var type: QRCodeType {
+        switch self {
+        case .rawText:
+            return .rawText
+        case .url:
+            return .url
+        }
     }
 }
 

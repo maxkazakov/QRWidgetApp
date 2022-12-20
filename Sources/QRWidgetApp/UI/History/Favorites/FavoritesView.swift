@@ -1,7 +1,6 @@
 
 import SwiftUI
 import UIKit
-import SwiftUINavigation
 
 struct FavoritesView: View {
 

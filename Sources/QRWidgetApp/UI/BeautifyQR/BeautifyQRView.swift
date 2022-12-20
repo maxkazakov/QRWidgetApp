@@ -7,6 +7,7 @@
 
 import SwiftUI
 import QRWidgetCore
+import QRCodeUI
 
 struct BeautifyQRView: View {
     @StateObject var viewModel: BeautifyQRViewModel

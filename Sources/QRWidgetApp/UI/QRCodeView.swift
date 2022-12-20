@@ -1,38 +1,6 @@
-//
-//  QRCodeDataView.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 23.02.2022.
-//
 
 import SwiftUI
 import QRWidgetCore
-
-struct QRCodeTypeView: View {
-    let type: QRCodeDataType
-
-    var body: some View {
-        switch self.type {
-        case .url:
-            HStack {
-                Text(L10n.QrType.website)
-                Spacer()
-            }
-            .font(.callout)
-            .imageScale(.small)
-            .foregroundColor(Color.gray)
-
-        case .rawText:
-            HStack {
-                Text(L10n.QrType.text)
-                Spacer()
-            }
-            .font(.callout)
-            .imageScale(.small)
-            .foregroundColor(Color.gray)
-        }
-    }
-}
 
 struct QRCodeDataView: View {
 
@@ -68,7 +36,7 @@ struct QRCodeView: View {
 
     var body: some View {
         VStack(spacing: 4) {
-            QRCodeTypeView(type: type)
+            QRCodeTypeView(type: type.type)
             HStack {
                 QRCodeDataView(type: type)
                 Spacer()

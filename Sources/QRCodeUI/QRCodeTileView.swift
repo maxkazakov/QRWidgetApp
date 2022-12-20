@@ -1,15 +1,9 @@
-//
-//  QRCodeTileView.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 06.01.2022.
-//
 
+import UIKit
 import SwiftUI
 import QRWidgetCore
 
 struct QRCodeTileViewData: Equatable {
-
     let id: UUID
     let qrData: String
     let foreground: CGColor
@@ -17,16 +11,16 @@ struct QRCodeTileViewData: Equatable {
     let errorCorrectionLevel: ErrorCorrection
 }
 
-struct QRCodeTileView: View {
+public struct QRCodeTileView: View {
 
     @Environment(\.colorScheme) var colorScheme: ColorScheme
-    @Environment(\.sendAnalyticsEvent) var sendAnalyticsEvent
+//    @Environment(\.sendAnalyticsEvent) var sendAnalyticsEvent
     @StateObject var viewModel = QRCodeTileViewModel()
 
     let data: QRCodeTileViewData
     let flipEnabled: Bool
 
-    init(id: UUID,
+    public init(id: UUID,
          qrData: String,
          foreground: CGColor = .qr.defaultForeground,
          background: CGColor = .qr.defaultBackground,
@@ -39,7 +33,7 @@ struct QRCodeTileView: View {
         flipEnabled = false
     }
 
-    init(
+    public init(
         model: QRModel,
         proVersionActivated: Bool,
         forcedForegroundColor: UIColor? = nil,
@@ -70,7 +64,7 @@ struct QRCodeTileView: View {
             && (model.foregroundColor != nil || model.backgroundColor != nil)
     }
 
-    var body: some View {
+    public var body: some View {
         let flipDegrees = viewModel.flipped ? 180.0 : 0
 
         return ZStack {
@@ -103,12 +97,10 @@ struct QRCodeTileView: View {
         .onTapGesture {
             guard flipEnabled, viewModel.coloredQrImage != nil else { return }
 
-            sendAnalyticsEvent(.flipQrImage, nil)
+//            sendAnalyticsEvent(.flipQrImage, nil)
             self.viewModel.flipped.toggle()
         }
         .onAppear(perform: {
-            // onAppear sometimes is not called on tab pages
-            // Example: 3 Qr-s, 3-rd selected. 2-nd qr onAppear not called, that leads to no qr image is shown
             viewModel.update(data)
         })
         .onChange(of: data, perform: {

@@ -7,7 +7,6 @@
 
 import SwiftUI
 import UIKit
-import SwiftUINavigation
 
 struct HistoryView: View {
 
