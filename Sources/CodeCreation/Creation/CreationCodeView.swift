@@ -5,21 +5,59 @@ import QRCodeUI
 import CasePaths
 import SwiftUINavigation
 
-final public class CreationCodeModel: ObservableObject {
+enum QRFormData {
+    case rawText(String)
+    case url(String)
 
-    @Published var qrDataType: QRCodeDataType = .rawText("") {
+    var isValid: Bool {
+        qrData() != nil
+    }
+
+    func qrData() -> QRCodeDataType? {
+        switch self {
+        case let .rawText(text):
+            if text.isEmpty {
+                return nil
+            }
+            return .rawText(text)
+        case let .url(urlString):
+            guard let url = URL(string: urlString), urlString.isValidURL else { return nil }
+            return .url(url)
+        }
+    }
+}
+
+final public class CreationCodeModel: ObservableObject, Equatable, Identifiable {
+
+    public var id: Int {
+        self.type.rawValue
+    }
+
+    public static func == (lhs: CreationCodeModel, rhs: CreationCodeModel) -> Bool {
+        lhs.type == rhs.type
+    }
+
+    @Published var qrDataType: QRFormData = .rawText("") {
         didSet {
-            qrData = qrDataType.qrString
+            guard let qrdata = qrDataType.qrData() else {
+                self.canCreate = false
+                return
+            }
+            self.qrData = qrdata.qrString
+            self.canCreate = true
         }
     }
     @Published var qrData: String = ""
+    @Published var canCreate = false
+    @Published var type: QRCodeType
 
     public init(type: QRCodeType) {
+        self.type = type
         switch type {
         case .url:
-            qrDataType = .rawText("")
+            qrDataType = .url("https://")
         case .rawText:
-            qrDataType = .url(URL(string: "https://")!)
+            qrDataType = .rawText("")
         }
     }
 }
@@ -50,29 +88,19 @@ struct CreationCodeView: View {
                 } label: {
                     Text("Done")
                 }
+                .disabled(!model.canCreate)
             }
-//
-//            ToolbarItem(placement: .cancellationAction) {
-//                Button {
-//                    //do something
-//                } label: {
-//                    Text("Cancel")
-//                }
-//            }
         }
     }
 
     @ViewBuilder
     var formSection: some View {
         Switch($model.qrDataType, content: {
-            CaseLet(/QRCodeDataType.rawText) { rawText in
+            CaseLet(/QRFormData.rawText) { rawText in
                 TextEditor(text: rawText)
             }
-            CaseLet(/QRCodeDataType.url) { url in
-                TextEditor(text: Binding(
-                    get: { url.wrappedValue.absoluteString },
-                    set: { url.wrappedValue = URL(string: $0) ?? URL(string: "https://")! }
-                ))
+            CaseLet(/QRFormData.url) { url in
+                TextEditor(text: url)
             }
         })
     }

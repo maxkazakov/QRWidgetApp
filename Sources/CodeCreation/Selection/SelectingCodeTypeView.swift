@@ -3,41 +3,58 @@ import SwiftUI
 import QRWidgetCore
 import SwiftUINavigation
 
-class SelectingCodeTypeModel: ObservableObject {
+public class SelectingCodeTypeModel: ObservableObject {
+    public init(destination: SelectingCodeTypeModel.Destination? = nil) {
+        self.destination = destination
+    }
+
     let allTypes = QRCodeType.allCases
 
     @Published var destination: Destination?
-    enum Destination {
+    public enum Destination: Equatable {
         case creation(CreationCodeModel)
     }
 }
 
-struct SelectingCodeTypeView: View {
+public struct SelectingCodeTypeView: View {
+    public init(model: SelectingCodeTypeModel) {
+        self.model = model
+    }
+
     @ObservedObject var model: SelectingCodeTypeModel
 
-    var body: some View {
-        NavigationView {
+    @State var isActive: Bool = false
+
+    public var body: some View {
+        NavigationView {            
             List {
                 Section(content: {
                     ForEach(model.allTypes) { type in
-                        NavigationLink(
-                            unwrapping: self.$model.destination,
-                            case: /SelectingCodeTypeModel.Destination.creation,
-                            onNavigate: {
-                                self.model.destination = $0 ? .creation(CreationCodeModel(type: type)) : nil
-                            },
-                            destination: { $model in
-                                CreationCodeView(model: model)
-                            },
-                            label: {
-                                QRCodeTypeView(type: type)
-                            }
-                        )
+                        Button(action: {
+                            model.destination = .creation(CreationCodeModel(type: type))
+                        }, label: {
+                            QRCodeTypeView(type: type)
+                        })
                     }
                 }, header: {
                     Text("Select QR type")
                 })
             }
+            .background(
+                NavigationLink(
+                    unwrapping: self.$model.destination,
+                    case: /SelectingCodeTypeModel.Destination.creation,
+                    onNavigate: {
+                        if $0 == false {
+                            self.model.destination = nil
+                        }
+                    },
+                    destination: { $model in
+                        CreationCodeView(model: model)
+                    },
+                    label: { EmptyView() }
+                )
+            )
             .navigationTitle("New code")
             .navigationBarTitleDisplayMode(.inline)
         }

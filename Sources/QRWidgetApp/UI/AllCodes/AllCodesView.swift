@@ -1,4 +1,6 @@
 import SwiftUI
+import CodeCreation
+import SwiftUINavigation
 
 struct AllCodesView: View {
     @StateObject var viewModel: AllCodesViewModel
@@ -20,5 +22,24 @@ struct AllCodesView: View {
             }
         }
         .navigationTitle(L10n.History.title)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    viewModel.createdNewCodeTapped()
+                } label: {
+                    Text("Create new")
+                }
+            }
+        }
+        .sheet(
+            unwrapping: $viewModel.destination,
+            case: /AllCodesViewModel.Destination.newCode,
+            onDismiss: {
+                print("onDismiss", Int.random(in: 0..<1000))
+                viewModel.destination = nil
+            },
+            content: { $viewModel in
+                SelectingCodeTypeView(model: viewModel)
+            })
     }
 }

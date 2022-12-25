@@ -1,4 +1,5 @@
 import SwiftUI
+import CodeCreation
 
 enum SelectedTab: Int {
     case favorites = 0
@@ -6,14 +7,23 @@ enum SelectedTab: Int {
 }
 
 class AllCodesViewModel: ObservableObject {
-    
-    init(historyViewModel: HistoryViewModel, favoritesViewModel: FavoritesViewModel) {        
+
+    enum Destination {
+        case newCode(SelectingCodeTypeModel)
+    }
+
+    init(historyViewModel: HistoryViewModel, favoritesViewModel: FavoritesViewModel) {
         self.historyViewModel = historyViewModel
         self.favoritesViewModel = favoritesViewModel
     }
 
     @Published var selectedTab: SelectedTab = .history
+    @Published var destination: Destination?
 
     let historyViewModel: HistoryViewModel
     let favoritesViewModel: FavoritesViewModel
+
+    func createdNewCodeTapped() {
+        destination = .newCode(SelectingCodeTypeModel())
+    }
 }

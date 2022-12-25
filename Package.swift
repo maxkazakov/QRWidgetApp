@@ -45,6 +45,7 @@ let package = Package(
                 "QRGenerator",
                 "QRWidgetCore",
                 "QRCodeUI",
+                "CodeCreation",
                 .product(name: "SimpleToast", package: "SimpleToast"),
                 .product(name: "Haptica", package: "Haptica"),
                 .product(name: "Lottie", package: "lottie-ios")
