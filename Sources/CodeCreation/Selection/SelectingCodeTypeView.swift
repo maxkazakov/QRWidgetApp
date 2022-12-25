@@ -8,7 +8,7 @@ class SelectingCodeTypeModel: ObservableObject {
 
     @Published var destination: Destination?
     enum Destination {
-        case creation(QRCodeType)
+        case creation(CreationCodeModel)
     }
 }
 
@@ -24,10 +24,10 @@ struct SelectingCodeTypeView: View {
                             unwrapping: self.$model.destination,
                             case: /SelectingCodeTypeModel.Destination.creation,
                             onNavigate: {
-                                self.model.destination = $0 ? .creation(type) : nil
+                                self.model.destination = $0 ? .creation(CreationCodeModel(type: type)) : nil
                             },
-                            destination: { type in
-                                CreationCodeView(model: CreationCodeModel(type: type.wrappedValue))
+                            destination: { $model in
+                                CreationCodeView(model: model)
                             },
                             label: {
                                 QRCodeTypeView(type: type)
@@ -39,13 +39,7 @@ struct SelectingCodeTypeView: View {
                 })
             }
             .navigationTitle("New code")
-            .toolbar {
-                ToolbarItemGroup() {
-                    Button("First") {
-                        print("Pressed")
-                    }
-                }
-            }
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }

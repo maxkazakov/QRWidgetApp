@@ -69,6 +69,7 @@ let package = Package(
             name: "CodeCreation",
             dependencies: [
                 "QRWidgetCore",
+                "QRCodeUI",
                 .product(name: "SwiftUINavigation", package: "swiftui-navigation"),
             ]
         ),

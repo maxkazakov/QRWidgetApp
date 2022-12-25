@@ -26,8 +26,16 @@ public enum QRCodeDataType {
         if let url = URL(string: string), string.hasPrefix("http") || string.hasPrefix("www") {
             return .url(url)
         }
-
         return .rawText(string)
+    }
+
+    public var qrString: String {
+        switch self {
+        case let .rawText(text):
+            return text
+        case let .url(url):
+            return url.absoluteString
+        }
     }
 
     public var type: QRCodeType {

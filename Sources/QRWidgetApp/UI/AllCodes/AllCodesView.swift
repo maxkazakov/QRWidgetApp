@@ -10,6 +10,7 @@ struct AllCodesView: View {
                 Text(L10n.Tabs.favorites).tag(SelectedTab.favorites)
             }
             .pickerStyle(.segmented)
+            .padding(.horizontal)
 
             switch viewModel.selectedTab {
             case .favorites:

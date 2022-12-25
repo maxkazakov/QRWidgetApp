@@ -4,7 +4,6 @@ import SwiftUI
 import QRWidgetCore
 
 struct QRCodeTileViewData: Equatable {
-    let id: UUID
     let qrData: String
     let foreground: CGColor
     let background: CGColor
@@ -14,22 +13,23 @@ struct QRCodeTileViewData: Equatable {
 public struct QRCodeTileView: View {
 
     @Environment(\.colorScheme) var colorScheme: ColorScheme
-//    @Environment(\.sendAnalyticsEvent) var sendAnalyticsEvent
     @StateObject var viewModel = QRCodeTileViewModel()
 
     let data: QRCodeTileViewData
     let flipEnabled: Bool
 
-    public init(id: UUID,
+    public init(
          qrData: String,
          foreground: CGColor = .qr.defaultForeground,
          background: CGColor = .qr.defaultBackground,
-         errorCorrectionLevel: ErrorCorrection) {
-        self.data = QRCodeTileViewData(id: id,
-                                       qrData: qrData,
-                                       foreground: foreground,
-                                       background: background,
-                                       errorCorrectionLevel: errorCorrectionLevel)
+         errorCorrectionLevel: ErrorCorrection = .default
+    ) {
+        self.data = QRCodeTileViewData(
+            qrData: qrData,
+            foreground: foreground,
+            background: background,
+            errorCorrectionLevel: errorCorrectionLevel
+        )
         flipEnabled = false
     }
 
@@ -54,7 +54,6 @@ public struct QRCodeTileView: View {
         }
 
         self.data = QRCodeTileViewData(
-            id: model.id,
             qrData: model.qrData,
             foreground: foregroundColor,
             background: backgroundColor,
@@ -96,8 +95,6 @@ public struct QRCodeTileView: View {
         .animation(.easeInOut(duration: 0.5), value: viewModel.flipped)
         .onTapGesture {
             guard flipEnabled, viewModel.coloredQrImage != nil else { return }
-
-//            sendAnalyticsEvent(.flipQrImage, nil)
             self.viewModel.flipped.toggle()
         }
         .onAppear(perform: {
