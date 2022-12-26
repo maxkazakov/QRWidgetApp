@@ -4,60 +4,75 @@ import QRWidgetCore
 import SwiftUINavigation
 
 public class SelectingCodeTypeModel: ObservableObject {
-    public init(destination: SelectingCodeTypeModel.Destination? = nil) {
-        self.destination = destination
-    }
+    public init() {}
 
+    @Published var typeModels: [QRTypeRowViewModel] = QRCodeType.allCases.map { QRTypeRowViewModel(type: $0) }
     let allTypes = QRCodeType.allCases
+}
 
-    @Published var destination: Destination?
+class QRTypeRowViewModel: ObservableObject, Identifiable {
+
     public enum Destination: Equatable {
         case creation(CreationCodeModel)
+    }
+
+    var id: Int {
+        type.rawValue
+    }
+
+    let type: QRCodeType
+    @Published var destination: Destination?
+
+    init(type: QRCodeType, destination: QRTypeRowViewModel.Destination? = nil) {
+        self.type = type
+        self.destination = destination
+    }
+}
+
+struct QRTypeRowView: View {
+    @ObservedObject var model: QRTypeRowViewModel
+
+    var body: some View {
+        NavigationLink(
+            unwrapping: self.$model.destination,
+            case: /QRTypeRowViewModel.Destination.creation,
+            onNavigate: {
+                self.model.destination = $0 ? .creation(CreationCodeModel(type: model.type)) : nil
+            },
+            destination: { $model in
+                CreationCodeView(model: model)
+            },
+            label: {
+                QRCodeTypeView(type: model.type)
+            }
+        )
     }
 }
 
 public struct SelectingCodeTypeView: View {
+
+    @ObservedObject var model: SelectingCodeTypeModel
+
     public init(model: SelectingCodeTypeModel) {
         self.model = model
     }
 
-    @ObservedObject var model: SelectingCodeTypeModel
-
-    @State var isActive: Bool = false
-
     public var body: some View {
-        NavigationView {            
+        NavigationView {
             List {
                 Section(content: {
-                    ForEach(model.allTypes) { type in
-                        Button(action: {
-                            model.destination = .creation(CreationCodeModel(type: type))
-                        }, label: {
-                            QRCodeTypeView(type: type)
-                        })
+                    ForEach(model.typeModels) { typeModel in
+                        QRTypeRowView(model: typeModel)
                     }
                 }, header: {
                     Text("Select QR type")
                 })
             }
-            .background(
-                NavigationLink(
-                    unwrapping: self.$model.destination,
-                    case: /SelectingCodeTypeModel.Destination.creation,
-                    onNavigate: {
-                        if $0 == false {
-                            self.model.destination = nil
-                        }
-                    },
-                    destination: { $model in
-                        CreationCodeView(model: model)
-                    },
-                    label: { EmptyView() }
-                )
-            )
-            .navigationTitle("New code")
+            .listStyle(.insetGrouped)
+            .navigationTitle("Code type")
             .navigationBarTitleDisplayMode(.inline)
         }
+
     }
 }
 

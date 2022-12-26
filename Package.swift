@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "QRWidgetApp",
     defaultLocalization: "en",
-    platforms: [.iOS(.v14), .watchOS(.v6)],
+    platforms: [.iOS(.v15), .watchOS(.v6)],
 
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.

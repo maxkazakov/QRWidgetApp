@@ -50,8 +50,10 @@ final public class CreationCodeModel: ObservableObject, Equatable, Identifiable 
     @Published var qrData: String = ""
     @Published var canCreate = false
     @Published var type: QRCodeType
+    @Published var focus: CreationCodeView.Field?
 
-    public init(type: QRCodeType) {
+    public init(type: QRCodeType, focus: CreationCodeView.Field? = .first) {
+        self.focus = focus
         self.type = type
         switch type {
         case .url:
@@ -62,11 +64,18 @@ final public class CreationCodeModel: ObservableObject, Equatable, Identifiable 
     }
 }
 
-struct CreationCodeView: View {
+public struct CreationCodeView: View {
     @ObservedObject var model: CreationCodeModel
+    @FocusState var focus: Field?
 
-    var body: some View {
+    public enum Field: Hashable {
+        case first
+    }
+
+    public var body: some View {
         Form {
+            formSection
+
             Section {
                 HStack {
                     Spacer()
@@ -75,12 +84,10 @@ struct CreationCodeView: View {
                 }
                 .padding(.vertical, 16)
             }
-            Section(content: {
-                formSection
-            }, header: {
-                Text("Form")
-            })
         }
+        .bind(self.$model.focus, to: self.$focus)
+        .navigationTitle("Code content")
+        .listStyle(.insetGrouped)
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
                 Button {
@@ -97,10 +104,28 @@ struct CreationCodeView: View {
     var formSection: some View {
         Switch($model.qrDataType, content: {
             CaseLet(/QRFormData.rawText) { rawText in
-                TextEditor(text: rawText)
+                Section(content: {
+                    TextEditor(text: rawText)
+                        .focused($focus, equals: .first)
+//                        .toolbar {
+//                            ToolbarItemGroup(placement: .keyboard) {
+//                                Spacer()
+//                                Button("Done") {
+//                                    model.focus = nil
+//                                }
+//                            }
+//                        }
+                }, header: {
+                    Text("Text")
+                })
             }
             CaseLet(/QRFormData.url) { url in
-                TextEditor(text: url)
+                Section(content: {
+                    TextEditor(text: url)
+                        .focused($focus, equals: .first)
+                }, header: {
+                    Text("Website")
+                })
             }
         })
     }
