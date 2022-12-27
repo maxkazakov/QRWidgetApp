@@ -12,18 +12,41 @@ class AllCodesViewModel: ObservableObject {
         case newCode(SelectingCodeTypeModel)
     }
 
-    init(historyViewModel: HistoryViewModel, favoritesViewModel: FavoritesViewModel) {
+    init(
+        qrCodeRepo: QRCodesRepository,
+        historyViewModel: HistoryViewModel,
+        favoritesViewModel: FavoritesViewModel
+    ) {
+        self.qrCodeRepo = qrCodeRepo
         self.historyViewModel = historyViewModel
         self.favoritesViewModel = favoritesViewModel
     }
 
     @Published var selectedTab: SelectedTab = .history
-    @Published var destination: Destination?
+    @Published var destination: Destination? {
+        didSet {
+            self.bind()
+        }
+    }
 
+    let qrCodeRepo: QRCodesRepository
     let historyViewModel: HistoryViewModel
     let favoritesViewModel: FavoritesViewModel
 
     func createdNewCodeTapped() {
         destination = .newCode(SelectingCodeTypeModel())
+    }
+
+    func bind() {
+        switch destination {
+        case let .newCode(codeCreationModel):
+            codeCreationModel.onCodeCreatoinFinished = { [weak self] newCode in
+                guard let self else { return }
+                self.qrCodeRepo.addNew(qr: newCode)
+                self.destination = nil
+            }
+        case .none:
+            break
+        }
     }
 }

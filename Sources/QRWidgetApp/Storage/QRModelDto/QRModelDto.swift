@@ -9,7 +9,16 @@ import UIKit
 import QRWidgetCore
 
 struct QRModelDto: Codable {
-    init(id: UUID, dateCreated: Date, qrData: String, label: String, errorCorrectionLevel: ErrorCorrection, backgroundColor: UIColor? = nil, foregroundColor: UIColor? = nil, batchId: UUID? = nil) {
+    init(
+        id: UUID, dateCreated: Date,
+        qrData: String,
+        label: String,
+        errorCorrectionLevel: ErrorCorrection,
+        backgroundColor: UIColor? = nil,
+        foregroundColor: UIColor? = nil,
+        batchId: UUID? = nil,
+        isMy: Bool
+    ) {
         self.id = id
         self.dateCreated = dateCreated
         self.qrData = qrData
@@ -17,7 +26,7 @@ struct QRModelDto: Codable {
         self.errorCorrectionLevel = errorCorrectionLevel
         self.backgroundColor = backgroundColor
         self.foregroundColor = foregroundColor
-
+        self.isMy = isMy
     }
 
     let version = currentVersion
@@ -31,6 +40,7 @@ struct QRModelDto: Codable {
     var foregroundColor: UIColor?
 
     var batchId: UUID?
+    var isMy: Bool
     
     enum CodingKeys: CodingKey {
         case version
@@ -42,6 +52,7 @@ struct QRModelDto: Codable {
         case backgroundColor
         case foregroundColor
         case batchId
+        case isMy
     }
 
     func encode(to encoder: Encoder) throws {
@@ -52,6 +63,7 @@ struct QRModelDto: Codable {
         try container.encode(qrData, forKey: .qrData)
         try container.encode(label, forKey: .label)
         try container.encode(batchId, forKey: .batchId)
+        try container.encode(isMy, forKey: .isMy)
 
         try container.encode(errorCorrectionLevel, forKey: .errorCorrectionLevel)
 
@@ -87,6 +99,7 @@ struct QRModelDto: Codable {
         }
 
         self.batchId = try container.decodeIfPresent(UUID.self, forKey: .batchId)
+        self.isMy = try container.decodeIfPresent(Bool.self, forKey: .isMy) ?? false
     }
 }
 

@@ -1,9 +1,3 @@
-//
-//  QRModel.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 12.10.2021.
-//
 
 import Foundation
 import UIKit
@@ -16,7 +10,9 @@ public struct QRModel: Identifiable, Equatable {
          errorCorrectionLevel: ErrorCorrection = .default,
          backgroundColor: UIColor? = nil,
          foregroundColor: UIColor? = nil,
-         batchId: UUID? = nil) {
+         batchId: UUID? = nil,
+         isMy: Bool = false
+    ) {
         self.id = id
         self.dateCreated = dateCreated
         self.qrData = qrData
@@ -25,6 +21,7 @@ public struct QRModel: Identifiable, Equatable {
         self.backgroundColor = backgroundColor
         self.foregroundColor = foregroundColor
         self.batchId = batchId
+        self.isMy = isMy
     }
 
     public var id: UUID
@@ -32,6 +29,7 @@ public struct QRModel: Identifiable, Equatable {
     public var qrData: String
     public var label: String = ""
     public var batchId: UUID?
+    public var isMy: Bool
 
     public var errorCorrectionLevel: ErrorCorrection = .default
     public var backgroundColor: UIColor?

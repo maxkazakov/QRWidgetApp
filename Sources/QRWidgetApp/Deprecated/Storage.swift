@@ -73,7 +73,8 @@ class Storage {
             dateCreated: Date(),
             qrData: qrLink,
             label: label,
-            errorCorrectionLevel: .H
+            errorCorrectionLevel: .default,
+            isMy: false
         )
         let allWalletPasses = serialNumber.map { [qrModelDto.id: $0] } ?? [:]
         userDefaultsStorage.migratedToFile = "mirgated"

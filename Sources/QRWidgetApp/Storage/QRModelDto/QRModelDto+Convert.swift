@@ -18,6 +18,7 @@ extension QRModelDto {
         self.foregroundColor = model.foregroundColor
         self.backgroundColor = model.backgroundColor
         self.batchId = model.batchId
+        self.isMy = model.isMy
     }
     
     func makeModel() -> QRModel {
@@ -29,7 +30,8 @@ extension QRModelDto {
             errorCorrectionLevel: self.errorCorrectionLevel,
             backgroundColor: self.backgroundColor,
             foregroundColor: self.foregroundColor,
-            batchId: self.batchId
+            batchId: self.batchId,
+            isMy: self.isMy
         )
     }
 }

@@ -4,6 +4,7 @@ import QRWidgetCore
 import QRCodeUI
 import CasePaths
 import SwiftUINavigation
+import XCTestDynamicOverlay
 
 enum QRFormData {
     case rawText(String)
@@ -52,6 +53,8 @@ final public class CreationCodeModel: ObservableObject, Equatable, Identifiable 
     @Published var type: QRCodeType
     @Published var focus: CreationCodeView.Field?
 
+    public var onCodeCreatoinFinished: (QRModel) -> Void = unimplemented("CreationCodeModel.onCodeCreatoinFinished")
+
     public init(type: QRCodeType, focus: CreationCodeView.Field? = .first) {
         self.focus = focus
         self.type = type
@@ -61,6 +64,10 @@ final public class CreationCodeModel: ObservableObject, Equatable, Identifiable 
         case .rawText:
             qrDataType = .rawText("")
         }
+    }
+
+    func onTapDone() {
+        onCodeCreatoinFinished(QRModel(qrData: qrData))
     }
 }
 
@@ -91,7 +98,7 @@ public struct CreationCodeView: View {
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
                 Button {
-                    //do something
+                    model.onTapDone()
                 } label: {
                     Text("Done")
                 }

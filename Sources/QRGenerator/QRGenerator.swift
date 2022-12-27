@@ -1,9 +1,3 @@
-//
-//  QRGenerator.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 27.06.2021.
-//
 
 import UIKit
 #if !os(watchOS)

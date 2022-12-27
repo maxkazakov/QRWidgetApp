@@ -167,6 +167,7 @@ class GeneralAssembly {
     // History
     func makeAllCodesView() -> some View {
         let viewModel = AllCodesViewModel(
+            qrCodeRepo: qrCodesRepository,
             historyViewModel: HistoryViewModel(
                 qrCodesRepository: self.qrCodesRepository,
                 favoritesService: self.favoritesService
