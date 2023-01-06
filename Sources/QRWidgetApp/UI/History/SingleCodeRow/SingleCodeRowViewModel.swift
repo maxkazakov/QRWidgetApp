@@ -1,9 +1,3 @@
-//
-//  SingleCodeRowViewModel.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 15.06.2022.
-//
 
 import Foundation
 import SwiftUI

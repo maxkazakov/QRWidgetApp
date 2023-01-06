@@ -85,8 +85,7 @@ class HistoryViewModel: ViewModel {
                 .filter {
                     guard self.showOnlyFavorites else { return true }
                     return self.isInFavorite($0.id)
-                }
-                .sorted(by: { $0.dateCreated > $1.dateCreated })
+                }                
 
             var sections = [HistorySectionUIModel]()
             var i = 0

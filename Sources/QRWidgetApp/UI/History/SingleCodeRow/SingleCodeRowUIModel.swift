@@ -14,6 +14,7 @@ struct SingleCodeRowUIModel {
     let qrData: QRCodeDataType
     var isFavorite: Bool
     let date: Date
+    let isMy: Bool
 }
 
 extension SingleCodeRowUIModel {
@@ -22,6 +23,7 @@ extension SingleCodeRowUIModel {
                   label: model.label,
                   qrData: QRCodeDataType.make(from: model.qrData),
                   isFavorite: isFavorite,
-                  date: model.dateCreated)
+                  date: model.dateCreated,
+                  isMy: model.isMy)
     }
 }

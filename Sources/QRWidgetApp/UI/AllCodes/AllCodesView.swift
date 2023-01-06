@@ -35,11 +35,11 @@ struct AllCodesView: View {
             unwrapping: $viewModel.destination,
             case: /AllCodesViewModel.Destination.newCode,
             onDismiss: {
-                print("onDismiss", Int.random(in: 0..<1000))
                 viewModel.destination = nil
             },
             content: { $viewModel in
-                SelectingCodeTypeView(model: viewModel)
+                CodeCreationFlowView()
+                    .environmentObject(viewModel)                
             })
     }
 }

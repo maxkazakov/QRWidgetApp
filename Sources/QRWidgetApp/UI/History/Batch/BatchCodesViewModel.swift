@@ -72,8 +72,7 @@ class BatchCodesViewModel: ViewModel {
     private func makeUIModels(from codes: [QRModel]) {
         isLoading = true
         DispatchQueue.global(qos: .userInitiated).async {
-            let sortedCodes = codes
-                .sorted(by: { $0.dateCreated > $1.dateCreated })
+            let sortedCodes = codes                
                 .filter { $0.batchId == self.batchId }
                 .map { SingleCodeRowUIModel(model: $0, isFavorite: self.isInFavorite($0.id)) }
 

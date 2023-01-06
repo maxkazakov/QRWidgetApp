@@ -29,9 +29,9 @@ class QRCodesService {
         self.selectedQRCodePublisher = CurrentValueSubject<UUID?, Never>(userStorage.selectedQR)
         self.favoriteQrCodes = Publishers.CombineLatest(favotitesService.favorites, repository.qrCodesPublisher)
             .map { (favIds, qrCodes) -> [QRModel] in
-                favIds.compactMap { favId in
-                    qrCodes.first(where: { $0.id == favId})
-                }
+                let favIdsSet = Set(favIds)
+                let result = qrCodes.filter { favIdsSet.contains($0.id) }
+                return result
             }
             .eraseToAnyPublisher()
     }

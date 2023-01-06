@@ -9,7 +9,7 @@ enum SelectedTab: Int {
 class AllCodesViewModel: ObservableObject {
 
     enum Destination {
-        case newCode(SelectingCodeTypeModel)
+        case newCode(CodeCreationFlowModel)
     }
 
     init(
@@ -34,7 +34,7 @@ class AllCodesViewModel: ObservableObject {
     let favoritesViewModel: FavoritesViewModel
 
     func createdNewCodeTapped() {
-        destination = .newCode(SelectingCodeTypeModel())
+        destination = .newCode(CodeCreationFlowModel())
     }
 
     func bind() {

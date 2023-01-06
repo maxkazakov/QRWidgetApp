@@ -201,8 +201,13 @@ class GeneralAssembly {
     }
 
     func makeSingleQRRowView(model: SingleCodeRowUIModel) -> some View {
-        SingleCodeRowView(model: model,
-                          viewModel: SingleCodeRowViewModel(id: model.id, favoritesService: self.favoritesService))
+        SingleCodeRowView(
+            model: model,
+            viewModel: SingleCodeRowViewModel(
+                id: model.id,
+                favoritesService: self.favoritesService
+            )
+        )
     }
 
     lazy var debugHelper = {

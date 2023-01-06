@@ -1,7 +1,11 @@
 import UIKit
 import Contacts
 
-public enum QRCodeType: Int, CaseIterable {
+public enum QRCodeType: Int, CaseIterable, Hashable, Identifiable {
+    public var id: Int {
+        rawValue
+    }
+
     case rawText = 0
     case url
 

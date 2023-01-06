@@ -1,10 +1,3 @@
-//
-//  SingleCodeRow.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 15.06.2022.
-//
-
 import SwiftUI
 
 struct SingleCodeRowView: View {
@@ -29,6 +22,12 @@ struct SingleCodeRowView: View {
                 Image(systemName: "star.fill")
                     .imageScale(.small)
                     .foregroundColor(Color.yellow)
+            }
+
+            if model.isMy {
+                Image(systemName: "person.crop.circle.fill")
+                    .imageScale(.small)
+                    .foregroundColor(Color.green)
             }
         }
     }

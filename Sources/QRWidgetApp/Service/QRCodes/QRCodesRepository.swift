@@ -54,7 +54,7 @@ class QRCodesRepository {
                     qrModels.append(qrModel)
                 }
             }
-            qrModels.sort(by: { $0.dateCreated < $1.dateCreated })
+            qrModels.sort(by: { $0.dateCreated > $1.dateCreated })
             self.qrCodesPublisher.send(qrModels)
 
             logMessage("QRCodes Repo: Loaded from disc. Count: \(qrCodesPublisher.value.count)")

@@ -1,78 +1,11 @@
 
+import Foundation
 import SwiftUI
-import QRWidgetCore
 import QRCodeUI
-import CasePaths
 import SwiftUINavigation
-import XCTestDynamicOverlay
-
-enum QRFormData {
-    case rawText(String)
-    case url(String)
-
-    var isValid: Bool {
-        qrData() != nil
-    }
-
-    func qrData() -> QRCodeDataType? {
-        switch self {
-        case let .rawText(text):
-            if text.isEmpty {
-                return nil
-            }
-            return .rawText(text)
-        case let .url(urlString):
-            guard let url = URL(string: urlString), urlString.isValidURL else { return nil }
-            return .url(url)
-        }
-    }
-}
-
-final public class CreationCodeModel: ObservableObject, Equatable, Identifiable {
-
-    public var id: Int {
-        self.type.rawValue
-    }
-
-    public static func == (lhs: CreationCodeModel, rhs: CreationCodeModel) -> Bool {
-        lhs.type == rhs.type
-    }
-
-    @Published var qrDataType: QRFormData = .rawText("") {
-        didSet {
-            guard let qrdata = qrDataType.qrData() else {
-                self.canCreate = false
-                return
-            }
-            self.qrData = qrdata.qrString
-            self.canCreate = true
-        }
-    }
-    @Published var qrData: String = ""
-    @Published var canCreate = false
-    @Published var type: QRCodeType
-    @Published var focus: CreationCodeView.Field?
-
-    public var onCodeCreatoinFinished: (QRModel) -> Void = unimplemented("CreationCodeModel.onCodeCreatoinFinished")
-
-    public init(type: QRCodeType, focus: CreationCodeView.Field? = .first) {
-        self.focus = focus
-        self.type = type
-        switch type {
-        case .url:
-            qrDataType = .url("https://")
-        case .rawText:
-            qrDataType = .rawText("")
-        }
-    }
-
-    func onTapDone() {
-        onCodeCreatoinFinished(QRModel(qrData: qrData))
-    }
-}
 
 public struct CreationCodeView: View {
-    @ObservedObject var model: CreationCodeModel
+    @EnvironmentObject var model: CodeCreationFlowModel
     @FocusState var focus: Field?
 
     public enum Field: Hashable {
@@ -114,14 +47,14 @@ public struct CreationCodeView: View {
                 Section(content: {
                     TextEditor(text: rawText)
                         .focused($focus, equals: .first)
-//                        .toolbar {
-//                            ToolbarItemGroup(placement: .keyboard) {
-//                                Spacer()
-//                                Button("Done") {
-//                                    model.focus = nil
-//                                }
-//                            }
-//                        }
+                    //                        .toolbar {
+                    //                            ToolbarItemGroup(placement: .keyboard) {
+                    //                                Spacer()
+                    //                                Button("Done") {
+                    //                                    model.focus = nil
+                    //                                }
+                    //                            }
+                    //                        }
                 }, header: {
                     Text("Text")
                 })
@@ -141,7 +74,8 @@ public struct CreationCodeView: View {
 struct CreationCodeView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            CreationCodeView(model: .init(type: .rawText))
+            CreationCodeView()
+                .environmentObject(CodeCreationFlowModel())
                 .navigationTitle("New code")
         }
     }
