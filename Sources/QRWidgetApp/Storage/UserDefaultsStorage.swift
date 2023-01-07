@@ -1,9 +1,3 @@
-//
-//  SharedStorage.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 31.07.2021.
-//
 
 import Foundation
 import QRWidgetCore
@@ -12,13 +6,6 @@ let appGroupID = "group.ru.maxkazakov.QRWidget"
 
 enum UserDefaultsKey {
 
-    // Legacy. Before version 2.0 local data was stored in UserDefaults
-    static let migratedToFile = "migratedToFile"
-    static let label = "label"
-    static let qrLink = "qrLink"
-    static let serialNumber = "serialNumber"
-    static let hasActiveWidgets = "hasActiveWidgets"
-
     // I screwed it up with raw value. It's used only for widgets, so fuck this
     static let isProVersionActivated = "hasActiveWidgets"
 
@@ -26,7 +13,6 @@ enum UserDefaultsKey {
     static let isFlipTipWasShown = "isFlipTipWasShown"
 
     static let openAppCounter = "openAppCounter"
-    static let mirgatedFromReduxKey = "mirgatedFromRedux"
     static let walletPassesByQRCodeIdKey = "walletPassesByQRCodeId"
 
     static let favoritesIdsKey = "favoritesIds"
@@ -63,31 +49,9 @@ public class UserDefaultsStorage {
         set { setInt(newValue ? 1 : 0, key: UserDefaultsKey.onboardingWasShown) }
     }
 
-    public var mirgatedFromRedux: Bool {
-        get { getInt(key: UserDefaultsKey.mirgatedFromReduxKey) == 1 }
-        set { setInt(newValue ? 1 : 0, key: UserDefaultsKey.mirgatedFromReduxKey) }
-    }
-
     public var openAppCounter: Int {
         get { getInt(key: UserDefaultsKey.openAppCounter) }
         set { setInt(newValue, key: UserDefaultsKey.openAppCounter) }
-    }
-
-    public var qrLink: String? {
-        getString(key: UserDefaultsKey.qrLink)
-    }
-
-    public var qrLabel: String? {
-        getString(key: UserDefaultsKey.label)
-    }
-
-    public var serialNumber: String? {
-        getString(key: UserDefaultsKey.serialNumber)
-    }
-
-    public var migratedToFile: String? {
-        get { getString(key: UserDefaultsKey.migratedToFile) }
-        set { setString(newValue, key: UserDefaultsKey.migratedToFile) }
     }
 
     public var walletPassesByQRCodeId: [UUID: String] {

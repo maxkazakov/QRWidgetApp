@@ -22,8 +22,7 @@ class GeneralAssembly {
         qrCodesService: qrCodesService,
         walletService: walletService,
         widgetsService: widgetsService,
-        favoritesService: favoritesService,
-        oldStorage: oldStorage
+        favoritesService: favoritesService
     )
 
     lazy var userDefaultsStorage = UserDefaultsStorage()
@@ -42,7 +41,6 @@ class GeneralAssembly {
 
     // Repositories
     lazy var qrCodesRepository = QRCodesRepository(logMessage: { Logger.debugLog(message: $0) })    
-    lazy var oldStorage = Storage()
 
     lazy var appRouter = AppRouter(rootViewController: rootViewController)
 

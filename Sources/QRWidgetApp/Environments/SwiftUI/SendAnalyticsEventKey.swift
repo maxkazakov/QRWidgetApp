@@ -1,9 +1,3 @@
-//
-//  SendAnalyticsEventKey.swift
-//  
-//
-//  Created by Максим Казаков on 09.08.2022.
-//
 
 import Foundation
 import SwiftUI

@@ -15,7 +15,6 @@ public class Starter {
     private let walletService: WalletService
     private let widgetsService: WidgetsService
     private let favoritesService: FavoritesService
-    private let oldStorage: Storage
 
     private var cancellableSet = Set<AnyCancellable>()
     var isAppStartedPublisher = CurrentValueSubject<Bool, Never>(false)
@@ -26,15 +25,13 @@ public class Starter {
          qrCodesService: QRCodesService,
          walletService: WalletService,
          widgetsService: WidgetsService,
-         favoritesService: FavoritesService,
-         oldStorage: Storage
+         favoritesService: FavoritesService
     ) {
         self.rootViewController = rootViewController
         self.userDefaultsStorage = userDefaults
         self.qrCodesService = qrCodesService
         self.qrCodesRepository = qrCodesRepository
         self.walletService = walletService
-        self.oldStorage = oldStorage
         self.widgetsService = widgetsService
         self.favoritesService = favoritesService
     }

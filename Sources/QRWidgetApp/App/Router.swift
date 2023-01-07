@@ -1,9 +1,3 @@
-//
-//  Router.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 18.01.2022.
-//
 
 import Combine
 import SwiftUI

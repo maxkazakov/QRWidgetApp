@@ -1,9 +1,3 @@
-//
-//  AnalyticsEvent.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 02.08.2022.
-//
 
 import Foundation
 
@@ -47,7 +41,7 @@ public enum AnalyticsEvent: String {
     case openWidgetDeeplink
     case tapContinueOnCongratsScreen
 
-    // Tabs    
+    // Tabs
     case openScanTab
     case openHistoryTab
     case openSettingsTab

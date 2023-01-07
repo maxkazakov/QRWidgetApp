@@ -1,9 +1,3 @@
-//
-//  ViewModel.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 18.01.2022.
-//
 
 import SwiftUI
 import Combine

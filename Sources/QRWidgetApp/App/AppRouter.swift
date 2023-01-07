@@ -1,9 +1,3 @@
-//
-//  AppRouter.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 16.01.2022.
-//
 
 import UIKit
 import SwiftUI

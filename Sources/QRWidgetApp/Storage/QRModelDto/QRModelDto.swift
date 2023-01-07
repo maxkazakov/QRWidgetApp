@@ -1,9 +1,3 @@
-//
-//  QRModelDto.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 17.10.2021.
-//
 
 import UIKit
 import QRWidgetCore
