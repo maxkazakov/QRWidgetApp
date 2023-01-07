@@ -4,7 +4,7 @@ import SwiftUI
 import QRCodeUI
 import SwiftUINavigation
 
-public struct CreationCodeView: View {
+public struct CodeCreationView: View {
     @EnvironmentObject var model: CodeCreationFlowModel
     @FocusState var focus: Field?
 
@@ -74,7 +74,7 @@ public struct CreationCodeView: View {
 struct CreationCodeView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            CreationCodeView()
+            CodeCreationView()
                 .environmentObject(CodeCreationFlowModel())
                 .navigationTitle("New code")
         }

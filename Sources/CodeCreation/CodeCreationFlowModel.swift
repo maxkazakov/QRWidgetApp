@@ -35,7 +35,7 @@ final public class CodeCreationFlowModel: ObservableObject {
             }
         }
     }
-    @Published var focus: CreationCodeView.Field? = .first
+    @Published var focus: CodeCreationView.Field? = .first
 
     public init(type: QRCodeType? = nil) {
         self.type = type

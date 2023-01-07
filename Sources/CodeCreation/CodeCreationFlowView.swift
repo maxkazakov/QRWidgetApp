@@ -17,7 +17,7 @@ public struct CodeCreationFlowView: View {
                             tag: type,
                             selection: $model.type,
                             destination: {
-                                CreationCodeView()
+                                CodeCreationView()
                             },
                             label: {
                                 QRCodeTypeView(type: type)
