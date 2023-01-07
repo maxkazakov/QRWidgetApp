@@ -47,8 +47,7 @@ public enum AnalyticsEvent: String {
     case openWidgetDeeplink
     case tapContinueOnCongratsScreen
 
-    // Tabs
-    case openFavoritesTab
+    // Tabs    
     case openScanTab
     case openHistoryTab
     case openSettingsTab

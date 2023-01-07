@@ -13,11 +13,11 @@ class AllCodesViewModel: ObservableObject {
     }
 
     init(
-        qrCodeRepo: QRCodesRepository,
+        codesService: QRCodesService,
         historyViewModel: HistoryViewModel,
         favoritesViewModel: FavoritesViewModel
     ) {
-        self.qrCodeRepo = qrCodeRepo
+        self.codesService = codesService
         self.historyViewModel = historyViewModel
         self.favoritesViewModel = favoritesViewModel
     }
@@ -29,7 +29,7 @@ class AllCodesViewModel: ObservableObject {
         }
     }
 
-    let qrCodeRepo: QRCodesRepository
+    let codesService: QRCodesService
     let historyViewModel: HistoryViewModel
     let favoritesViewModel: FavoritesViewModel
 
@@ -42,7 +42,7 @@ class AllCodesViewModel: ObservableObject {
         case let .newCode(codeCreationModel):
             codeCreationModel.onCodeCreatoinFinished = { [weak self] newCode in
                 guard let self else { return }
-                self.qrCodeRepo.addNew(qr: newCode)
+                self.codesService.addNew(qrModel: newCode)                
                 self.destination = nil
             }
         case .none:

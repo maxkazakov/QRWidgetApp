@@ -1,9 +1,3 @@
-//
-//  HistoryViewModel.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 16.04.2022.
-//
 
 import Foundation
 import SwiftUI
@@ -11,13 +5,13 @@ import QRWidgetCore
 
 class HistoryViewModel: ViewModel {
 
-    private let qrCodesRepository: QRCodesRepository
+    private let qrCodesService: QRCodesService
     private let favoritesService: FavoritesService
     private let showOnlyFavorites: Bool
     private var isAppeared = false
 
-    init(qrCodesRepository: QRCodesRepository, favoritesService: FavoritesService, showOnlyFavorites: Bool = false) {
-        self.qrCodesRepository = qrCodesRepository
+    init(qrCodesService: QRCodesService, favoritesService: FavoritesService, showOnlyFavorites: Bool = false) {
+        self.qrCodesService = qrCodesService
         self.favoritesService = favoritesService
         self.showOnlyFavorites = showOnlyFavorites
         super.init()
@@ -28,26 +22,24 @@ class HistoryViewModel: ViewModel {
     @Published var isLoading = false
 
     func remove(_ indexSet: IndexSet, section: HistorySectionUIModel) {
-        var codesIds: Set<UUID> = []
         for index in indexSet {
             let item = section.items[index].data
             switch item {
             case let .single(single):
-                codesIds.insert(single.id)
+                qrCodesService.removeQR(id: single.id)
 
             case let .multiple(multiple):
                 for itemFromMultiple in multiple.codes {
-                    codesIds.insert(itemFromMultiple.id)
+                    qrCodesService.removeQR(id: itemFromMultiple.id)
                 }
             }
         }
-        qrCodesRepository.remove(ids: codesIds)
     }
 
     func onAppear() {
         guard !isAppeared else { return }
         isAppeared = true
-        qrCodesRepository.qrCodesPublisher
+        qrCodesService.qrCodesPublisher
             .sink(receiveValue: { [weak self] in
                 self?.makeUIModels(from: $0)
             })
@@ -57,7 +49,7 @@ class HistoryViewModel: ViewModel {
 
     @ViewBuilder
     func singleDetailsView(id: UUID) -> some View {
-        if let model = qrCodesRepository.get(id: id) {
+        if let model = qrCodesService.getQR(id: id) {
             generalAssembly.makeDetailsView(qrModel: model)
         } else {
             EmptyView()
@@ -85,7 +77,7 @@ class HistoryViewModel: ViewModel {
                 .filter {
                     guard self.showOnlyFavorites else { return true }
                     return self.isInFavorite($0.id)
-                }                
+                }
 
             var sections = [HistorySectionUIModel]()
             var i = 0

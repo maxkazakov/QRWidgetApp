@@ -1,20 +1,14 @@
-//
-//  WidgetsService.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 20.02.2022.
-//
 
 import UIKit
 import Combine
 import WidgetKit
 
 class WidgetsService {
-    private let repository: QRCodesRepository
+    private let qrCodesService: QRCodesService
     private let favoritesService: FavoritesService
 
-    init(repository: QRCodesRepository, favoritesService: FavoritesService) {
-        self.repository = repository
+    init(qrCodesService: QRCodesService, favoritesService: FavoritesService) {
+        self.qrCodesService = qrCodesService
         self.favoritesService = favoritesService
     }
 
@@ -22,7 +16,7 @@ class WidgetsService {
 
     // MARK: - Private
     func subscribeQrChanges() {
-        repository.qrCodesPublisher
+        qrCodesService.qrCodesPublisher
             .sink(receiveValue: { _ in
                 self.reloadWidgets()
             })

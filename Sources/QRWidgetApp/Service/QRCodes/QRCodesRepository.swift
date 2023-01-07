@@ -1,17 +1,9 @@
-//
-//  QRCodesRepository.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 13.02.2022.
-//
-
-import Combine
 import UIKit
 import QRWidgetCore
 
 class QRCodesRepository {
 
-    init(logMessage: @escaping (String) -> Void) {
+    init(logMessage: @escaping (String) -> Void = { _ in }) {
         self.logMessage = logMessage
     }
 
@@ -19,28 +11,12 @@ class QRCodesRepository {
     private let decoder = JSONDecoder()
     private let logMessage: (String) -> Void
 
-    let qrCodesPublisher = CurrentValueSubject<[QRModel], Never>([])
-    private let queue = DispatchQueue(label: "QRCodesRepository")
-    var qrCodes: [QRModel] {
-        qrCodesPublisher.value
-    }
-
-    func loadAllQrFromStoragePublisher() -> AnyPublisher<Void, Never> {
-        Deferred {
-            Future<Void, Never> { promise in
-                self.loadAllQrFromStorage()
-                promise(.success(()))
-            }
-        }
-        .eraseToAnyPublisher()
-    }
-
-    func loadAllQrFromStorage() {
+    func loadAllCodes() -> [QRModel] {
         var isDir: ObjCBool = false
         guard FileManager.default.fileExists(atPath: qrCodesDirectory.path, isDirectory: &isDir),
               isDir.boolValue else {
             createQRDirectory()
-            return
+            return []
         }
         do {
             let directoryContents = try FileManager.default.contentsOfDirectory(at: qrCodesDirectory, includingPropertiesForKeys: nil)
@@ -55,54 +31,27 @@ class QRCodesRepository {
                 }
             }
             qrModels.sort(by: { $0.dateCreated > $1.dateCreated })
-            self.qrCodesPublisher.send(qrModels)
-
-            logMessage("QRCodes Repo: Loaded from disc. Count: \(qrCodesPublisher.value.count)")
+            logMessage("QRCodes Repo: Loaded from disc. Count: \(qrModels.count)")
+            return qrModels
         } catch {
             logMessage("QRCodes Repo: Failed to load qr codes from directory. Error: \(error)")
+            return []
         }
     }
 
     func addNew(qr: QRModel) {
-        var newCodes = qrCodesPublisher.value
-        newCodes.append(qr)
-        qrCodesPublisher.send(newCodes)
-
         saveQRToFile(qr: qr)
     }
 
-    func get(id: UUID) -> QRModel? {
-        return qrCodesPublisher.value.first(where: { $0.id == id })
-    }
-
     func update(qrModel: QRModel) {
-        var newCodes = qrCodesPublisher.value
-        guard let idx = newCodes.firstIndex(where: { $0.id == qrModel.id }) else {
-            return
-        }
-        newCodes[idx] = qrModel
-        qrCodesPublisher.send(newCodes)
-
         saveQRToFile(qr: qrModel)
     }
 
     func remove(id: UUID) {
-        var newCodes = qrCodesPublisher.value
-        guard let idx = newCodes.firstIndex(where: { $0.id == id }) else {
-            return
-        }
-        newCodes.remove(at: idx)
-        qrCodesPublisher.send(newCodes)
-
         removeFile(qrId: id)
     }
 
     func remove(ids: Set<UUID>) {
-        var newCodes = qrCodesPublisher.value
-        newCodes.removeAll { code in
-            ids.contains(code.id)
-        }
-        qrCodesPublisher.send(newCodes)
         for id in ids {
             removeFile(qrId: id)
         }

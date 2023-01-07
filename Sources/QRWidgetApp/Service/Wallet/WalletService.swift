@@ -1,9 +1,3 @@
-//
-//  WalletService.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 16.02.2022.
-//
 
 import PassKit
 import Combine

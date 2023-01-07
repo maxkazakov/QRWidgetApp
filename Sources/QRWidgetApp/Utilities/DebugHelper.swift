@@ -1,9 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Максим Казаков on 14.11.2022.
-//
 
 import Foundation
 import QRWidgetCore
@@ -11,17 +5,15 @@ import UIKit
 
 class DebugHelper {
     private let qrService: QRCodesService
-    private let favoritesService: FavoritesService
-    private let repository: QRCodesRepository
+    private let favoritesService: FavoritesService    
 
-    init(qrService: QRCodesService, favoritesService: FavoritesService, repository: QRCodesRepository) {
+    init(qrService: QRCodesService, favoritesService: FavoritesService) {
         self.qrService = qrService
         self.favoritesService = favoritesService
-        self.repository = repository
     }
 
     func removeAllQRs() {
-        repository.qrCodes.forEach { code in
+        qrService.qrCodesPublisher.value.forEach { code in
             qrService.removeQR(id: code.id)
         }
     }
@@ -48,7 +40,7 @@ class DebugHelper {
                                foregroundColor: UIColor(hexString: "FFA7C8"))
         let qrCode_4 = QRModel(dateCreated: yesterdayDate.addingTimeInterval(-2), qrData: appstore, label: "Link to the app")
 
-        qrService.createManyQrCodes(qrModels: [qrCode_1, qrCode_2, qrCode_3, qrCode_4])
+        qrService.addNewQrCodes(qrModels: [qrCode_1, qrCode_2, qrCode_3, qrCode_4])
 
         let batchId = UUID()
         let batchDate = todayDate
@@ -58,6 +50,6 @@ class DebugHelper {
             batchList[i].dateCreated = batchDate
             batchList[i].batchId = batchId
         }
-        qrService.createManyQrCodes(qrModels: batchList)
+        qrService.addNewQrCodes(qrModels: batchList)
     }
 }

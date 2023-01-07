@@ -1,9 +1,3 @@
-//
-//  GeneralAsembly.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 15.01.2022.
-//
 
 import UIKit
 import SwiftUI
@@ -40,9 +34,8 @@ class GeneralAssembly {
                                            analyticsEnvironment: appEnvironment.analyticsEnvironment)
     lazy var qrCodesService = QRCodesService(repository: qrCodesRepository,
                                              walletService: walletService,
-                                             userStorage: userDefaultsStorage,
                                              favotitesService: favoritesService)
-    lazy var widgetsService = WidgetsService(repository: qrCodesRepository, favoritesService: favoritesService)
+    lazy var widgetsService = WidgetsService(qrCodesService: qrCodesService, favoritesService: favoritesService)
     lazy var favoritesService = FavoritesService()
     lazy var settingsService = SettingsService(storage: userDefaultsStorage)
     lazy var watchPhoneManager = WatchPhoneManager(qrService: qrCodesService)
@@ -83,7 +76,6 @@ class GeneralAssembly {
         let viewModel = DetailsViewModel(qrModel: qrModel,
                                          qrCodesService: self.qrCodesService,
                                          favoritesService: self.favoritesService,
-                                         qrRepository: self.qrCodesRepository,
                                          options: options,
                                          sendAnalytics: appEnvironment.analyticsEnvironment.sendAnalyticsEvent)
         let view = DetailsView(viewModel: viewModel)
@@ -96,7 +88,6 @@ class GeneralAssembly {
         let viewModel = DetailsViewModel(qrModel: qrModel,
                                          qrCodesService: self.qrCodesService,
                                          favoritesService: self.favoritesService,
-                                         qrRepository: self.qrCodesRepository,
                                          options: .zero,
                                          sendAnalytics: appEnvironment.analyticsEnvironment.sendAnalyticsEvent)
         viewModel.router.routerController = generalAssembly.appRouter.rootViewController
@@ -117,7 +108,7 @@ class GeneralAssembly {
 
     func makeMultipleCodesRecognized(codes: [QRModel], onClose: @escaping EmptyBlock) -> Module {
         let viewModel = MutlipleQRRecognizedViewModel(favoritesService: favoritesService,
-                                                      qrCodesRepository: qrCodesRepository,
+                                                      qrCodesService: qrCodesService,
                                                       codes: codes,
                                                       onClose: onClose)
         let view = MutlipleQRRecognizedView(viewModel: viewModel)
@@ -167,9 +158,9 @@ class GeneralAssembly {
     // History
     func makeAllCodesView() -> some View {
         let viewModel = AllCodesViewModel(
-            qrCodeRepo: qrCodesRepository,
+            codesService: qrCodesService,
             historyViewModel: HistoryViewModel(
-                qrCodesRepository: self.qrCodesRepository,
+                qrCodesService: self.qrCodesService,
                 favoritesService: self.favoritesService
             ),
             favoritesViewModel: FavoritesViewModel(
@@ -185,7 +176,7 @@ class GeneralAssembly {
     func makeBatchCodesView(batchId: UUID) -> some View {
         let batchViewModel = BatchCodesViewModel(
             batchId: batchId,
-            qrCodesRepository: qrCodesRepository,
+            codesService: qrCodesService,
             favoritesService: favoritesService
         )
         let batchView = BatchCodesView(viewModel: batchViewModel)
@@ -211,7 +202,7 @@ class GeneralAssembly {
     }
 
     lazy var debugHelper = {
-        DebugHelper(qrService: qrCodesService, favoritesService: favoritesService, repository: qrCodesRepository)
+        DebugHelper(qrService: qrCodesService, favoritesService: favoritesService)
     }()
 }
 

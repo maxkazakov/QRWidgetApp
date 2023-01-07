@@ -26,7 +26,6 @@ enum UserDefaultsKey {
     static let isFlipTipWasShown = "isFlipTipWasShown"
 
     static let openAppCounter = "openAppCounter"
-    static let selectedQRCodeKey = "selectedQRCode"
     static let mirgatedFromReduxKey = "mirgatedFromRedux"
     static let walletPassesByQRCodeIdKey = "walletPassesByQRCodeId"
 
@@ -89,16 +88,6 @@ public class UserDefaultsStorage {
     public var migratedToFile: String? {
         get { getString(key: UserDefaultsKey.migratedToFile) }
         set { setString(newValue, key: UserDefaultsKey.migratedToFile) }
-    }
-
-    public var selectedQR: UUID? {
-        get {
-            getString(key: UserDefaultsKey.selectedQRCodeKey)
-                .flatMap { UUID(uuidString: $0) }
-        }
-        set {
-            setString(newValue?.uuidString ?? "", key: UserDefaultsKey.selectedQRCodeKey)
-        }
     }
 
     public var walletPassesByQRCodeId: [UUID: String] {

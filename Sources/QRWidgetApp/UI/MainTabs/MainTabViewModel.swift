@@ -1,15 +1,9 @@
-//
-//  MainTabViewModel.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 21.02.2022.
-//
 
 import SwiftUI
 import Foundation
 import Combine
 
-let selectedTabBarPublisher = CurrentValueSubject<Tab, Never>(.favorites)
+let selectedTabBarPublisher = CurrentValueSubject<Tab, Never>(.scan)
 
 class MainTabViewModel: ViewModel {
     let storage: UserDefaultsStorage
@@ -40,9 +34,7 @@ class MainTabViewModel: ViewModel {
     }
 
     private func trackTabChange(tab: Tab) {
-        switch tab {
-        case .favorites:
-            sendAnalytics(.openFavoritesTab, nil)
+        switch tab {        
         case .scan:
             sendAnalytics(.openScanTab, nil)
         case .history:

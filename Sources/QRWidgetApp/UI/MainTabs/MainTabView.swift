@@ -1,23 +1,15 @@
-//
-//  MainTabView.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 21.02.2022.
-//
 
 import SwiftUI
 
 enum Tab: Int, Identifiable {
     var id: Int { self.rawValue }
 
-    case favorites = 1
-    case scan = 2
-    case history = 3
-    case settings = 4
+    case scan = 1
+    case history = 2
+    case settings = 3
 }
 
-struct MainTabView: View {
-    @Environment(\.colorScheme) var colorScheme
+struct MainTabView: View {    
     @StateObject var viewModel: MainTabViewModel
 
     var body: some View {
@@ -45,6 +37,5 @@ struct MainTabView: View {
         }
         .accentColor(.blue)
         .tabViewStyle(.automatic)
-        .colorScheme(viewModel.currentTab == .favorites ? .dark : colorScheme)
     }
 }

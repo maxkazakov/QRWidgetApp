@@ -1,9 +1,3 @@
-//
-//  DetailsViewModel.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 21.04.2022.
-//
 
 import SwiftUI
 import QRWidgetCore
@@ -21,7 +15,6 @@ struct CodeDetailsPresentaionOptions {
 class DetailsViewModel: ViewModel {
 
     let qrCodesService: QRCodesService
-    let qrRepository: QRCodesRepository
     let favoritesService: FavoritesService
     let options: CodeDetailsPresentaionOptions
     let sendAnalytics: SendAnalyticsAction
@@ -29,11 +22,9 @@ class DetailsViewModel: ViewModel {
     public init(qrModel: QRModel,
                 qrCodesService: QRCodesService,
                 favoritesService: FavoritesService,
-                qrRepository: QRCodesRepository,
                 options: CodeDetailsPresentaionOptions,
                 sendAnalytics: @escaping SendAnalyticsAction) {
         self.qrCodesService = qrCodesService
-        self.qrRepository = qrRepository
         self.favoritesService = favoritesService
         self.options = options
         self.sendAnalytics = sendAnalytics
@@ -103,7 +94,7 @@ class DetailsViewModel: ViewModel {
     }
 
     private func setupSubscriptions() {
-        qrRepository.qrCodesPublisher
+        qrCodesService.qrCodesPublisher
             .dropFirst()
             .sink(receiveValue: { [weak self] qrCodes in
                 guard let self = self else { return }

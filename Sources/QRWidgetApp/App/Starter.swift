@@ -1,10 +1,3 @@
-//
-//  Starter.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 15.01.2022.
-//
-
 import UIKit
 import SwiftUI
 import Combine
@@ -58,30 +51,21 @@ public class Starter {
         rootViewController.set(viewController: bootstrapViewContoller)
         window.makeKeyAndVisible()
 
-        Publishers.CombineLatest(
-            initializeRepositories(),
-            generalAssembly.appEnvironment.paymentEnvironment.getProVersionActivated()
-        )
-            .receive(on: DispatchQueue.main)
-            .sink(receiveValue: { (_, isActivated) in
-                self.onAppReady()
-            })
-            .store(in: &cancellableSet)
-    }
+        let codes = qrCodesRepository.loadAllCodes()
+        let codesCount = codes.count
 
-    private func onAppReady() {
         walletService.loadAndValidatePasses()
         widgetsService.subscribeQrChanges()
 
         setupTabbar()
-        setupAnalyticsUserOptions()
+        setupAnalyticsUserOptions(codesCount: codesCount)
         startWatchSession()
 
         var needToShowOnboarding = !userDefaultsStorage.onboardingWasShown
             && !generalAssembly.appEnvironment.paymentEnvironment.isProActivated()
-//        #if DEBUG
-//        needToShowOnboarding = true
-//        #endif
+        //        #if DEBUG
+        //        needToShowOnboarding = true
+        //        #endif
 
         if needToShowOnboarding {
             let onboardingCompletion = {
@@ -94,9 +78,9 @@ public class Starter {
             showTabsController()
         }
 
-//        #if !DEBUG
-        tryAskForReview(qrCount: qrCodesRepository.qrCodes.count)
-//        #endif
+        // #if !DEBUG
+        tryAskForReview(codesCount: codesCount)
+        // #endif
 
         Logger.debugLog(message: "App Starter: End")
         isAppStartedPublisher.send(true)
@@ -111,26 +95,13 @@ public class Starter {
         if let storedSelectedTab = userDefaultsStorage.selectedTab.flatMap({ Tab(rawValue: $0) }) {
             selectedTabBarPublisher.send(storedSelectedTab)
         } else {
-            if qrCodesRepository.qrCodes.count == 0 {
-                selectedTabBarPublisher.send(.scan)
-            } else {
-                selectedTabBarPublisher.send(.favorites)
-            }
+            selectedTabBarPublisher.send(.scan)
         }
     }
 
-    private func setupAnalyticsUserOptions() {
-        let qrCount = qrCodesRepository.qrCodes.count
+    private func setupAnalyticsUserOptions(codesCount: Int) {
         let openCounter = userDefaultsStorage.openAppCounter
-        generalAssembly.appEnvironment.analyticsEnvironment.setUserOptions(qrCount: qrCount, openAppCounter: openCounter)
-    }
-
-    private func initializeRepositories() -> AnyPublisher<Void, Never> {
-        qrCodesRepository.loadAllQrFromStoragePublisher()
-            .flatMap {
-                self.mirgateDataToRepositories()
-            }
-            .eraseToAnyPublisher()
+        generalAssembly.appEnvironment.analyticsEnvironment.setUserOptions(qrCount: codesCount, openAppCounter: openCounter)
     }
 
     private func startWatchSession() {
@@ -139,65 +110,9 @@ public class Starter {
 
     // MARK: - Migrations
 
-    private func mirgateDataToRepositories() -> AnyPublisher<Void, Never> {
-        oldStorage.loadStatePublisher()
-            .flatMap { stateOptional -> AnyPublisher<Void, Never> in
-                if let state = stateOptional {
-                    self.mirgateFromStateToUserDefaultsIfNeeded(state: state)
-                    self.mirgateFromRedux(state: state)
-                }
-                self.mirgateFavotites()
-                return Just(()).eraseToAnyPublisher()
-            }
-            .eraseToAnyPublisher()
-    }
-
-    private func mirgateFavotites() {
-        if userDefaultsStorage.hasValue(for: UserDefaultsKey.favoritesIdsKey) {
-            return
-        }
-        let allIds = qrCodesRepository.qrCodes.map { $0.id }
-        favoritesService.setFavotites(ids: allIds)
-    }
-
-    private func mirgateFromStateToUserDefaultsIfNeeded(state: AppStateDto) {
-        if userDefaultsStorage.hasValue(for: UserDefaultsKey.onboardingWasShown) {
-            return
-        }
-        userDefaultsStorage.onboardingWasShown = state.data.onboardingWasShown ?? false
-    }
-
-    private func mirgateFromRedux(state: AppStateDto) {
-        if userDefaultsStorage.mirgatedFromRedux {
-            return
-        }
-        Logger.debugLog(message: "Mirgation from redux. Start")
-        // Move QR-s
-        for qrCodeDto in state.data.allQRs {
-            let qrCodeModel = qrCodeDto.makeModel()
-            qrCodesRepository.addNew(qr: qrCodeModel)
-        }
-        // Move Passes
-        for (qrId, passId) in state.data.allWalletPasses {
-            walletService.addPass(qrId: qrId, passId: passId)
-        }
-        // Move selected
-        if let selectedQr = state.data.selectedQR {
-            userDefaultsStorage.selectedQR = selectedQr
-        }
-        Logger.debugLog(message: "Mirgation from redux. Finish. Mirgated \(state.data.allQRs.count) qrCodes, \(state.data.allWalletPasses) wallet passes, selectedQrId: \(String(describing: state.data.selectedQR))")
-        // Finish migrations
-        userDefaultsStorage.mirgatedFromRedux = true
-    }
-
-    private func tryAskForReview(qrCount: Int) {
-        guard qrCount > 0 else {
-            return
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            if let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
-                SKStoreReviewController.requestReview(in: scene)
-            }
+    private func tryAskForReview(codesCount: Int) {
+        if let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
+            SKStoreReviewController.requestReview(in: scene)
         }
     }
 

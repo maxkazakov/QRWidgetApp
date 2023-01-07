@@ -1,9 +1,3 @@
-//
-//  BatchHistoryViewModel.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 15.06.2022.
-//
 
 import Foundation
 import SwiftUI
@@ -12,13 +6,13 @@ import QRWidgetCore
 class BatchCodesViewModel: ViewModel {
 
     private let batchId: UUID
-    private let qrCodesRepository: QRCodesRepository
+    private let codesService: QRCodesService
     private let favoritesService: FavoritesService
     private var isAppeared = false
 
-    init(batchId: UUID, qrCodesRepository: QRCodesRepository, favoritesService: FavoritesService) {
+    init(batchId: UUID, codesService: QRCodesService, favoritesService: FavoritesService) {
         self.batchId = batchId
-        self.qrCodesRepository = qrCodesRepository
+        self.codesService = codesService
         self.favoritesService = favoritesService
         super.init()
     }
@@ -32,17 +26,15 @@ class BatchCodesViewModel: ViewModel {
     }
 
     func remove(_ indexSet: IndexSet) {
-        var codesIds: Set<UUID> = []
         for index in indexSet {
-            codesIds.insert(codes[index].id)
+            codesService.removeQR(id: codes[index].id)
         }
-        qrCodesRepository.remove(ids: codesIds)
     }
 
     func onAppear() {
         guard !isAppeared else { return }
         isAppeared = true
-        qrCodesRepository.qrCodesPublisher
+        codesService.qrCodesPublisher
             .sink(receiveValue: { [weak self] in
                 self?.makeUIModels(from: $0)
             })
@@ -52,11 +44,11 @@ class BatchCodesViewModel: ViewModel {
 
     @ViewBuilder
     func singleDetailsView(id: UUID) -> some View {
-        if let model = qrCodesRepository.get(id: id) {
+        if let model = codesService.getQR(id: id) {
             generalAssembly.makeDetailsView(qrModel: model)
         } else {
             EmptyView()
-        }
+        }        
     }
 
     func rowView(item: SingleCodeRowUIModel) -> some View {
@@ -72,7 +64,7 @@ class BatchCodesViewModel: ViewModel {
     private func makeUIModels(from codes: [QRModel]) {
         isLoading = true
         DispatchQueue.global(qos: .userInitiated).async {
-            let sortedCodes = codes                
+            let sortedCodes = codes
                 .filter { $0.batchId == self.batchId }
                 .map { SingleCodeRowUIModel(model: $0, isFavorite: self.isInFavorite($0.id)) }
 

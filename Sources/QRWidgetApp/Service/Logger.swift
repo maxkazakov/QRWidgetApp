@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Максим Казаков on 03.08.2022.
-//
-
 import Foundation
 
 class Logger {
