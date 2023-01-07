@@ -20,7 +20,7 @@ public struct CodeCreationFlowView: View {
                                 CodeCreationView()
                             },
                             label: {
-                                QRCodeTypeView(type: type)
+                                Text(type.title)                                
                             }
                         )
                     }

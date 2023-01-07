@@ -1,10 +1,3 @@
-//
-//  MutlipleQRRecognizedView.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 14.06.2022.
-//
-
 
 import SwiftUI
 
@@ -16,13 +9,16 @@ struct MutlipleQRRecognizedView: View {
         NavigationView {
             List {
                 ForEach(viewModel.items, id: \.id) { item in
-                    NavigationLink(tag: item.id, selection: $selectedQRId, destination: {
-                        viewModel.detailsView(id: item.id)
-                    }, label: {
-                        viewModel.rowView(item: item)
-                            .padding(.vertical, 12)
-                            .foregroundColor(Color.primary)
-                    })
+                    NavigationLink(
+                        tag: item.id,
+                        selection: $selectedQRId,
+                        destination: {
+                            viewModel.detailsView(id: item.id)
+                        }, label: {
+                            viewModel.rowView(item: item)
+                                .padding(.vertical, 12)
+                                .foregroundColor(Color.primary)
+                        })
                 }
             }
             .buttonStyle(PlainButtonStyle())

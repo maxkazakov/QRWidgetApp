@@ -35,8 +35,9 @@ struct QRCodeView: View {
     let type: QRCodeDataType
 
     var body: some View {
-        VStack(spacing: 4) {
-            QRCodeTypeView(type: type.type)
+        VStack(alignment: .leading, spacing: 4) {
+            Text(type.type.title)
+                .foregroundColor(Color.gray)
             HStack {
                 QRCodeDataView(type: type)
                 Spacer()

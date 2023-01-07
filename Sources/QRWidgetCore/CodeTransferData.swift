@@ -1,9 +1,3 @@
-//
-//  CodeTransferData.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 02.07.2022.
-//
 
 import Foundation
 
