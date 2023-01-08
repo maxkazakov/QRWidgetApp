@@ -10,6 +10,7 @@ struct AllCodesView: View {
             Picker("", selection: $viewModel.selectedTab) {
                 Text(L10n.Allcodes.Segment.all).tag(SelectedTab.history)
                 Text(L10n.Tabs.favorites).tag(SelectedTab.favorites)
+                Text(L10n.Allcodes.Segment.my).tag(SelectedTab.my)
             }
             .pickerStyle(.segmented)
             .padding(.horizontal)
@@ -19,6 +20,8 @@ struct AllCodesView: View {
                 FavoritesView(viewModel: viewModel.favoritesViewModel)
             case .history:
                 HistoryView(viewModel: viewModel.historyViewModel)
+            case .my:
+                MyCodesListView(viewModel: viewModel.myCodesViewModel)                
             }
         }
         .navigationTitle(L10n.History.title)
@@ -39,7 +42,7 @@ struct AllCodesView: View {
             },
             content: { $viewModel in
                 CodeCreationFlowView()
-                    .environmentObject(viewModel)                
+                    .environmentObject(viewModel)
             })
     }
 }

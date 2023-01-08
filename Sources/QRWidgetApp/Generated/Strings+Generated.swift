@@ -25,6 +25,8 @@ internal enum L10n {
     internal enum Segment {
       /// All
       internal static let all = L10n.tr("Localizable", "allcodes.segment.all")
+      /// My
+      internal static let my = L10n.tr("Localizable", "allcodes.segment.my")
     }
   }
 
@@ -80,7 +82,7 @@ internal enum L10n {
   internal enum History {
     /// Batch of codes
     internal static let batch = L10n.tr("Localizable", "history.batch")
-    /// Scan History
+    /// Codes
     internal static let title = L10n.tr("Localizable", "history.title")
     internal enum Batch {
       /// %d QR-codes

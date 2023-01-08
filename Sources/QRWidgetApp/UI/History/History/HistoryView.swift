@@ -52,50 +52,27 @@ struct HistoryView: View {
 
     @ViewBuilder
     func rowView(item: HistoryItemUIModel) -> some View {
-        NavigationLink(tag: item.id, selection: $selectedQRId, destination: {
-            switch item.data {
-            case .single:
-                viewModel.singleDetailsView(id: item.id)
-            case .multiple:
-                viewModel.mutlipleDetailsView(batchId: item.id)
-            }
-        }, label: {
-            switch item.data {
-            case let .single(single):
-                viewModel.rowView(item: single)
-                    .padding(.vertical, 12)
-                    .foregroundColor(Color.primary)
-            case let .multiple(multiple):
-                HistoryMultipleRowView(model: multiple)
-                    .padding(.vertical, 12)
-                    .foregroundColor(Color.primary)
-            }
-        })
-//        NavigationLink(
-//            unwrapping: $selectedQRId,
-//            onNavigate: {
-//                self.selectedQRId = $0 ? item.id : nil
-//            },
-//            destination: { selectedQRId in
-//                switch item.data {
-//                case .single:
-//                    viewModel.singleDetailsView(id: item.id)
-//                case .multiple:
-//                    viewModel.mutlipleDetailsView(batchId: item.id)
-//                }
-//            },
-//            label: {
-//                switch item.data {
-//                case let .single(single):
-//                    viewModel.rowView(item: single)
-//                        .padding(.vertical, 12)
-//                        .foregroundColor(Color.primary)
-//                case let .multiple(multiple):
-//                    HistoryMultipleRowView(model: multiple)
-//                        .padding(.vertical, 12)
-//                        .foregroundColor(Color.primary)
-//                }
-//            }
-//        )
+        NavigationLink(
+            tag: item.id,
+            selection: $selectedQRId,
+            destination: {
+                switch item.data {
+                case .single:
+                    viewModel.singleDetailsView(id: item.id)
+                case .multiple:
+                    viewModel.mutlipleDetailsView(batchId: item.id)
+                }
+            }, label: {
+                switch item.data {
+                case let .single(single):
+                    viewModel.rowView(item: single)
+                        .padding(.vertical, 12)
+                        .foregroundColor(Color.primary)
+                case let .multiple(multiple):
+                    HistoryMultipleRowView(model: multiple)
+                        .padding(.vertical, 12)
+                        .foregroundColor(Color.primary)
+                }
+            })
     }
 }

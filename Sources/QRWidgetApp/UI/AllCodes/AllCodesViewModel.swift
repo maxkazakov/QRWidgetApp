@@ -4,6 +4,7 @@ import CodeCreation
 enum SelectedTab: Int {
     case favorites = 0
     case history = 1
+    case my = 2
 }
 
 class AllCodesViewModel: ObservableObject {
@@ -15,11 +16,13 @@ class AllCodesViewModel: ObservableObject {
     init(
         codesService: QRCodesService,
         historyViewModel: HistoryViewModel,
-        favoritesViewModel: FavoritesViewModel
+        favoritesViewModel: FavoritesViewModel,
+        myCodesViewModel: MyCodesListViewModel
     ) {
         self.codesService = codesService
         self.historyViewModel = historyViewModel
         self.favoritesViewModel = favoritesViewModel
+        self.myCodesViewModel = myCodesViewModel
     }
 
     @Published var selectedTab: SelectedTab = .history
@@ -32,6 +35,7 @@ class AllCodesViewModel: ObservableObject {
     let codesService: QRCodesService
     let historyViewModel: HistoryViewModel
     let favoritesViewModel: FavoritesViewModel
+    let myCodesViewModel: MyCodesListViewModel
 
     func createdNewCodeTapped() {
         destination = .newCode(CodeCreationFlowModel())
@@ -42,7 +46,7 @@ class AllCodesViewModel: ObservableObject {
         case let .newCode(codeCreationModel):
             codeCreationModel.onCodeCreatoinFinished = { [weak self] newCode in
                 guard let self else { return }
-                self.codesService.addNew(qrModel: newCode)                
+                self.codesService.addNew(qrModel: newCode)
                 self.destination = nil
             }
         case .none:

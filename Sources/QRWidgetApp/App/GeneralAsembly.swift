@@ -40,7 +40,7 @@ class GeneralAssembly {
     lazy var watchPhoneManager = WatchPhoneManager(qrService: qrCodesService)
 
     // Repositories
-    lazy var qrCodesRepository = QRCodesRepository(logMessage: { Logger.debugLog(message: $0) })    
+    lazy var qrCodesRepository = QRCodesRepository(logMessage: { Logger.debugLog(message: $0) })
 
     lazy var appRouter = AppRouter(rootViewController: rootViewController)
 
@@ -158,12 +158,15 @@ class GeneralAssembly {
         let viewModel = AllCodesViewModel(
             codesService: qrCodesService,
             historyViewModel: HistoryViewModel(
-                qrCodesService: self.qrCodesService,
-                favoritesService: self.favoritesService
+                qrCodesService: qrCodesService,
+                favoritesService: favoritesService
             ),
             favoritesViewModel: FavoritesViewModel(
                 qrCodesService: qrCodesService,
                 favoritesSerice: favoritesService
+            ),
+            myCodesViewModel: MyCodesListViewModel(
+                qrCodesService: qrCodesService
             )
         )
         let view = AllCodesView(viewModel: viewModel)
