@@ -1,5 +1,6 @@
 import SwiftUI
 import CodeCreation
+import XCTestDynamicOverlay
 
 enum SelectedTab: Int {
     case favorites = 0
@@ -13,16 +14,8 @@ class AllCodesViewModel: ObservableObject {
         case newCode(CodeCreationFlowModel)
     }
 
-    init(
-        codesService: QRCodesService,
-        historyViewModel: HistoryViewModel,
-        favoritesViewModel: FavoritesViewModel,
-        myCodesViewModel: MyCodesListViewModel
-    ) {
+    init(codesService: QRCodesService) {
         self.codesService = codesService
-        self.historyViewModel = historyViewModel
-        self.favoritesViewModel = favoritesViewModel
-        self.myCodesViewModel = myCodesViewModel
     }
 
     @Published var selectedTab: SelectedTab = .history
@@ -32,10 +25,23 @@ class AllCodesViewModel: ObservableObject {
         }
     }
 
+    var startScanningTapped: EmptyBlock = unimplemented("AllCodesViewModel.startScanningTapped") {
+        didSet {
+            historyViewModel.startScanningTapped = startScanningTapped
+        }
+    }
+
     let codesService: QRCodesService
-    let historyViewModel: HistoryViewModel
-    let favoritesViewModel: FavoritesViewModel
-    let myCodesViewModel: MyCodesListViewModel
+
+    lazy var historyViewModel: HistoryViewModel = {
+        HistoryViewModel(qrCodesService: codesService, favoritesService: generalAssembly.favoritesService)
+    }()
+    lazy var favoritesViewModel: FavoritesViewModel = {
+        FavoritesViewModel(qrCodesService: codesService, favoritesSerice: generalAssembly.favoritesService)
+    }()
+    lazy var myCodesViewModel: MyCodesListViewModel = {
+        MyCodesListViewModel(qrCodesService: codesService)
+    }()
 
     func createdNewCodeTapped() {
         destination = .newCode(CodeCreationFlowModel())

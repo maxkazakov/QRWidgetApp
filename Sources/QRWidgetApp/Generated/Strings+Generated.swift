@@ -287,6 +287,11 @@ internal enum L10n {
     }
   }
 
+  internal enum StartScanningButton {
+    /// Start Scanning
+    internal static let title = L10n.tr("Localizable", "startScanningButton.title")
+  }
+
   internal enum Subscription {
     /// You have unlocked Pro version!
     internal static let activated = L10n.tr("Localizable", "subscription.activated")

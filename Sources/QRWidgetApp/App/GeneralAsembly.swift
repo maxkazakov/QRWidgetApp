@@ -59,11 +59,14 @@ class GeneralAssembly {
         .anyView
     }
 
+    lazy var mainTabViewModel = MainTabViewModel(
+        storage: userDefaultsStorage,
+        sendAnalytics: appEnvironment.analyticsEnvironment.sendAnalyticsEvent
+    )
+
     // Main Tab View
     func makeTabView() -> Module {
-        let view = MainTabView(
-            viewModel: MainTabViewModel(storage: self.userDefaultsStorage, sendAnalytics: self.appEnvironment.analyticsEnvironment.sendAnalyticsEvent)
-        )
+        let view = MainTabView(viewModel: self.mainTabViewModel)
             .injectAnalyticsSender(appEnvironment.analyticsEnvironment.sendAnalyticsEvent)
             .anyView
         return Module(router: Router(), view: view)
@@ -151,26 +154,6 @@ class GeneralAssembly {
             viewModel: AddToWalletButtonViewModel(walletService: self.walletService,
                                                   sendAnalyticsEvent: self.appEnvironment.analyticsEnvironment.sendAnalyticsEvent)
         )
-    }
-
-    // History
-    func makeAllCodesView() -> some View {
-        let viewModel = AllCodesViewModel(
-            codesService: qrCodesService,
-            historyViewModel: HistoryViewModel(
-                qrCodesService: qrCodesService,
-                favoritesService: favoritesService
-            ),
-            favoritesViewModel: FavoritesViewModel(
-                qrCodesService: qrCodesService,
-                favoritesSerice: favoritesService
-            ),
-            myCodesViewModel: MyCodesListViewModel(
-                qrCodesService: qrCodesService
-            )
-        )
-        let view = AllCodesView(viewModel: viewModel)
-        return view
     }
 
     // History

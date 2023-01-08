@@ -2,20 +2,21 @@
 import Foundation
 import SwiftUI
 import QRWidgetCore
+import XCTestDynamicOverlay
 
 class HistoryViewModel: ViewModel {
 
     private let qrCodesService: QRCodesService
     private let favoritesService: FavoritesService
-    private let showOnlyFavorites: Bool
     private var isAppeared = false
 
-    init(qrCodesService: QRCodesService, favoritesService: FavoritesService, showOnlyFavorites: Bool = false) {
+    init(qrCodesService: QRCodesService, favoritesService: FavoritesService) {
         self.qrCodesService = qrCodesService
         self.favoritesService = favoritesService
-        self.showOnlyFavorites = showOnlyFavorites
         super.init()
     }
+
+    var startScanningTapped: EmptyBlock = unimplemented("HistoryViewModel.startScanningTapped")
 
     // MARK: - HistoryViewModelProtocol
     @Published var sections: [HistorySectionUIModel] = []
@@ -73,16 +74,10 @@ class HistoryViewModel: ViewModel {
     private func makeUIModels(from codes: [QRModel]) {
         isLoading = true
         DispatchQueue.global(qos: .userInitiated).async {
-            let sortedCodes = codes
-                .filter {
-                    guard self.showOnlyFavorites else { return true }
-                    return self.isInFavorite($0.id)
-                }
-
             var sections = [HistorySectionUIModel]()
             var i = 0
-            while i < sortedCodes.count {
-                let code = sortedCodes[i]
+            while i < codes.count {
+                let code = codes[i]
                 let day = Calendar.current.numberOfDaysBetween(code.dateCreated, and: Date(timeIntervalSince1970: 0))
                 if sections.last?.day != day {
                     let newSection = HistorySectionUIModel(day: day,
@@ -95,8 +90,8 @@ class HistoryViewModel: ViewModel {
                 if let batchId = code.batchId {
                     var j = i
                     var multiple = HistoryMultipleCodesUIModel(batchId: batchId, codes: [])
-                    while j < sortedCodes.count && sortedCodes[j].batchId == code.batchId {
-                        let codeInBatch = sortedCodes[j]
+                    while j < codes.count && codes[j].batchId == code.batchId {
+                        let codeInBatch = codes[j]
                         let single = SingleCodeRowUIModel(model: codeInBatch, isFavorite: self.isInFavorite(codeInBatch.id))
                         multiple.codes.append(single)
                         j += 1

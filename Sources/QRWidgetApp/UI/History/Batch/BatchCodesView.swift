@@ -9,20 +9,16 @@ struct BatchCodesView: View {
 
     var body: some View {
         ZStack {
-            if viewModel.codes.isEmpty {
-                NoHistoryView()
-            } else {
-                List {
-                    ForEach(viewModel.codes, id: \.id) { item in
-                        rowView(item: item)
-                    }
-                    .onDelete { indexSet in
-                        viewModel.remove(indexSet)
-                    }
+            List {
+                ForEach(viewModel.codes, id: \.id) { item in
+                    rowView(item: item)
                 }
-                .buttonStyle(PlainButtonStyle())
-                .listStyle(InsetGroupedListStyle())
+                .onDelete { indexSet in
+                    viewModel.remove(indexSet)
+                }
             }
+            .buttonStyle(PlainButtonStyle())
+            .listStyle(InsetGroupedListStyle())
         }
         .navigationTitle(viewModel.title)
         .onAppear(perform: { viewModel.onAppear() })

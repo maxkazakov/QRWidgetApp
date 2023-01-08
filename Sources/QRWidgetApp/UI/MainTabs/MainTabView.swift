@@ -9,7 +9,7 @@ enum Tab: Int, Identifiable {
     case settings = 3
 }
 
-struct MainTabView: View {    
+struct MainTabView: View {
     @StateObject var viewModel: MainTabViewModel
 
     var body: some View {
@@ -21,7 +21,7 @@ struct MainTabView: View {
                 .tag(Tab.scan)
 
             NavigationView {
-                generalAssembly.makeAllCodesView()
+                AllCodesView(viewModel: viewModel.allCodesTabModel)
             }
             .navigationViewStyle(.stack)
             .tabItem {

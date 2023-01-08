@@ -1,9 +1,3 @@
-//
-//  HistoryView.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 16.04.2022.
-//
 
 import SwiftUI
 import UIKit
@@ -17,7 +11,7 @@ struct HistoryView: View {
     var body: some View {
         ZStack {
             if viewModel.sections.isEmpty {
-                NoHistoryView()
+                NoHistoryView(startScanningTapped: viewModel.startScanningTapped)
             } else {
                 List {
                     ForEach(viewModel.sections) { section in

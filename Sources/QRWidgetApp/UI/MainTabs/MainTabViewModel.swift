@@ -10,6 +10,14 @@ class MainTabViewModel: ViewModel {
     let sendAnalytics: SendAnalyticsAction
     @Published var currentTab: Tab
 
+    lazy var allCodesTabModel: AllCodesViewModel = {
+        let model = AllCodesViewModel(codesService: generalAssembly.qrCodesService)
+        model.startScanningTapped = { [weak self] in
+            self?.currentTab = .scan
+        }
+        return model
+    }()
+
     init(storage: UserDefaultsStorage, sendAnalytics: @escaping SendAnalyticsAction) {
         self.storage = storage
         self.sendAnalytics = sendAnalytics
@@ -34,7 +42,7 @@ class MainTabViewModel: ViewModel {
     }
 
     private func trackTabChange(tab: Tab) {
-        switch tab {        
+        switch tab {
         case .scan:
             sendAnalytics(.openScanTab, nil)
         case .history:
