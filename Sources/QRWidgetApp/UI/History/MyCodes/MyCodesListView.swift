@@ -10,7 +10,7 @@ struct MyCodesListView: View {
     var body: some View {
         ZStack {
             if viewModel.codes.isEmpty {
-                NoFavoriteCodesView()
+                EmptyMyCodesView(createNewTapped: viewModel.createNewTapped)
             } else {
                 List {
                     ForEach(viewModel.codes, id: \.id) { item in

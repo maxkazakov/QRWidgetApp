@@ -36,11 +36,15 @@ class AllCodesViewModel: ObservableObject {
     lazy var historyViewModel: HistoryViewModel = {
         HistoryViewModel(qrCodesService: codesService, favoritesService: generalAssembly.favoritesService)
     }()
+    
     lazy var favoritesViewModel: FavoritesViewModel = {
         FavoritesViewModel(qrCodesService: codesService, favoritesSerice: generalAssembly.favoritesService)
     }()
+
     lazy var myCodesViewModel: MyCodesListViewModel = {
-        MyCodesListViewModel(qrCodesService: codesService)
+        var model = MyCodesListViewModel(qrCodesService: codesService)
+        model.createNewTapped = { [weak self] in self?.createdNewCodeTapped() }
+        return model
     }()
 
     func createdNewCodeTapped() {

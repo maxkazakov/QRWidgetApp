@@ -1,12 +1,15 @@
 import Combine
 import SwiftUI
 import QRWidgetCore
+import XCTestDynamicOverlay
 
 class MyCodesListViewModel: ViewModel {
 
     private let qrCodesService: QRCodesService
 
     @Published var codes: [SingleCodeRowUIModel] = []
+
+    var createNewTapped: EmptyBlock = unimplemented("MyCodesListViewModel.createNewTapped")
 
     init(qrCodesService: QRCodesService) {
         self.qrCodesService = qrCodesService

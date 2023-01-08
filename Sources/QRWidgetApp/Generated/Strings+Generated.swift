@@ -98,6 +98,19 @@ internal enum L10n {
     }
   }
 
+  internal enum MyCodes {
+    internal enum Empty {
+      /// Here will be QR codes created by you
+      internal static let subtitle = L10n.tr("Localizable", "myCodes.empty.subtitle")
+      /// You didn't create any code yet
+      internal static let title = L10n.tr("Localizable", "myCodes.empty.title")
+      internal enum CreateNew {
+        /// Create
+        internal static let button = L10n.tr("Localizable", "myCodes.empty.createNew.button")
+      }
+    }
+  }
+
   internal enum Onboarding {
     /// All QR-codes in one place
     internal static let allQRCodesInOnePlace = L10n.tr("Localizable", "onboarding.allQRCodesInOnePlace")
