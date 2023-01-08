@@ -54,7 +54,6 @@ public class Starter {
         walletService.loadAndValidatePasses()
         widgetsService.subscribeQrChanges()
 
-        setupTabbar()
         setupAnalyticsUserOptions(codesCount: codesCount)
         startWatchSession()
 
@@ -86,14 +85,6 @@ public class Starter {
     private func showTabsController() {
         let qrPagesModule = generalAssembly.makeTabView()
         rootViewController.set(viewController: qrPagesModule.controller)
-    }
-
-    private func setupTabbar() {
-        if let storedSelectedTab = userDefaultsStorage.selectedTab.flatMap({ Tab(rawValue: $0) }) {
-            selectedTabBarPublisher.send(storedSelectedTab)
-        } else {
-            selectedTabBarPublisher.send(.scan)
-        }
     }
 
     private func setupAnalyticsUserOptions(codesCount: Int) {

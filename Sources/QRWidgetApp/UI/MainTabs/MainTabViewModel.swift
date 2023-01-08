@@ -3,12 +3,10 @@ import SwiftUI
 import Foundation
 import Combine
 
-let selectedTabBarPublisher = CurrentValueSubject<Tab, Never>(.scan)
-
 class MainTabViewModel: ViewModel {
     let storage: UserDefaultsStorage
     let sendAnalytics: SendAnalyticsAction
-    @Published var currentTab: Tab
+    @Published var currentTab: Tab = .scan
 
     lazy var allCodesTabModel: AllCodesViewModel = {
         let model = AllCodesViewModel(codesService: generalAssembly.qrCodesService)
@@ -21,22 +19,14 @@ class MainTabViewModel: ViewModel {
     init(storage: UserDefaultsStorage, sendAnalytics: @escaping SendAnalyticsAction) {
         self.storage = storage
         self.sendAnalytics = sendAnalytics
-        self.currentTab = selectedTabBarPublisher.value
         super.init()
 
-        selectedTabBarPublisher
-            .removeDuplicates()
-            .sink(receiveValue: { [weak self] in
-                self?.currentTab = $0
-            })
-            .store(in: &cancellableSet)
-
+        initializeSelectedTab()
         $currentTab
             .removeDuplicates()
             .sink(receiveValue: { [weak self] in
                 self?.trackTabChange(tab: $0)
                 self?.storage.selectedTab = $0.rawValue
-                selectedTabBarPublisher.send($0)
             })
             .store(in: &cancellableSet)
     }
@@ -49,6 +39,14 @@ class MainTabViewModel: ViewModel {
             sendAnalytics(.openHistoryTab, nil)
         case .settings:
             sendAnalytics(.openSettingsTab, nil)
+        }
+    }
+
+    private func initializeSelectedTab() {
+        if let storedSelectedTab = storage.selectedTab.flatMap({ Tab(rawValue: $0) }) {
+            currentTab = storedSelectedTab
+        } else {
+            currentTab = .scan
         }
     }
 }
