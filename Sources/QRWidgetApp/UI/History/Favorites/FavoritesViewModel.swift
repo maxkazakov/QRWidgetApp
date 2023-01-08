@@ -45,13 +45,14 @@ class FavoritesViewModel: ViewModel {
     // MARK: - Private
 
     private func updateQrCodeList(_ qrCodes: [QRModel], isProActivated: Bool) {
-        if qrCodes.count > 1, !isProActivated {
-            let firstQrCode = qrCodes.first!
+        let sortedCodes = qrCodes.sorted(by: { $0.dateCreated > $1.dateCreated })
+        if sortedCodes.count > 1, !isProActivated {
+            let firstQrCode = sortedCodes.last!
             self.codes = [SingleCodeRowUIModel(model: firstQrCode, isFavorite: true)]
             self.showNeedToPaySubscription = true
         } else {
             self.showNeedToPaySubscription = false
-            self.codes = qrCodes.map {
+            self.codes = sortedCodes.map {
                 SingleCodeRowUIModel(model: $0, isFavorite: true)
             }
         }

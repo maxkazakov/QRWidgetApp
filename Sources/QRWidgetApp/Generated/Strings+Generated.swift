@@ -23,10 +23,10 @@ internal enum L10n {
 
   internal enum Allcodes {
     internal enum Segment {
-      /// All
-      internal static let all = L10n.tr("Localizable", "allcodes.segment.all")
       /// My
       internal static let my = L10n.tr("Localizable", "allcodes.segment.my")
+      /// Scans
+      internal static let scans = L10n.tr("Localizable", "allcodes.segment.scans")
     }
   }
 
@@ -56,6 +56,11 @@ internal enum L10n {
     internal static let title = L10n.tr("Localizable", "changeAppearance.title")
   }
 
+  internal enum CreateNewQrCodeButton {
+    /// Create
+    internal static let title = L10n.tr("Localizable", "createNewQrCodeButton.title")
+  }
+
   internal enum DeleteQr {
     /// Remove
     internal static let buttonTitle = L10n.tr("Localizable", "deleteQr.buttonTitle")
@@ -65,7 +70,7 @@ internal enum L10n {
 
   internal enum Favorites {
     internal enum Empty {
-      /// You can add favorites right after scanning or from History tab
+      /// You can add favorites right after scanning or from Scans tab
       internal static let subtitle = L10n.tr("Localizable", "favorites.empty.subtitle")
       /// No favorite QR-codes yet
       internal static let title = L10n.tr("Localizable", "favorites.empty.title")

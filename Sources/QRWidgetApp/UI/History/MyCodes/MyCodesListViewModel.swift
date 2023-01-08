@@ -45,10 +45,9 @@ class MyCodesListViewModel: ViewModel {
 
     private func updateQrCodeList(_ qrCodes: [QRModel]) {
         self.codes = qrCodes
+            .sorted { $0.dateCreated > $1.dateCreated }
             .filter { $0.isMy }
-            .map {
-                SingleCodeRowUIModel(model: $0, isFavorite: true)
-            }
+            .map { SingleCodeRowUIModel(model: $0, isFavorite: true) }
     }
 }
 

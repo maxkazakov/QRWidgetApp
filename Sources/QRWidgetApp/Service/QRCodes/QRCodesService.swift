@@ -28,7 +28,8 @@ class QRCodesService {
             }
             .eraseToAnyPublisher()
 
-        qrCodesPublisher.send(repository.loadAllCodes())
+        let allCodes = repository.loadAllCodes()
+        qrCodesPublisher.send(allCodes)
     }
     
     private var cancellableSet = Set<AnyCancellable>()
@@ -50,7 +51,7 @@ class QRCodesService {
     }
 
     func addNew(qrModel: QRModel) {
-        qrCodesPublisher.value.insert(qrModel, at: 0)
+        qrCodesPublisher.value.append(qrModel)
         repository.addNew(qr: qrModel)
     }
 
@@ -78,7 +79,7 @@ class QRCodesService {
     }
 
     func getQR(id: UUID) -> QRModel? {
-        qrCodesPublisher.value.first(where: { $0.id == id })
+        qrCodesPublisher.value.first { $0.id == id }
     }
 
     func removeQR(id: UUID) {

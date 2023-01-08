@@ -29,8 +29,7 @@ class QRCodesRepository {
                     let qrModel = qrModelDto.makeModel()
                     qrModels.append(qrModel)
                 }
-            }
-            qrModels.sort(by: { $0.dateCreated > $1.dateCreated })
+            }            
             logMessage("QRCodes Repo: Loaded from disc. Count: \(qrModels.count)")
             return qrModels
         } catch {

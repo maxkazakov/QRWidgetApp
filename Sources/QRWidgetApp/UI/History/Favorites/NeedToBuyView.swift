@@ -1,9 +1,3 @@
-//
-//  NeedToBuyView.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 27.10.2021.
-//
 
 import SwiftUI
 

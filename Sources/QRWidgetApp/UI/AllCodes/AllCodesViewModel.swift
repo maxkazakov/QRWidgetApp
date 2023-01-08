@@ -4,7 +4,7 @@ import XCTestDynamicOverlay
 
 enum SelectedTab: Int {
     case favorites = 0
-    case history = 1
+    case scans = 1
     case my = 2
 }
 
@@ -18,7 +18,7 @@ class AllCodesViewModel: ObservableObject {
         self.codesService = codesService
     }
 
-    @Published var selectedTab: SelectedTab = .history
+    @Published var selectedTab: SelectedTab = .scans
     @Published var destination: Destination? {
         didSet {
             self.bind()
@@ -36,7 +36,7 @@ class AllCodesViewModel: ObservableObject {
     lazy var historyViewModel: HistoryViewModel = {
         HistoryViewModel(qrCodesService: codesService, favoritesService: generalAssembly.favoritesService)
     }()
-    
+
     lazy var favoritesViewModel: FavoritesViewModel = {
         FavoritesViewModel(qrCodesService: codesService, favoritesSerice: generalAssembly.favoritesService)
     }()

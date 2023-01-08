@@ -8,7 +8,7 @@ struct AllCodesView: View {
     var body: some View {
         VStack {
             Picker("", selection: $viewModel.selectedTab) {
-                Text(L10n.Allcodes.Segment.all).tag(SelectedTab.history)
+                Text(L10n.Allcodes.Segment.scans).tag(SelectedTab.scans)
                 Text(L10n.Tabs.favorites).tag(SelectedTab.favorites)
                 Text(L10n.Allcodes.Segment.my).tag(SelectedTab.my)
             }
@@ -18,10 +18,10 @@ struct AllCodesView: View {
             switch viewModel.selectedTab {
             case .favorites:
                 FavoritesView(viewModel: viewModel.favoritesViewModel)
-            case .history:
+            case .scans:
                 HistoryView(viewModel: viewModel.historyViewModel)
             case .my:
-                MyCodesListView(viewModel: viewModel.myCodesViewModel)                
+                MyCodesListView(viewModel: viewModel.myCodesViewModel)
             }
         }
         .navigationTitle(L10n.History.title)
@@ -30,7 +30,7 @@ struct AllCodesView: View {
                 Button {
                     viewModel.createdNewCodeTapped()
                 } label: {
-                    Text("Create new")
+                    Text(L10n.CreateNewQrCodeButton.title)
                 }
             }
         }
