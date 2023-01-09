@@ -1,12 +1,14 @@
 
 import SwiftUI
 import UIKit
+import SwiftUINavigation
 
 struct HistoryView: View {
 
     @ObservedObject var viewModel: HistoryViewModel
     @State var selectedQRId: UUID?
     @Environment(\.sendAnalyticsEvent) var sendAnalyticsEvent
+    @State private var confirmationShown = false
     
     var body: some View {
         ZStack {
@@ -21,7 +23,7 @@ struct HistoryView: View {
                                     rowView(item: item)
                                 }
                                 .onDelete { indexSet in
-                                    viewModel.remove(indexSet, section: section)
+                                    viewModel.userTappedRemove(indexSet: indexSet, section: section)                                    
                                 }
                             },
                             header: {
@@ -35,7 +37,16 @@ struct HistoryView: View {
                 .buttonStyle(PlainButtonStyle())
                 .listStyle(InsetGroupedListStyle())
             }
-        }        
+        }
+        .alert(
+            unwrapping: self.$viewModel.destination,
+            case: /HistoryViewModel.Destination.alert
+        ) { action in
+            switch action {
+            case let .confirmRemoval(indices, section):
+                viewModel.remove(indices, section: section)
+            }
+        }
         .onAppear(perform: { viewModel.onAppear() })
         .onChange(of: selectedQRId, perform: {
             if $0 != nil {

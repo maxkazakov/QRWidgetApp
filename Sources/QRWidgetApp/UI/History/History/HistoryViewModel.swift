@@ -3,12 +3,20 @@ import Foundation
 import SwiftUI
 import QRWidgetCore
 import XCTestDynamicOverlay
+import SwiftUINavigation
 
 class HistoryViewModel: ViewModel {
 
     private let qrCodesService: QRCodesService
     private let favoritesService: FavoritesService
     private var isAppeared = false
+
+    enum Destination {
+        case alert(AlertState<AlertAction>)
+    }
+    enum AlertAction {
+        case confirmRemoval(indices: IndexSet, section: HistorySectionUIModel)
+    }
 
     init(qrCodesService: QRCodesService, favoritesService: FavoritesService) {
         self.qrCodesService = qrCodesService
@@ -21,6 +29,19 @@ class HistoryViewModel: ViewModel {
     // MARK: - HistoryViewModelProtocol
     @Published var sections: [HistorySectionUIModel] = []
     @Published var isLoading = false
+    @Published var destination: Destination?
+
+    func userTappedRemove(indexSet: IndexSet, section: HistorySectionUIModel) {
+        destination = .alert(
+            AlertState(
+                title: TextState("Remove code?"),
+                buttons: [
+                    .destructive(TextState("Remove"), action: .send(.confirmRemoval(indices: indexSet, section: section))),
+                    .cancel(TextState("Cancel"))
+                ]
+            )
+        )
+    }
 
     func remove(_ indexSet: IndexSet, section: HistorySectionUIModel) {
         for index in indexSet {
@@ -77,7 +98,7 @@ class HistoryViewModel: ViewModel {
             let sortedCodes = codes
                 .filter { !$0.isMy }
                 .sorted { $0.dateCreated > $1.dateCreated }
-            
+
             var sections = [HistorySectionUIModel]()
             var i = 0
             while i < sortedCodes.count {
@@ -113,8 +134,10 @@ class HistoryViewModel: ViewModel {
             }
 
             DispatchQueue.main.async {
-                self.isLoading = false
-                self.sections = sections
+                withAnimation {
+                    self.isLoading = false
+                    self.sections = sections
+                }
             }
         }
     }
