@@ -55,7 +55,8 @@ let package = Package(
         ),
         .target(
             name: "QRWidgetCore",
-            dependencies: []
+            dependencies: [],
+            exclude: ["swiftgen.yml"]
         ),
         .target(
             name: "QRGenerator",
@@ -72,7 +73,8 @@ let package = Package(
                 "QRWidgetCore",
                 "QRCodeUI",
                 .product(name: "SwiftUINavigation", package: "swiftui-navigation"),
-            ]
+            ],
+            exclude: ["swiftgen.yml"]
         ),
 
         .testTarget(

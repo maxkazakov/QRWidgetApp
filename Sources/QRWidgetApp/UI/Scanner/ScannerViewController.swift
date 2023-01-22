@@ -197,7 +197,6 @@ extension CodeScannerView {
                 return
             }
             let rectOfInterest = previewLayer.metadataOutputRectConverted(fromLayerRect: viewFinder?.frame ?? .zero)
-            Logger.debugLog(message: "Setting rectOfInterest: \(rectOfInterest)")
             metadataOutput.rectOfInterest = rectOfInterest
         }
 

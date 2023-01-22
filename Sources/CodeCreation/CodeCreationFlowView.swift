@@ -20,16 +20,16 @@ public struct CodeCreationFlowView: View {
                                 CodeCreationView()
                             },
                             label: {
-                                Text(type.title)                                
+                                Text(type.title)
                             }
                         )
                     }
                 }, header: {
-                    Text("Select QR type")
+                    Text(L10n.selectQrType)
                 })
             }
             .listStyle(.insetGrouped)
-            .navigationTitle("Code type")
+            .navigationTitle(L10n.codeType)
             .navigationBarTitleDisplayMode(.inline)
         }
     }

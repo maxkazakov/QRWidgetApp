@@ -3,6 +3,7 @@ import Foundation
 import SwiftUI
 import QRCodeUI
 import SwiftUINavigation
+import QRWidgetCore
 
 public struct CodeCreationView: View {
     @EnvironmentObject var model: CodeCreationFlowModel
@@ -26,14 +27,14 @@ public struct CodeCreationView: View {
             }
         }
         .bind(self.$model.focus, to: self.$focus)
-        .navigationTitle("Code content")
+        .navigationTitle(L10n.codeContent)
         .listStyle(.insetGrouped)
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
                 Button {
                     model.onTapDone()
                 } label: {
-                    Text("Done")
+                    Text(L10n.done)
                 }
                 .disabled(!model.canCreate)
             }
@@ -56,7 +57,7 @@ public struct CodeCreationView: View {
                     //                            }
                     //                        }
                 }, header: {
-                    Text("Text")
+                    Text(QRCodeType.rawText.title)
                 })
             }
             CaseLet(/QRFormData.url) { url in
@@ -64,7 +65,7 @@ public struct CodeCreationView: View {
                     TextEditor(text: url)
                         .focused($focus, equals: .first)
                 }, header: {
-                    Text("Website")
+                    Text(QRCodeType.url.title)
                 })
             }
         })

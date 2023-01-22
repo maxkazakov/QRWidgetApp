@@ -12,9 +12,9 @@ public enum QRCodeType: Int, CaseIterable, Hashable, Identifiable {
     public var title: String {
         switch self {
         case .rawText:
-            return "Raw text"
+            return L10n.rawText
         case .url:
-            return "Website"
+            return L10n.website
         }
     }
 }
