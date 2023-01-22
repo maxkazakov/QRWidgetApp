@@ -84,6 +84,7 @@ struct DetailsView: View {
                 }
             )
         }
+        .hideKeyboardOnScroll()
         .listStyle(.insetGrouped)
         .navigationBarItems(trailing: shareButton)
         .navigationTitle(viewModel.options.title)
@@ -114,5 +115,24 @@ struct DetailsView: View {
     @ViewBuilder
     private var shareButton: some View {
         viewModel.makeShareView()
+    }
+}
+
+struct HideKeyboardOnScrollModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(iOS 16.0, *) {
+            content
+                .scrollDismissesKeyboard(.immediately)
+        } else {
+            content.onAppear {
+                UIScrollView.appearance().keyboardDismissMode = .onDrag
+            }
+        }
+    }
+}
+
+extension View {
+    func hideKeyboardOnScroll() -> some View {
+        modifier(HideKeyboardOnScrollModifier())
     }
 }

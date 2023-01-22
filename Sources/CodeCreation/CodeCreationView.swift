@@ -6,6 +6,7 @@ import SwiftUINavigation
 import QRWidgetCore
 
 public struct CodeCreationView: View {
+
     @EnvironmentObject var model: CodeCreationFlowModel
     @FocusState var focus: Field?
 
@@ -25,7 +26,7 @@ public struct CodeCreationView: View {
                 }
                 .padding(.vertical, 16)
             }
-        }
+        }        
         .bind(self.$model.focus, to: self.$focus)
         .navigationTitle(L10n.codeContent)
         .listStyle(.insetGrouped)

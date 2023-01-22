@@ -25,6 +25,7 @@ final public class CodeCreationFlowModel: ObservableObject {
     @Published var canCreate = false
     @Published var type: QRCodeType? {
         didSet {
+            focus = .first
             switch type {
             case .url:
                 qrDataType = .url("https://")

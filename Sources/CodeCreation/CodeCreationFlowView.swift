@@ -13,7 +13,7 @@ public struct CodeCreationFlowView: View {
             List {
                 Section(content: {
                     ForEach(model.codeTypes) { type in
-                        NavigationLink.init(
+                        NavigationLink(
                             tag: type,
                             selection: $model.type,
                             destination: {

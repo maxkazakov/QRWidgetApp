@@ -1,9 +1,3 @@
-//
-//  AddPassButtonViewModel.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 18.02.2022.
-//
 
 import SwiftUI
 import PassKit

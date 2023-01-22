@@ -16,9 +16,9 @@ struct AddToWalletButton: View {
     @State var showPaywall: Bool = false
 
     var body: some View {
-        if #available(iOS 15.0, *) {
-            let _ = Self._printChanges()
-        }
+//        if #available(iOS 15.0, *) {
+//            let _ = Self._printChanges()
+//        }
 
         VStack(spacing: 12) {
             if viewModel.hasWalletPass {
