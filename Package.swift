@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "QRWidgetApp",
     defaultLocalization: "en",
-    platforms: [.iOS(.v15), .watchOS(.v6)],
+    platforms: [.iOS(.v15), .watchOS(.v7)],
 
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
@@ -29,6 +29,10 @@ let package = Package(
         .library(
             name: "QRCodeUI",
             targets: ["QRCodeUI"]
+        ),
+        .library(
+            name: "QRWatch",
+            targets: ["QRWatch"]
         ),
     ],
     dependencies: [
@@ -75,6 +79,10 @@ let package = Package(
                 .product(name: "SwiftUINavigation", package: "swiftui-navigation"),
             ],
             exclude: ["swiftgen.yml"]
+        ),
+        .target(
+            name: "QRWatch",
+            dependencies: ["QRWidgetCore"]
         ),
 
         .testTarget(
