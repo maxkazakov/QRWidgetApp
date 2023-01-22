@@ -1,9 +1,3 @@
-//
-//  PaywallOffersErrorView.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 26.10.2021.
-//
 
 import SwiftUI
 
@@ -14,14 +8,11 @@ struct PaywallOffersErrorView: View {
 
     var body: some View {
         VStack(spacing: 30) {
-            Spacer()
             Text(errorMessage)
                 .font(.body)
                 .lineLimit(4)
                 .multilineTextAlignment(.center)
                 .foregroundColor(.white)
-                
-            Spacer()
             Button(action: {
                 onRepeat()
             }, label: {
@@ -29,7 +20,7 @@ struct PaywallOffersErrorView: View {
             })
             .buttonStyle(MainButtonStyle(titleColor: Asset.primaryColor.color, backgroundColor: .white))
         }
-        .padding()        
+        .padding()
     }
 }
 

@@ -82,7 +82,7 @@ struct ProductsInfoView_Previews: PreviewProvider {
     static var previews: some View {
         VStack(spacing: 0) {
             GeometryReader { _ in
-                ProductsInfoView(viewModel: PaywallViewModel.makeLoadedStub())
+                ProductsInfoView(viewModel: PaywallViewModel.makeSuccessStub())
                     .padding(30)
             }
             .background(Color.red.ignoresSafeArea())
@@ -94,6 +94,5 @@ struct ProductsInfoView_Previews: PreviewProvider {
             .background(Color.red.ignoresSafeArea())
 
         }
-
     }
 }

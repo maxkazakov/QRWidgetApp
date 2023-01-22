@@ -1,10 +1,3 @@
-//
-//  PaywallScreen.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 16.07.2022.
-//
-
 import SwiftUI
 import Haptica
 import StoreKit
@@ -37,28 +30,27 @@ struct PaywallScreen: View {
 
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: 20) {
-                        VStack(spacing: 12) {
-                            Text(L10n.Paywall.freeVersion)
-                                .font(Font.system(size: 28, weight: .bold, design: .default))
-                                .foregroundColor(.white)
-
-                            HStack {
-                                VStack(alignment: .leading, spacing: 16) {
-                                    FeatureView(name: L10n.Paywall.Feature.Scanner.title,
-                                                subtitle: L10n.Paywall.Feature.Scanner.subtitle,
-                                                icon: "qrcode.viewfinder")
-                                    FeatureView(name: L10n.Paywall.Feature.Sharing.title,
-                                                subtitle: L10n.Paywall.Feature.Sharing.subtitle,
-                                                icon: "square.and.arrow.up")
-                                    FeatureView(name: L10n.Paywall.Feature.NoAds.title,
-                                                subtitle: L10n.Paywall.Feature.NoAds.subtitle,
-                                                icon: "speaker.slash")
-                                }
-                                Spacer()
-                            }
-                            .padding(.horizontal, 16)
-                        }
-
+//                        VStack(spacing: 12) {
+//                            Text(L10n.Paywall.freeVersion)
+//                                .font(Font.system(size: 28, weight: .bold, design: .default))
+//                                .foregroundColor(.white)
+//
+//                            HStack {
+//                                VStack(alignment: .leading, spacing: 16) {
+//                                    FeatureView(name: L10n.Paywall.Feature.Scanner.title,
+//                                                subtitle: L10n.Paywall.Feature.Scanner.subtitle,
+//                                                icon: "qrcode.viewfinder")
+//                                    FeatureView(name: L10n.Paywall.Feature.Sharing.title,
+//                                                subtitle: L10n.Paywall.Feature.Sharing.subtitle,
+//                                                icon: "square.and.arrow.up")
+//                                    FeatureView(name: L10n.Paywall.Feature.NoAds.title,
+//                                                subtitle: L10n.Paywall.Feature.NoAds.subtitle,
+//                                                icon: "speaker.slash")
+//                                }
+//                                Spacer()
+//                            }
+//                            .padding(.horizontal, 16)
+//                        }
                         VStack(spacing: 8) {
                             HStack(alignment: .center) {
                                 Image(uiImage: Asset.star.image)
@@ -149,9 +141,13 @@ struct PaywallScreen: View {
 struct PaywallScreen_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            PaywallScreen(viewModel: PaywallViewModel.makeLoadedStub())
+            PaywallScreen(viewModel: PaywallViewModel.makeSuccessStub())
 
-            PaywallScreen(viewModel: PaywallViewModel.makeLoadedStub())
+            PaywallScreen(viewModel: PaywallViewModel.makeFailueStub())
+                .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
+                .environment(\.locale, .init(identifier: "ru"))
+
+            PaywallScreen(viewModel: PaywallViewModel.makeLoadingStub())
                 .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
                 .environment(\.locale, .init(identifier: "ru"))
         }
@@ -159,30 +155,23 @@ struct PaywallScreen_Previews: PreviewProvider {
 }
 
 extension PaywallViewModel {
-    static func makeLoadedStub() -> PaywallViewModel {
+    static func makeFailueStub() -> PaywallViewModel {
+        let viewModelStub = PaywallViewModel(source: .onboarding,
+                                             purchasesEnvironment: .unimplemented,
+                                             sendAnalyticsEvent: { _, _ in },
+                                             onClose: {})
+        viewModelStub.state = .error("Failed to load")
+        viewModelStub.products = productStubs
+        return viewModelStub
+    }
+
+    static func makeSuccessStub() -> PaywallViewModel {
         let viewModelStub = PaywallViewModel(source: .onboarding,
                                              purchasesEnvironment: .unimplemented,
                                              sendAnalyticsEvent: { _, _ in },
                                              onClose: {})
         viewModelStub.state = .data
-        viewModelStub.products = [
-            .init(
-                id: "1",
-                isPopular: false,
-                title: "7 days Free",
-                priceInfo: "Then $9.99 1 month",
-                type: .subscription,
-                purchase: { Just(()).setFailureType(to: PurchasesError.self).eraseToAnyPublisher() }
-            ),
-            .init(
-                id: "2",
-                isPopular: true,
-                title: "One time purchase",
-                priceInfo: "$29.99",
-                type: .oneTime,
-                purchase: { Just(()).setFailureType(to: PurchasesError.self).eraseToAnyPublisher() }
-            )
-        ]
+        viewModelStub.products = productStubs
         return viewModelStub
     }
 
@@ -192,6 +181,25 @@ extension PaywallViewModel {
         return viewModelStub
     }
 }
+
+private let productStubs: [QRProduct] = [
+    .init(
+        id: "1",
+        isPopular: false,
+        title: "7 days Free",
+        priceInfo: "Then $9.99 1 month",
+        type: .subscription,
+        purchase: { Just(()).setFailureType(to: PurchasesError.self).eraseToAnyPublisher() }
+    ),
+    .init(
+        id: "2",
+        isPopular: true,
+        title: "One time purchase",
+        priceInfo: "$29.99",
+        type: .oneTime,
+        purchase: { Just(()).setFailureType(to: PurchasesError.self).eraseToAnyPublisher() }
+    )
+]
 
 extension QRProduct {
     static func mock(id: String) -> QRProduct {
