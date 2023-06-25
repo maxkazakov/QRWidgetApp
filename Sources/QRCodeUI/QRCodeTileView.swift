@@ -4,7 +4,7 @@ import SwiftUI
 import QRWidgetCore
 
 struct QRCodeTileViewData: Equatable {
-    let qrData: String
+    let data: String
     let foreground: CGColor
     let background: CGColor
     let errorCorrectionLevel: ErrorCorrection
@@ -19,13 +19,13 @@ public struct QRCodeTileView: View {
     let flipEnabled: Bool
 
     public init(
-         qrData: String,
+         data: String,
          foreground: CGColor = .qr.defaultForeground,
          background: CGColor = .qr.defaultBackground,
          errorCorrectionLevel: ErrorCorrection = .default
     ) {
         self.data = QRCodeTileViewData(
-            qrData: qrData,
+            data: data,
             foreground: foreground,
             background: background,
             errorCorrectionLevel: errorCorrectionLevel
@@ -34,7 +34,7 @@ public struct QRCodeTileView: View {
     }
 
     public init(
-        model: QRModel,
+        model: CodeModel,
         proVersionActivated: Bool,
         forcedForegroundColor: UIColor? = nil,
         forcedBackgroundColor: UIColor? = nil
@@ -54,7 +54,7 @@ public struct QRCodeTileView: View {
         }
 
         self.data = QRCodeTileViewData(
-            qrData: model.qrData,
+            data: model.data,
             foreground: foregroundColor,
             background: backgroundColor,
             errorCorrectionLevel: model.errorCorrectionLevel
@@ -130,7 +130,7 @@ extension Image {
     }
 }
 
-extension QRModel {
+extension CodeModel {
     func foregroundColor(isProActivated: Bool) -> CGColor {
         guard isProActivated else {
             return CGColor.qr.defaultForeground

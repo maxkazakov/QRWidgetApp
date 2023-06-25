@@ -18,12 +18,14 @@ struct SingleCodeRowUIModel {
 }
 
 extension SingleCodeRowUIModel {
-    init(model: QRModel, isFavorite: Bool) {
-        self.init(id: model.id,
-                  label: model.label,
-                  qrData: QRCodeDataType.make(from: model.qrData),
-                  isFavorite: isFavorite,
-                  date: model.dateCreated,
-                  isMy: model.isMy)
+    init(model: CodeModel, isFavorite: Bool) {
+        self.init(
+            id: model.id,
+            label: model.label,
+            qrData: QRCodeDataType.make(from: model.data),
+            isFavorite: isFavorite,
+            date: model.dateCreated,
+            isMy: model.isMy
+        )
     }
 }

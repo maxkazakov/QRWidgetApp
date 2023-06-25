@@ -92,7 +92,7 @@ class HistoryViewModel: ViewModel {
         favoritesService.isFavorite(qrId: id)
     }
 
-    private func makeUIModels(from codes: [QRModel]) {
+    private func makeUIModels(from codes: [CodeModel]) {
         isLoading = true
         DispatchQueue.global(qos: .userInitiated).async {
             let sortedCodes = codes

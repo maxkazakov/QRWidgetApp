@@ -9,7 +9,6 @@ import SwiftUI
 import UIKit
 import AVFoundation
 import SimpleToast
-//import PurchasesCoreSwift
 
 struct ScannerView: View {
 

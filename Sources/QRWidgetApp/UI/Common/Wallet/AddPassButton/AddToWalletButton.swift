@@ -11,7 +11,7 @@ import QRWidgetCore
 
 struct AddToWalletButton: View {
 
-    let qrModel: QRModel
+    let qrModel: CodeModel
     @StateObject var viewModel: AddToWalletButtonViewModel
     @State var showPaywall: Bool = false
 

@@ -24,8 +24,8 @@ struct BeautifyQRView: View {
                     Section {
                         HStack {
                             Spacer()
-                            QRCodeTileView(                              
-                                qrData: viewModel.qrModel.qrData,
+                            QRCodeTileView(
+                                data: viewModel.qrModel.data,
                                 foreground: viewModel.foregroundColor,
                                 background: viewModel.backgroundColor,
                                 errorCorrectionLevel: viewModel.errorCorrectionLevel)

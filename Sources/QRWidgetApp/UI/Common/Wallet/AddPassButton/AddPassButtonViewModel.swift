@@ -25,14 +25,14 @@ class AddToWalletButtonViewModel: ViewModel {
         case loading
     }
 
-    func checkHasPass(qrModel: QRModel) {
+    func checkHasPass(qrModel: CodeModel) {
         self.hasWalletPass = walletService.allWalletPasses[qrModel.id] != nil
     }
 
-    func generatePass(qrModel: QRModel) {
+    func generatePass(qrModel: CodeModel) {
         sendAnalyticsEvent(.appleWalletClick, nil)
         status = .loading
-        walletService.createPass(qrCode: qrModel)
+        walletService.createPass(code: qrModel)
             .sink(receiveCompletion: { [sendAnalyticsEvent] in
                 if case let .failure(error) = $0 {
                     self.status = .notLoading
@@ -48,7 +48,7 @@ class AddToWalletButtonViewModel: ViewModel {
             .store(in: &cancellableSet)
     }
 
-    func finish(qrModel: QRModel) {
+    func finish(qrModel: CodeModel) {
         defer {
             presentGeneratedPass = false
             status = .notLoading

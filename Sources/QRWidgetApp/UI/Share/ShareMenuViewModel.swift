@@ -20,13 +20,13 @@ class ShareMenuViewModel: ViewModel {
         self.sendAnalytics = sendAnalytics
     }
 
-    func shareAsText(_ qrModel: QRModel) {
+    func shareAsText(_ qrModel: CodeModel) {
         sendAnalytics(.tapShareAsString, ["source": source.rawValue])
-        let text = qrModel.qrData
+        let text = qrModel.data
         self.share(items: [text])
     }
 
-    func shareAsImage(_ qrModel: QRModel) {
+    func shareAsImage(_ qrModel: CodeModel) {
         sendAnalytics(.tapShareAsImage, ["source": source.rawValue])
         guard let image = QRCodeGenerator.shared.generateQRCode(from: qrModel, useCustomColorsIfPossible: false) else {
             return

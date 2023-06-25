@@ -9,7 +9,7 @@ import SwiftUI
 import QRWidgetCore
 
 struct ShareMenuView: View {    
-    let qrModel: QRModel
+    let qrModel: CodeModel
     var customButton: (() -> AnyView)? = nil
     @StateObject var viewModel: ShareMenuViewModel
 

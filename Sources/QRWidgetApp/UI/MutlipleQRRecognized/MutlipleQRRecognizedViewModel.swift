@@ -15,7 +15,7 @@ class MutlipleQRRecognizedViewModel: ViewModel {
     let items: [SingleCodeRowUIModel]
     let onClose: EmptyBlock
 
-    init(favoritesService: FavoritesService, qrCodesService: QRCodesService, codes: [QRModel], onClose: @escaping EmptyBlock) {
+    init(favoritesService: FavoritesService, qrCodesService: QRCodesService, codes: [CodeModel], onClose: @escaping EmptyBlock) {
         self.favoritesService = favoritesService
         self.qrCodesService = qrCodesService
         self.items = codes.map { SingleCodeRowUIModel(model: $0, isFavorite: false) }

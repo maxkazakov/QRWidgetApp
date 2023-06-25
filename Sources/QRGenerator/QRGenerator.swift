@@ -38,7 +38,7 @@ public class QRCodeGenerator {
 
     private let context = CIContext()
 
-    public func generateQRCode(from qrModel: QRModel, size: CGSize = QRCodeGenerator.defaultQRSize, useCustomColorsIfPossible: Bool) -> UIImage? {
+    public func generateQRCode(from qrModel: CodeModel, size: CGSize = QRCodeGenerator.defaultQRSize, useCustomColorsIfPossible: Bool) -> UIImage? {
         let foregroundColor = useCustomColorsIfPossible
         ? (qrModel.foregroundColor?.cgColor ?? CGColor.qr.defaultForeground)
         : CGColor.qr.defaultForeground
@@ -48,7 +48,7 @@ public class QRCodeGenerator {
         : CGColor.qr.defaultBackground
 
         return generateQRCode(
-            from: qrModel.qrData,
+            from: qrModel.data,
             size: size,
             foreground: foregroundColor,
             background: backgroundColor,

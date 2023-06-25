@@ -21,7 +21,7 @@ public struct CodeCreationView: View {
             Section {
                 HStack {
                     Spacer()
-                    QRCodeTileView(qrData: model.qrData)
+                    QRCodeTileView(data: model.qrData)
                     Spacer()
                 }
                 .padding(.vertical, 16)

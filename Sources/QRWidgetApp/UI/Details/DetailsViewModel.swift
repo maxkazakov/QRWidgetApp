@@ -19,7 +19,7 @@ class DetailsViewModel: ViewModel {
     let options: CodeDetailsPresentaionOptions
     let sendAnalytics: SendAnalyticsAction
 
-    public init(qrModel: QRModel,
+    public init(qrModel: CodeModel,
                 qrCodesService: QRCodesService,
                 favoritesService: FavoritesService,
                 options: CodeDetailsPresentaionOptions,
@@ -29,7 +29,7 @@ class DetailsViewModel: ViewModel {
         self.options = options
         self.sendAnalytics = sendAnalytics
 
-        self.qrDataType = QRCodeDataType.make(from: qrModel.qrData)
+        self.qrDataType = QRCodeDataType.make(from: qrModel.data)
         self.qrModel = qrModel
         self.qrId = qrModel.id
 
@@ -40,7 +40,7 @@ class DetailsViewModel: ViewModel {
 
     @Published var showPaywall: Bool = false
     @Published var needToClose = false
-    @Published var qrModel: QRModel
+    @Published var qrModel: CodeModel
     @Published var isFavorite = false
 
     var labelBinding: Binding<String> {

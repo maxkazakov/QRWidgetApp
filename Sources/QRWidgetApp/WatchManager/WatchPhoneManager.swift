@@ -45,7 +45,7 @@ final class WatchPhoneManager: NSObject {
             .store(in: &cancellableSet)
     }
 
-    func onFavoritesChanged(qrModels: [QRModel]) {
+    func onFavoritesChanged(qrModels: [CodeModel]) {
         Logger.debugLog(message: "WatchPhoneManager. On favorite changed called")
         let transferableModels: [CodeTransferData] = qrModels.enumerated().compactMap { orderIdx, model in
             guard let qrImage = QRCodeGenerator.shared.generateQRCode(from: model, size: .init(width: 300, height: 300), useCustomColorsIfPossible: false)

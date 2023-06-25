@@ -44,7 +44,7 @@ class FavoritesViewModel: ViewModel {
 
     // MARK: - Private
 
-    private func updateQrCodeList(_ qrCodes: [QRModel], isProActivated: Bool) {
+    private func updateQrCodeList(_ qrCodes: [CodeModel], isProActivated: Bool) {
         let sortedCodes = qrCodes.sorted(by: { $0.dateCreated > $1.dateCreated })
         if sortedCodes.count > 1, !isProActivated {
             let firstQrCode = sortedCodes.last!

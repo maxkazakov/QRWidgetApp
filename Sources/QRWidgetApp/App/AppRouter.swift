@@ -5,9 +5,9 @@ import QRWidgetCore
 
 enum Route {
     case onboarding(onComplete: EmptyBlock)
-    case beautify(QRModel)
-    case details(QRModel, options: CodeDetailsPresentaionOptions = .zero, completion: EmptyBlock = {})
-    case multipleCodesRecognized(codes: [QRModel], completion: EmptyBlock)
+    case beautify(CodeModel)
+    case details(CodeModel, options: CodeDetailsPresentaionOptions = .zero, completion: EmptyBlock = {})
+    case multipleCodesRecognized(codes: [CodeModel], completion: EmptyBlock)
     case mailToDeveloper(onComplete: (_ sent: Bool) -> Void)
 }
 
@@ -43,7 +43,7 @@ class AppRouter {
         EmailSender().sendEmail(presentingController: router.routerController!, completion: completion)
     }
 
-    private func presentMultipleCodesRecognized(router: Router, codes: [QRModel], completion: @escaping EmptyBlock) {
+    private func presentMultipleCodesRecognized(router: Router, codes: [CodeModel], completion: @escaping EmptyBlock) {
         let module = generalAssembly.makeMultipleCodesRecognized(codes: codes, onClose: {
             router.dismiss(animated: true, completion: {
                 completion()
@@ -68,14 +68,14 @@ class AppRouter {
         rootViewController.present(viewController, animated: false, completion: nil)
     }
 
-    private func presentBeautify(router: Router, qrModel: QRModel) {
+    private func presentBeautify(router: Router, qrModel: CodeModel) {
         let module = generalAssembly.makeBeautifyModule(qrModel: qrModel)
         let viewController = module.controller
         viewController.modalPresentationStyle = .fullScreen
         router.routerController?.present(module.controller, animated: true, completion: nil)
     }
 
-    private func presentDetails(router: Router, qrModel: QRModel, options: CodeDetailsPresentaionOptions, completion: @escaping EmptyBlock) {
+    private func presentDetails(router: Router, qrModel: CodeModel, options: CodeDetailsPresentaionOptions, completion: @escaping EmptyBlock) {
         let module = generalAssembly.makeDetailsViewModule(qrModel: qrModel, options: options)
         let viewController = module.controller
         let navigationController = UINavigationController(rootViewController: viewController)

@@ -22,7 +22,7 @@ class QRCodesService {
             favotitesService.favorites,
             qrCodesPublisher
         )
-            .map { (favIds, qrCodes) -> [QRModel] in
+            .map { (favIds, qrCodes) -> [CodeModel] in
                 let favIdsSet = Set(favIds)
                 return qrCodes.filter { favIdsSet.contains($0.id) }
             }
@@ -34,23 +34,23 @@ class QRCodesService {
     
     private var cancellableSet = Set<AnyCancellable>()
     
-    let qrCodesPublisher: CurrentValueSubject<[QRModel], Never>
-    let favoriteQrCodes: AnyPublisher<[QRModel], Never>
+    let qrCodesPublisher: CurrentValueSubject<[CodeModel], Never>
+    let favoriteQrCodes: AnyPublisher<[CodeModel], Never>
 
     @discardableResult
-    func createNewQrCode(data: String, batchId: UUID? = nil) -> QRModel {
-        let qrCode = QRModel(qrData: data, batchId: batchId)
+    func createNewQrCode(data: String, type: CodeType, batchId: UUID? = nil) -> CodeModel {
+        let qrCode = CodeModel(data: data, type: type, batchId: batchId)
         addNew(qrModel: qrCode)
         return qrCode
     }
     
-    func addNewQrCodes(qrModels: [QRModel]) {
+    func addNewQrCodes(qrModels: [CodeModel]) {
         for qr in qrModels {
             addNew(qrModel: qr)
         }
     }
 
-    func addNew(qrModel: QRModel) {
+    func addNew(qrModel: CodeModel) {
         qrCodesPublisher.value.append(qrModel)
         repository.addNew(qr: qrModel)
     }
@@ -71,14 +71,14 @@ class QRCodesService {
         updateQR(qrModel)
     }
 
-    func updateQR(_ qrModel: QRModel) {
+    func updateQR(_ qrModel: CodeModel) {
         qrCodesPublisher.value
             .firstIndex { $0.id == qrModel.id }
             .map { qrCodesPublisher.value[$0] = qrModel }
         repository.update(qrModel: qrModel)
     }
 
-    func getQR(id: UUID) -> QRModel? {
+    func getQR(id: UUID) -> CodeModel? {
         qrCodesPublisher.value.first { $0.id == id }
     }
 

@@ -10,12 +10,12 @@ import Combine
 import QRWidgetCore
 
 class BatchScanResult {
-    init(codes: [QRModel], batchId: UUID) {
+    init(codes: [CodeModel], batchId: UUID) {
         self.batchId = batchId
         self.codes = codes
     }
     let batchId: UUID
-    var codes: [QRModel]
+    var codes: [CodeModel]
 }
 
 class ScannerViewModel: ViewModel {
@@ -88,7 +88,7 @@ class ScannerViewModel: ViewModel {
     private func batchScanRecognized(data: String, source: ScanResult.Source) {
         sendAnalytics(.qrCodeRecogzined, ["source": mapScanSource(source).rawValue, "isBatchMode": true])
         isScanActive = false
-        let newQr = qrCodeService.createNewQrCode(data: data, batchId: batchScanResult?.batchId)
+        let newQr = qrCodeService.createNewQrCode(data: data, type: .qr, batchId: batchScanResult?.batchId)
         batchScanResult!.codes.append(newQr)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             self.isScanActive = true
@@ -98,7 +98,7 @@ class ScannerViewModel: ViewModel {
     private func singleCodeRecognized(data: String, source: ScanResult.Source) {
         sendAnalytics(.qrCodeRecogzined, ["source": mapScanSource(source).rawValue])
         isScanActive = false
-        let newQr = qrCodeService.createNewQrCode(data: data)
+        let newQr = qrCodeService.createNewQrCode(data: data, type: .qr)
         route(.details(newQr, options: CodeDetailsPresentaionOptions(isPopup: true, title: L10n.Scanner.Result.title, hideCodeImage: true), completion: { [weak self] in
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 self?.isScanActive = true

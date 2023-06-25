@@ -26,9 +26,9 @@ class WalletService {
         }
     }
 
-    func createPass(qrCode: QRModel) -> AnyPublisher<PKPass, Error> {
-        let serialNumber = allWalletPasses[qrCode.id] ?? UUID().uuidString
-        return walletPassEnvironment.createPass(WalletPassInputParams(serialNumber: serialNumber, data: qrCode.qrData, label: qrCode.label))
+    func createPass(code: CodeModel) -> AnyPublisher<PKPass, Error> {
+        let serialNumber = allWalletPasses[code.id] ?? UUID().uuidString
+        return walletPassEnvironment.createPass(WalletPassInputParams(serialNumber: serialNumber, data: code.data, label: code.label))
     }
 
     func loadAndValidatePasses() {
@@ -39,7 +39,7 @@ class WalletService {
         self.allWalletPasses = validatedPasses
     }
 
-    func checkPassCreated(_ pass: PKPass, qrCode: QRModel) -> Bool {
+    func checkPassCreated(_ pass: PKPass, qrCode: CodeModel) -> Bool {
         return passLibrary.containsPass(pass)
     }
 

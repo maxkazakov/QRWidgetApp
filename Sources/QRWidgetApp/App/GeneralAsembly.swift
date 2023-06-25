@@ -73,7 +73,7 @@ class GeneralAssembly {
     }
 
     // Main Details View
-    func makeDetailsViewModule(qrModel: QRModel, options: CodeDetailsPresentaionOptions) -> Module {
+    func makeDetailsViewModule(qrModel: CodeModel, options: CodeDetailsPresentaionOptions) -> Module {
         let viewModel = DetailsViewModel(qrModel: qrModel,
                                          qrCodesService: self.qrCodesService,
                                          favoritesService: self.favoritesService,
@@ -85,7 +85,7 @@ class GeneralAssembly {
         return Module(router: viewModel.router, view: view)
     }
 
-    func makeDetailsView(qrModel: QRModel) -> some View {
+    func makeDetailsView(qrModel: CodeModel) -> some View {
         let viewModel = DetailsViewModel(qrModel: qrModel,
                                          qrCodesService: self.qrCodesService,
                                          favoritesService: self.favoritesService,
@@ -107,7 +107,7 @@ class GeneralAssembly {
         return scannerView
     }
 
-    func makeMultipleCodesRecognized(codes: [QRModel], onClose: @escaping EmptyBlock) -> Module {
+    func makeMultipleCodesRecognized(codes: [CodeModel], onClose: @escaping EmptyBlock) -> Module {
         let viewModel = MutlipleQRRecognizedViewModel(favoritesService: favoritesService,
                                                       qrCodesService: qrCodesService,
                                                       codes: codes,
@@ -129,7 +129,7 @@ class GeneralAssembly {
     }
 
     // Beautify
-    func makeBeautifyModule(qrModel: QRModel) -> Module {
+    func makeBeautifyModule(qrModel: CodeModel) -> Module {
         let beautifyViewModel = BeautifyQRViewModel(qrModel: qrModel,
                                                     qrCodesService: qrCodesService,
                                                     sendAnalytics: appEnvironment.analyticsEnvironment.sendAnalyticsEvent)
@@ -148,7 +148,7 @@ class GeneralAssembly {
     }
 
     // Add to wallet
-    func makeAddToWalletButton(qrModel: QRModel) -> some View {
+    func makeAddToWalletButton(qrModel: CodeModel) -> some View {
         AddToWalletButton(
             qrModel: qrModel,
             viewModel: AddToWalletButtonViewModel(walletService: self.walletService,
@@ -168,7 +168,7 @@ class GeneralAssembly {
     }
 
     // Main Details View
-    func makeShareView(parentRouter: Router, qrModel: QRModel, source: AnalyticsSource.Share, customButton: (() -> AnyView)? = nil) -> some View {
+    func makeShareView(parentRouter: Router, qrModel: CodeModel, source: AnalyticsSource.Share, customButton: (() -> AnyView)? = nil) -> some View {
         let viewModel = ShareMenuViewModel(source: source, sendAnalytics: appEnvironment.analyticsEnvironment.sendAnalyticsEvent)
         viewModel.router = parentRouter
         let view = ShareMenuView(qrModel: qrModel, customButton: customButton, viewModel: viewModel)

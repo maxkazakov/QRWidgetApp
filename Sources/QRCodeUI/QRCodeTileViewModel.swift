@@ -36,23 +36,23 @@ class QRCodeTileViewModel: ObservableObject {
         prevData.send(data)
     }
 
-    private func generateQr(data: QRCodeTileViewData) -> AnyPublisher<QRGeneratorResult, Never> {
+    private func generateQr(data viewData: QRCodeTileViewData) -> AnyPublisher<QRGeneratorResult, Never> {
         Deferred {
             Future<QRGeneratorResult, Never> { promise in
                 var newQrColoredImage: UIImage?
-                if data.foreground != CGColor.qr.defaultForeground || data.background != CGColor.qr.defaultBackground {
+                if viewData.foreground != CGColor.qr.defaultForeground || viewData.background != CGColor.qr.defaultBackground {
                     newQrColoredImage = QRCodeGenerator.shared.generateQRCode(
-                        from: data.qrData,
-                        foreground: data.foreground,
-                        background: data.background,
-                        errorCorrectionLevel: data.errorCorrectionLevel.rawValue
+                        from: viewData.data,
+                        foreground: viewData.foreground,
+                        background: viewData.background,
+                        errorCorrectionLevel: viewData.errorCorrectionLevel.rawValue
                     )
                 }
                 let newBlackAndWhiteQrImage = QRCodeGenerator.shared.generateQRCode(
-                    from: data.qrData,
+                    from: viewData.data,
                     foreground: CGColor.qr.defaultForeground,
                     background: CGColor.qr.defaultBackground,
-                    errorCorrectionLevel: data.errorCorrectionLevel.rawValue
+                    errorCorrectionLevel: viewData.errorCorrectionLevel.rawValue
                 )!
                 let result = QRGeneratorResult(blackAndWhiteImage: newBlackAndWhiteQrImage, coloredImage: newQrColoredImage ?? newBlackAndWhiteQrImage)
                 promise(.success(result))

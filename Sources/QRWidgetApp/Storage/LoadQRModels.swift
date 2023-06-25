@@ -3,6 +3,6 @@ import Foundation
 import QRWidgetCore
 
 // Loading QRs from state for showing on widget
-public func loadQRModels() -> [QRModel] {
+public func loadCodeModels() -> [CodeModel] {
     QRCodesRepository().loadAllCodes()
 }

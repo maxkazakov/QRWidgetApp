@@ -2,20 +2,23 @@
 import Foundation
 import UIKit
 
-public struct QRModel: Identifiable, Equatable {
-    public init(id: UUID = UUID(),
-         dateCreated: Date = Date(),
-         qrData: String,
-         label: String = "",
-         errorCorrectionLevel: ErrorCorrection = .default,
-         backgroundColor: UIColor? = nil,
-         foregroundColor: UIColor? = nil,
-         batchId: UUID? = nil,
-         isMy: Bool = false
+public struct CodeModel: Identifiable, Equatable {
+    public init(
+        id: UUID = UUID(),
+        dateCreated: Date = Date(),
+        data: String,
+        type: CodeType,
+        label: String = "",
+        errorCorrectionLevel: ErrorCorrection = .default,
+        backgroundColor: UIColor? = nil,
+        foregroundColor: UIColor? = nil,
+        batchId: UUID? = nil,
+        isMy: Bool = false
     ) {
         self.id = id
         self.dateCreated = dateCreated
-        self.qrData = qrData
+        self.data = data
+        self.type = type
         self.label = label
         self.errorCorrectionLevel = errorCorrectionLevel
         self.backgroundColor = backgroundColor
@@ -26,7 +29,8 @@ public struct QRModel: Identifiable, Equatable {
 
     public var id: UUID
     public var dateCreated: Date
-    public var qrData: String
+    public var data: String
+    public let type: CodeType
     public var label: String = ""
     public var batchId: UUID?
     public var isMy: Bool
@@ -36,11 +40,12 @@ public struct QRModel: Identifiable, Equatable {
     public var foregroundColor: UIColor?
 }
 
-public extension QRModel {
-    static let zero = QRModel(
+public extension CodeModel {
+    static let zero = CodeModel(
         id: UUID(),
         dateCreated: Date(),
-        qrData: "https://www.figma.com",
+        data: "https://www.figma.com",
+        type: .qr,
         label: "Ticket",
         errorCorrectionLevel: ErrorCorrection.default,
         backgroundColor: nil,

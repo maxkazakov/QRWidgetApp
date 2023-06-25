@@ -43,7 +43,7 @@ class MyCodesListViewModel: ViewModel {
 
     // MARK: - Private
 
-    private func updateQrCodeList(_ qrCodes: [QRModel]) {
+    private func updateQrCodeList(_ qrCodes: [CodeModel]) {
         self.codes = qrCodes
             .sorted { $0.dateCreated > $1.dateCreated }
             .filter { $0.isMy }

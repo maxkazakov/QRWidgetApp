@@ -2,10 +2,12 @@
 import UIKit
 import QRWidgetCore
 
-struct QRModelDto: Codable {
+struct CodeModelDto: Codable {
     init(
-        id: UUID, dateCreated: Date,
-        qrData: String,
+        id: UUID,
+        dateCreated: Date,
+        data: String,
+        type: CodeType,
         label: String,
         errorCorrectionLevel: ErrorCorrection,
         backgroundColor: UIColor? = nil,
@@ -15,7 +17,8 @@ struct QRModelDto: Codable {
     ) {
         self.id = id
         self.dateCreated = dateCreated
-        self.qrData = qrData
+        self.data = data
+        self.type = type
         self.label = label
         self.errorCorrectionLevel = errorCorrectionLevel
         self.backgroundColor = backgroundColor
@@ -26,7 +29,8 @@ struct QRModelDto: Codable {
     let version = currentVersion
     let id: UUID
     let dateCreated: Date
-    let qrData: String
+    let data: String
+    let type: CodeType
     let label: String
 
     var errorCorrectionLevel: ErrorCorrection
@@ -40,13 +44,15 @@ struct QRModelDto: Codable {
         case version
         case id
         case dateCreated
-        case qrData
+        case qrData // deprecated
         case label
         case errorCorrectionLevel
         case backgroundColor
         case foregroundColor
         case batchId
         case isMy
+        case data
+        case type
     }
 
     func encode(to encoder: Encoder) throws {
@@ -54,7 +60,8 @@ struct QRModelDto: Codable {
         try container.encode(version, forKey: .version)
         try container.encode(id, forKey: .id)
         try container.encode(dateCreated, forKey: .dateCreated)
-        try container.encode(qrData, forKey: .qrData)
+        try container.encode(data, forKey: .data)
+        try container.encode(type, forKey: .type)
         try container.encode(label, forKey: .label)
         try container.encode(batchId, forKey: .batchId)
         try container.encode(isMy, forKey: .isMy)
@@ -76,7 +83,15 @@ struct QRModelDto: Codable {
 //        let version = try container.decode(Int.self, forKey: .version)
         self.id = try container.decode(UUID.self, forKey: .id)
         self.dateCreated = try container.decode(Date.self, forKey: .dateCreated)
-        self.qrData = try container.decode(String.self, forKey: .qrData)
+
+        if let qrData = try? container.decode(String.self, forKey: .qrData) {
+            self.data = qrData
+        } else {
+            self.data = try container.decode(String.self, forKey: .data)
+        }
+
+        self.type = (try? container.decode(CodeType.self, forKey: .type)) ?? .qr
+
         self.label = try container.decode(String.self, forKey: .label)
 
         self.errorCorrectionLevel = try container.decodeIfPresent(ErrorCorrection.self, forKey: .errorCorrectionLevel)
@@ -97,7 +112,7 @@ struct QRModelDto: Codable {
     }
 }
 
-extension QRModelDto {
-    static let currentVersion = 2
+extension CodeModelDto {
+    static let currentVersion = 3
 }
 

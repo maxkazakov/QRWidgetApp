@@ -14,7 +14,7 @@ class BeautifyQRViewModel: ViewModel {
     let qrCodesService: QRCodesService
     private let sendAnalytics: SendAnalyticsAction
 
-    public init(qrModel: QRModel,
+    public init(qrModel: CodeModel,
                 qrCodesService: QRCodesService,
                 sendAnalytics: @escaping SendAnalyticsAction) {
         self.qrCodesService = qrCodesService
@@ -46,7 +46,7 @@ class BeautifyQRViewModel: ViewModel {
     @Published var needToClose = false
     @Published var showPaywall: Bool = false
 
-    let qrModel: QRModel
+    let qrModel: CodeModel
 
     @Published var foregroundColor: CGColor
     @Published var backgroundColor: CGColor

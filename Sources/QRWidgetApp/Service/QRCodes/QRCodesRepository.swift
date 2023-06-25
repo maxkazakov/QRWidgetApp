@@ -11,7 +11,7 @@ class QRCodesRepository {
     private let decoder = JSONDecoder()
     private let logMessage: (String) -> Void
 
-    func loadAllCodes() -> [QRModel] {
+    func loadAllCodes() -> [CodeModel] {
         var isDir: ObjCBool = false
         guard FileManager.default.fileExists(atPath: qrCodesDirectory.path, isDirectory: &isDir),
               isDir.boolValue else {
@@ -21,11 +21,11 @@ class QRCodesRepository {
         do {
             let directoryContents = try FileManager.default.contentsOfDirectory(at: qrCodesDirectory, includingPropertiesForKeys: nil)
             let jsonFiles = directoryContents.filter { $0.pathExtension == "json" }
-            var qrModels: [QRModel] = []
+            var qrModels: [CodeModel] = []
 
             for jsonFile in jsonFiles {
                 if let data = try? Data(contentsOf: jsonFile),
-                   let qrModelDto = try? decoder.decode(QRModelDto.self, from: data) {
+                   let qrModelDto = try? decoder.decode(CodeModelDto.self, from: data) {
                     let qrModel = qrModelDto.makeModel()
                     qrModels.append(qrModel)
                 }
@@ -38,11 +38,11 @@ class QRCodesRepository {
         }
     }
 
-    func addNew(qr: QRModel) {
+    func addNew(qr: CodeModel) {
         saveQRToFile(qr: qr)
     }
 
-    func update(qrModel: QRModel) {
+    func update(qrModel: CodeModel) {
         saveQRToFile(qr: qrModel)
     }
 
@@ -70,9 +70,9 @@ class QRCodesRepository {
         }
     }
 
-    private func saveQRToFile(qr: QRModel) {
+    private func saveQRToFile(qr: CodeModel) {
         do {
-            let dto = QRModelDto(model: qr)
+            let dto = CodeModelDto(model: qr)
             let data = try encoder.encode(dto)
             let qrFileUrl = fileForQR(qrId: qr.id)
             try data.write(to: qrFileUrl)
