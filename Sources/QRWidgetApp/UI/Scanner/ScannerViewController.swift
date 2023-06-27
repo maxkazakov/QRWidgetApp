@@ -48,37 +48,39 @@ extension CodeScannerView {
             openGallery()
         }
 
+        let aztecDetector = AztecDetector()
+        let qrDetector = QRDetector()
+
         public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
             isGalleryShowing = false
-
-            var completion: (() -> Void)?
-            if let qrcodeImg = info[.originalImage] as? UIImage {
-                let detector = CIDetector(ofType: CIDetectorTypeQRCode, context: nil, options: [CIDetectorAccuracy: CIDetectorAccuracyHigh])!
-                let ciImage = CIImage(image:qrcodeImg)!
-                var qrCodeLink = ""
-
-                let features = detector.features(in: ciImage)
-
-                for feature in features as! [CIQRCodeFeature] {
-                    qrCodeLink += feature.messageString!
-                }
-
-                if qrCodeLink == "" {
-                    completion = { [delegate] in delegate?.didFail(reason: .badOutput) }
-                } else {
-                    let result = ScanResult(string: qrCodeLink, type: .qr, source: .gallery)
-                    completion = { [delegate] in delegate?.found(result) }
-                }
-            } else {
-                print("Something went wrong")
+//            var completion: (() -> Void)?
+            guard let image = info[.originalImage] as? UIImage else {
+                dismiss(animated: true, completion: nil)
+                return
             }
 
-            dismiss(animated: true, completion: completion)
+            Task {
+                do {
+                    let payload = try await qrDetector.find(image: image)
+                    let result = ScanResult(string: payload, type: .qr, source: .gallery)
+                    delegate?.found(result)
+                } catch {
+                    do {
+                        let payload = try await aztecDetector.find(image: image)
+                        let result = ScanResult(string: payload, type: .aztec, source: .gallery)
+                        delegate?.found(result)
+                    } catch {
+                        delegate?.didFail(reason: .badInput)
+                    }
+                }
+            }
+            
+            dismiss(animated: true, completion: nil)
         }
         
         public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
             isGalleryShowing = false
-            dismiss(animated: true, completion: nil)
+
         }
 
         #if targetEnvironment(simulator)
@@ -324,5 +326,3 @@ extension CodeScannerView.ScannerViewController: UIAdaptivePresentationControlle
         self.isGalleryShowing = false
     }
 }
-
-

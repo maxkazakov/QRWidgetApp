@@ -38,7 +38,11 @@ public class QRCodeGenerator {
 
     private let context = CIContext()
 
-    public func generateQRCode(from qrModel: CodeModel, size: CGSize = QRCodeGenerator.defaultQRSize, useCustomColorsIfPossible: Bool) -> UIImage? {
+    public func generateQRCode(
+        from qrModel: CodeModel,
+        size: CGSize = QRCodeGenerator.defaultQRSize,
+        useCustomColorsIfPossible: Bool
+    ) -> UIImage? {
         let foregroundColor = useCustomColorsIfPossible
         ? (qrModel.foregroundColor?.cgColor ?? CGColor.qr.defaultForeground)
         : CGColor.qr.defaultForeground
@@ -53,18 +57,22 @@ public class QRCodeGenerator {
             foreground: foregroundColor,
             background: backgroundColor,
             errorCorrectionLevel: qrModel.errorCorrectionLevel.rawValue,
+            codeType: qrModel.type,
             logoImage: nil
         )
     }
 
-    public func generateQRCode(from string: String,
-                               size: CGSize = QRCodeGenerator.defaultQRSize,
-                               foreground: CGColor,
-                               background: CGColor,
-                               errorCorrectionLevel: String,
-                               logoImage: UIImage? = nil) -> UIImage? {
+    public func generateQRCode(
+        from string: String,
+        size: CGSize = QRCodeGenerator.defaultQRSize,
+        foreground: CGColor,
+        background: CGColor,
+        errorCorrectionLevel: String,
+        codeType: CodeType,
+        logoImage: UIImage? = nil
+    ) -> UIImage? {
         let data = Data(string.utf8)
-        guard var image = createCIImage(data: data, errorCorrectionLevel: errorCorrectionLevel) else { return nil }
+        guard var image = createCIImage(data: data, codeType: codeType, errorCorrectionLevel: errorCorrectionLevel) else { return nil }
 
         if let colorImgae = updateColor(image: image, foreground: foreground, background: background) {
             image = colorImgae
@@ -97,13 +105,25 @@ public class QRCodeGenerator {
         return colorFilter.outputImage
     }
 
-    private func createCIImage(data: Data, errorCorrectionLevel: String) -> CIImage? {
-        let filter = CIFilter.qrCodeGenerator()
-        filter.setDefaults()
-        filter.setValue(data, forKey: "inputMessage")
-        filter.setValue(errorCorrectionLevel, forKey: "inputCorrectionLevel")
-        //https://www.qrcode.com/en/about/error_correction.html
-        return filter.outputImage
+    private func createCIImage(data: Data, codeType: CodeType, errorCorrectionLevel: String) -> CIImage? {
+        switch codeType {
+        case .qr:
+            let filter = CIFilter.qrCodeGenerator()
+            filter.setDefaults()
+            filter.setValue(data, forKey: "inputMessage")
+            filter.setValue(errorCorrectionLevel, forKey: "inputCorrectionLevel")
+            //https://www.qrcode.com/en/about/error_correction.html
+            return filter.outputImage
+        case .aztec:
+            let filter = CIFilter.aztecCodeGenerator()
+            filter.setDefaults()
+            filter.setValue(data, forKey: "inputMessage")
+            // TODO: Add Correctness level support:
+            // https://developer.apple.com/library/archive/documentation/GraphicsImaging/Reference/CoreImageFilterReference/index.html#//apple_ref/doc/filter/ci/CIAztecCodeGenerator
+//            filter.setValue(errorCorrectionLevel, forKey: "inputCorrectionLevel")
+            //https://www.qrcode.com/en/about/error_correction.html
+            return filter.outputImage
+        }
     }
 
     private func addLogo(image: CIImage, logo: UIImage) -> CIImage? {

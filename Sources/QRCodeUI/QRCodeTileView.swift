@@ -5,6 +5,7 @@ import QRWidgetCore
 
 struct QRCodeTileViewData: Equatable {
     let data: String
+    let codeType: CodeType
     let foreground: CGColor
     let background: CGColor
     let errorCorrectionLevel: ErrorCorrection
@@ -20,12 +21,14 @@ public struct QRCodeTileView: View {
 
     public init(
          data: String,
+         codeType: CodeType,
          foreground: CGColor = .qr.defaultForeground,
          background: CGColor = .qr.defaultBackground,
          errorCorrectionLevel: ErrorCorrection = .default
     ) {
         self.data = QRCodeTileViewData(
             data: data,
+            codeType: codeType,
             foreground: foreground,
             background: background,
             errorCorrectionLevel: errorCorrectionLevel
@@ -55,6 +58,7 @@ public struct QRCodeTileView: View {
 
         self.data = QRCodeTileViewData(
             data: model.data,
+            codeType: model.type,
             foreground: foregroundColor,
             background: backgroundColor,
             errorCorrectionLevel: model.errorCorrectionLevel

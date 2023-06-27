@@ -16,7 +16,6 @@ struct ScannerView: View {
     @Environment(\.sendAnalyticsEvent) var sendAnalyticsEvent
 
     @State var isGalleryPresented = false
-    @State var codeTypes: [AVMetadataObject.ObjectType] = [.qr]
     @State var showToast = false
     @State var isTorchOn = false
 
@@ -24,7 +23,7 @@ struct ScannerView: View {
         ZStack {
             CodeScannerView(
                 isScanActive: viewModel.isScanActive,
-                codeTypes: codeTypes,
+                codeTypes: viewModel.availableCodeTypesForScanning,
                 scanMode: .continuous,
                 showViewfinder: true,
                 shouldVibrateOnSuccess: viewModel.shouldVibrateOnSuccess,
@@ -32,7 +31,7 @@ struct ScannerView: View {
                 isGalleryPresented: $isGalleryPresented) { response in
                     switch response {
                     case .success(let result):
-                        viewModel.qrCodeFound(data: result.string, source: result.source)
+                        viewModel.qrCodeFound(data: result.string, source: result.source, type: result.type)
 
                     case .failure(let error):
                         self.viewModel.failedToRecognize()

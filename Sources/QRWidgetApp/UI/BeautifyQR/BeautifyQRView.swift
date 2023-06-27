@@ -26,6 +26,7 @@ struct BeautifyQRView: View {
                             Spacer()
                             QRCodeTileView(
                                 data: viewModel.qrModel.data,
+                                codeType: viewModel.qrModel.type,
                                 foreground: viewModel.foregroundColor,
                                 background: viewModel.backgroundColor,
                                 errorCorrectionLevel: viewModel.errorCorrectionLevel)
