@@ -27,19 +27,19 @@ class DebugHelper {
         let appstore = "https://apps.apple.com/us/app/qr-code-widget-scanner-reader/id1574087047"
         let qrCode_1 = CodeModel(
             dateCreated: todayDate.addingTimeInterval(-1),
-            data: ticket,
+            data: .string(ticket),
             type: .qr,
             label: "Movie ticket",
             backgroundColor: UIColor.white,
             foregroundColor: UIColor(hexString: "01098C")
         )
-        let qrCode_2 = CodeModel(dateCreated: todayDate.addingTimeInterval(-2), data: appstore, type: .qr, label: "QR codes app",
+        let qrCode_2 = CodeModel(dateCreated: todayDate.addingTimeInterval(-2), data: .string(appstore), type: .qr, label: "QR codes app",
                                backgroundColor: UIColor(hexString: "012F7B"),
                                foregroundColor: UIColor(hexString: "FEC700"))
-        let qrCode_3 = CodeModel(dateCreated: yesterdayDate.addingTimeInterval(-1), data: flight, type: .qr, label: "Flight to London",
+        let qrCode_3 = CodeModel(dateCreated: yesterdayDate.addingTimeInterval(-1), data: .string(flight), type: .qr, label: "Flight to London",
                                backgroundColor: UIColor.black,
                                foregroundColor: UIColor(hexString: "FFA7C8"))
-        let qrCode_4 = CodeModel(dateCreated: yesterdayDate.addingTimeInterval(-2), data: appstore, type: .qr, label: "Link to the app")
+        let qrCode_4 = CodeModel(dateCreated: yesterdayDate.addingTimeInterval(-2), data: .string(appstore), type: .qr, label: "Link to the app")
 
         qrService.addNewQrCodes(qrModels: [qrCode_1, qrCode_2, qrCode_3, qrCode_4])
 

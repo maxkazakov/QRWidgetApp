@@ -6,7 +6,8 @@ struct CodeModelDto: Codable {
     init(
         id: UUID,
         dateCreated: Date,
-        data: String,
+        stringPayload: String?,
+        descriptor: CIBarcodeDescriptor?,
         type: CodeType,
         label: String,
         errorCorrectionLevel: ErrorCorrection,
@@ -17,7 +18,8 @@ struct CodeModelDto: Codable {
     ) {
         self.id = id
         self.dateCreated = dateCreated
-        self.data = data
+        self.stringPayload = stringPayload
+        self.descriptor = descriptor
         self.type = type
         self.label = label
         self.errorCorrectionLevel = errorCorrectionLevel
@@ -29,7 +31,8 @@ struct CodeModelDto: Codable {
     let version = currentVersion
     let id: UUID
     let dateCreated: Date
-    let data: String
+    let stringPayload: String?
+    let descriptor: CIBarcodeDescriptor?
     let type: CodeType
     let label: String
 
@@ -51,7 +54,8 @@ struct CodeModelDto: Codable {
         case foregroundColor
         case batchId
         case isMy
-        case data
+        case stringPayload
+        case descriptor
         case type
     }
 
@@ -60,7 +64,13 @@ struct CodeModelDto: Codable {
         try container.encode(version, forKey: .version)
         try container.encode(id, forKey: .id)
         try container.encode(dateCreated, forKey: .dateCreated)
-        try container.encode(data, forKey: .data)
+
+        try container.encode(stringPayload, forKey: .stringPayload)
+        if let descriptor {
+            let descriptorData = try NSKeyedArchiver.archivedData(withRootObject: descriptor, requiringSecureCoding: false)
+            try container.encode(descriptorData, forKey: .descriptor)
+        }
+
         try container.encode(type, forKey: .type)
         try container.encode(label, forKey: .label)
         try container.encode(batchId, forKey: .batchId)
@@ -83,14 +93,27 @@ struct CodeModelDto: Codable {
 //        let version = try container.decode(Int.self, forKey: .version)
         self.id = try container.decode(UUID.self, forKey: .id)
         self.dateCreated = try container.decode(Date.self, forKey: .dateCreated)
+        self.type = (try? container.decode(CodeType.self, forKey: .type)) ?? .qr
 
         if let qrData = try? container.decode(String.self, forKey: .qrData) {
-            self.data = qrData
+            self.stringPayload = qrData
+            self.descriptor = nil
         } else {
-            self.data = try container.decode(String.self, forKey: .data)
-        }
+            self.stringPayload = try container.decode(String.self, forKey: .stringPayload)
 
-        self.type = (try? container.decode(CodeType.self, forKey: .type)) ?? .qr
+            if let descriptorData = try? container.decodeIfPresent(Data.self, forKey: .descriptor) {
+                let descriptorClass: CIBarcodeDescriptor.Type
+                switch self.type {
+                case .qr:
+                    descriptorClass = CIQRCodeDescriptor.self
+                case .aztec:
+                    descriptorClass = CIAztecCodeDescriptor.self
+                }
+                self.descriptor = try? NSKeyedUnarchiver.unarchivedObject(ofClass: descriptorClass, from: descriptorData)
+            } else {
+                self.descriptor = nil
+            }
+        }
 
         self.label = try container.decode(String.self, forKey: .label)
 
@@ -115,4 +138,3 @@ struct CodeModelDto: Codable {
 extension CodeModelDto {
     static let currentVersion = 3
 }
-

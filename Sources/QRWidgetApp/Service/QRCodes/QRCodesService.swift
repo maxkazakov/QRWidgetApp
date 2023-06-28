@@ -38,7 +38,8 @@ class QRCodesService {
     let favoriteQrCodes: AnyPublisher<[CodeModel], Never>
 
     @discardableResult
-    func createNewQrCode(data: String, type: CodeType, batchId: UUID? = nil) -> CodeModel {
+    func createNewQrCode(stringPayload: String?, descriptor: CIBarcodeDescriptor?, type: CodeType, batchId: UUID? = nil) -> CodeModel {
+        let data = CodeModel.DataType(stringPayload: stringPayload, descriptor: descriptor)        
         let qrCode = CodeModel(data: data, type: type, batchId: batchId)
         addNew(qrModel: qrCode)
         return qrCode

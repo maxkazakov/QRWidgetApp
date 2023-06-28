@@ -31,7 +31,10 @@ public struct ScanResult {
     }
 
     /// The contents of the code.
-    public let string: String
+    public let descriptor: CIBarcodeDescriptor
+
+    /// The contents of the code.
+    public let string: String?
 
     /// The type of code that was matched.
     public let type: AVMetadataObject.ObjectType
@@ -45,7 +48,7 @@ public enum ScanMode {
     case once
 
     /// Scan each code no more than once.
-    case oncePerCode
+//    case oncePerCode
 
     /// Keep scanning all codes until dismissed.
     case continuous

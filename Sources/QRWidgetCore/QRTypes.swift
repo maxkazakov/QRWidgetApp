@@ -8,6 +8,7 @@ public enum QRCodeType: Int, CaseIterable, Hashable, Identifiable {
 
     case rawText = 0
     case url
+    case binary
 
     public var title: String {
         switch self {
@@ -15,6 +16,8 @@ public enum QRCodeType: Int, CaseIterable, Hashable, Identifiable {
             return L10n.rawText
         case .url:
             return L10n.website
+        case .binary:
+            return "Binary"
         }
     }
 }
@@ -22,12 +25,16 @@ public enum QRCodeType: Int, CaseIterable, Hashable, Identifiable {
 public enum QRCodeDataType {
     case rawText(String)
     case url(URL)
+    case binary
 
-    public static func make(from string: String) -> QRCodeDataType {
-        if let url = URL(string: string), string.isValidURL {
+    public static func make(from stringPayload: String?) -> QRCodeDataType {
+        guard let stringPayload else {
+            return .binary
+        }
+        if let url = URL(string: stringPayload), stringPayload.isValidURL {
             return .url(url)
         }
-        return .rawText(string)
+        return .rawText(stringPayload)        
     }
 
     public var qrString: String {
@@ -36,6 +43,8 @@ public enum QRCodeDataType {
             return text
         case let .url(url):
             return url.absoluteString
+        case .binary:
+            return ""
         }
     }
 
@@ -45,6 +54,8 @@ public enum QRCodeDataType {
             return .rawText
         case .url:
             return .url
+        case .binary:
+            return .binary
         }
     }
 }

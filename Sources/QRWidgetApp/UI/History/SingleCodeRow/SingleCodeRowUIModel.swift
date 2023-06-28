@@ -1,9 +1,3 @@
-//
-//  SingleCodeRowUIModel.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 15.06.2022.
-//
 
 import Foundation
 import QRWidgetCore
@@ -11,6 +5,7 @@ import QRWidgetCore
 struct SingleCodeRowUIModel {
     let id: UUID
     let label: String
+    let codeType: CodeType
     let qrData: QRCodeDataType
     var isFavorite: Bool
     let date: Date
@@ -22,7 +17,8 @@ extension SingleCodeRowUIModel {
         self.init(
             id: model.id,
             label: model.label,
-            qrData: QRCodeDataType.make(from: model.data),
+            codeType: model.type,
+            qrData: QRCodeDataType.make(from: model.data.stringPayload),
             isFavorite: isFavorite,
             date: model.dateCreated,
             isMy: model.isMy

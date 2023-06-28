@@ -4,7 +4,7 @@ import SwiftUI
 import QRWidgetCore
 
 struct QRCodeTileViewData: Equatable {
-    let data: String
+    let data: CodeModel.DataType
     let codeType: CodeType
     let foreground: CGColor
     let background: CGColor
@@ -20,7 +20,7 @@ public struct QRCodeTileView: View {
     let flipEnabled: Bool
 
     public init(
-         data: String,
+         data: CodeModel.DataType,
          codeType: CodeType,
          foreground: CGColor = .qr.defaultForeground,
          background: CGColor = .qr.defaultBackground,

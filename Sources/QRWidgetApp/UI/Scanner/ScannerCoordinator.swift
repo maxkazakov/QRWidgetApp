@@ -33,21 +33,27 @@ extension CodeScannerView {
             guard isScanActive else { return }
             if let metadataObject = metadataObjects.first {
                 guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
-                guard let stringValue = readableObject.stringValue else { return }
+                guard let descriptor = readableObject.descriptor else { return }
                 guard didFinishScanning == false else { return }
-                let result = ScanResult(string: stringValue, type: readableObject.type, source: .camera)
+
+                let result = ScanResult(
+                    descriptor: descriptor,
+                    string: readableObject.stringValue,
+                    type: readableObject.type,
+                    source: .camera
+                )
 
                 switch parent.scanMode {
                 case .once:
                     found(result)
                     // make sure we only trigger scan once per use
                     didFinishScanning = true
-
-                case .oncePerCode:
-                    if !codesFound.contains(stringValue) {
-                        codesFound.insert(stringValue)
-                        found(result)
-                    }
+//
+//                case .oncePerCode:
+//                    if !codesFound.contains(stringValue) {
+//                        codesFound.insert(stringValue)
+//                        found(result)
+//                    }
 
                 case .continuous:
                     if isPastScanInterval() {

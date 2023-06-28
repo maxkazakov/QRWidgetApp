@@ -80,31 +80,51 @@ class ScannerViewModel: ViewModel {
         batchScanResult = nil
     }
 
-    func qrCodeFound(data: String, source: ScanResult.Source, type: AVMetadataObject.ObjectType) {
-        guard let codeType = CodeType(avType: type) else {
+    func codeFound(_ scanResult: ScanResult) {
+        guard let codeType = CodeType(avType: scanResult.type) else {
             return
         }
         if batchModeOn {
-            batchScanRecognized(data: data, source: source, codeType: codeType)
+            batchScanRecognized(result: scanResult, codeType: codeType)
         } else {
-            singleCodeRecognized(data: data, source: source, codeType: codeType)
+            singleCodeRecognized(result: scanResult, codeType: codeType)
         }
     }
 
-    private func batchScanRecognized(data: String, source: ScanResult.Source, codeType: CodeType) {
-        sendAnalytics(.qrCodeRecogzined, ["source": mapScanSource(source).rawValue, "isBatchMode": true])
+//    func qrCodeFound(data: String, source: ScanResult.Source, type: AVMetadataObject.ObjectType) {
+//        guard let codeType = CodeType(avType: type) else {
+//            return
+//        }
+//        if batchModeOn {
+//            batchScanRecognized(data: data, source: source, codeType: codeType)
+//        } else {
+//            singleCodeRecognized(data: data, source: source, codeType: codeType)
+//        }
+//    }
+
+    private func batchScanRecognized(result: ScanResult, codeType: CodeType) {
+        sendAnalytics(.qrCodeRecogzined, ["source": mapScanSource(result.source).rawValue, "isBatchMode": true])
         isScanActive = false
-        let newQr = qrCodeService.createNewQrCode(data: data, type: codeType, batchId: batchScanResult?.batchId)
+        let newQr = qrCodeService.createNewQrCode(
+            stringPayload: result.string,
+            descriptor: result.descriptor,
+            type: codeType,
+            batchId: batchScanResult?.batchId
+        )
         batchScanResult!.codes.append(newQr)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             self.isScanActive = true
         }
     }
 
-    private func singleCodeRecognized(data: String, source: ScanResult.Source, codeType: CodeType) {
-        sendAnalytics(.qrCodeRecogzined, ["source": mapScanSource(source).rawValue])
+    private func singleCodeRecognized(result: ScanResult, codeType: CodeType) {
+        sendAnalytics(.qrCodeRecogzined, ["source": mapScanSource(result.source).rawValue])
         isScanActive = false
-        let newQr = qrCodeService.createNewQrCode(data: data, type: codeType)
+        let newQr = qrCodeService.createNewQrCode(
+            stringPayload: result.string,
+            descriptor: result.descriptor,
+            type: codeType
+        )
         route(.details(newQr, options: CodeDetailsPresentaionOptions(isPopup: true, title: L10n.Scanner.Result.title, hideCodeImage: true), completion: { [weak self] in
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 self?.isScanActive = true

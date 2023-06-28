@@ -48,30 +48,26 @@ extension CodeScannerView {
             openGallery()
         }
 
-        let aztecDetector = AztecDetector()
-        let qrDetector = QRDetector()
+        let codeDetector = CodeDetector()
 
         public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
             isGalleryShowing = false
-//            var completion: (() -> Void)?
             guard let image = info[.originalImage] as? UIImage else {
                 dismiss(animated: true, completion: nil)
                 return
             }
-
             Task {
                 do {
-                    let payload = try await qrDetector.find(image: image)
-                    let result = ScanResult(string: payload, type: .qr, source: .gallery)
-                    delegate?.found(result)
+                    let result = try await codeDetector.find(image: image)
+                    let scanResult = ScanResult(
+                        descriptor: result.descriptor,
+                        string: result.stringPayload,
+                        type: result.codeType,
+                        source: .gallery
+                    )
+                    delegate?.found(scanResult)
                 } catch {
-                    do {
-                        let payload = try await aztecDetector.find(image: image)
-                        let result = ScanResult(string: payload, type: .aztec, source: .gallery)
-                        delegate?.found(result)
-                    } catch {
-                        delegate?.didFail(reason: .badInput)
-                    }
+                    delegate?.didFail(reason: .badInput)
                 }
             }
             
@@ -139,7 +135,12 @@ extension CodeScannerView {
             }
 
             // Send back their simulated data, as if it was one of the types they were scanning for
-            let result = ScanResult(string: simulatedData, type: delegate?.parent.codeTypes.first ?? .qr, source: .camera)
+            let result = ScanResult(
+                descriptor: CIQRCodeDescriptor(payload: Data(), symbolVersion: 0, maskPattern: 0, errorCorrectionLevel: .levelL)!,
+                string: simulatedData,
+                type: delegate?.parent.codeTypes.first ?? .qr,
+                source: .camera
+            )
             delegate?.found(result)
         }
         

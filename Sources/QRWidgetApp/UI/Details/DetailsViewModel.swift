@@ -29,7 +29,7 @@ class DetailsViewModel: ViewModel {
         self.options = options
         self.sendAnalytics = sendAnalytics
 
-        self.qrDataType = QRCodeDataType.make(from: qrModel.data)
+        self.qrDataType = QRCodeDataType.make(from: qrModel.data.stringPayload)
         self.qrModel = qrModel
         self.qrId = qrModel.id
 

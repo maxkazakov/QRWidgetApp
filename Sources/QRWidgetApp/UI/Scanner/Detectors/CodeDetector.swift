@@ -1,12 +1,19 @@
 import Vision
 import UIKit
+import AVFoundation
 
-class AztecDetector {
+struct CodeDetectorResult {
+    let codeType: AVMetadataObject.ObjectType
+    let descriptor: CIBarcodeDescriptor
+    let stringPayload: String?
+}
+
+class CodeDetector {
+
     struct AztecCodeDetectorError: Error {
-
     }
 
-    func find(image: UIImage) async throws -> String {
+    func find(image: UIImage) async throws -> CodeDetectorResult {
         try await withCheckedThrowingContinuation { continuation in
             guard let cgImage = image.cgImage else {
                 continuation.resume(throwing: AztecCodeDetectorError())
@@ -15,17 +22,15 @@ class AztecDetector {
             let orientation = CGImagePropertyOrientation(image.imageOrientation)
             let requestHandler = VNImageRequestHandler(cgImage: cgImage, orientation: orientation, options: [:])
             let vnRequests = [vnBarCodeDetectionRequest(continuation: continuation)]
-            DispatchQueue.global(qos: .userInitiated).async {
-                do {
-                    try requestHandler.perform(vnRequests)
-                } catch let error as NSError {
-                    continuation.resume(throwing: error)
-                }
+            do {
+                try requestHandler.perform(vnRequests)
+            } catch let error as NSError {
+                continuation.resume(throwing: error)
             }
         }
     }
 
-    func vnBarCodeDetectionRequest(continuation: CheckedContinuation<String, Error>) -> VNDetectBarcodesRequest{
+    func vnBarCodeDetectionRequest(continuation: CheckedContinuation<CodeDetectorResult, Error>) -> VNDetectBarcodesRequest{
         let request = VNDetectBarcodesRequest { (request,error) in
             if let error = error as NSError? {
                 print("Error in detecting - \(error)")
@@ -35,12 +40,28 @@ class AztecDetector {
             else {
                 guard let observations = request.results as? [VNBarcodeObservation],
                       let observation = observations.first(where: { $0.confidence == 1.0 }),
-                      let payload = observation.payloadStringValue
+                      (observation.symbology == .qr || observation.symbology == .aztec),
+                      let barcodeDescriptor = observation.barcodeDescriptor
                 else {
                     continuation.resume(throwing: AztecCodeDetectorError())
                     return
                 }
-                continuation.resume(returning: payload)
+                let codeType: AVMetadataObject.ObjectType
+                switch observation.symbology {
+                case .aztec:
+                    codeType = .aztec
+                case .qr:
+                    codeType = .qr
+                default:
+                    fatalError()
+                }
+
+                let result = CodeDetectorResult(
+                    codeType: codeType,
+                    descriptor: barcodeDescriptor,
+                    stringPayload: observation.payloadStringValue
+                )
+                continuation.resume(returning: result)
             }
         }
         return request

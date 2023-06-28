@@ -31,7 +31,7 @@ struct ScannerView: View {
                 isGalleryPresented: $isGalleryPresented) { response in
                     switch response {
                     case .success(let result):
-                        viewModel.qrCodeFound(data: result.string, source: result.source, type: result.type)
+                        viewModel.codeFound(result)                        
 
                     case .failure(let error):
                         self.viewModel.failedToRecognize()

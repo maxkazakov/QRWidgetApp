@@ -28,7 +28,9 @@ class WalletService {
 
     func createPass(code: CodeModel) -> AnyPublisher<PKPass, Error> {
         let serialNumber = allWalletPasses[code.id] ?? UUID().uuidString
-        return walletPassEnvironment.createPass(WalletPassInputParams(serialNumber: serialNumber, data: code.data, label: code.label))
+        return walletPassEnvironment.createPass(
+            WalletPassInputParams(serialNumber: serialNumber, data: code.data.stringPayload ?? "", label: code.label)
+        )
     }
 
     func loadAndValidatePasses() {

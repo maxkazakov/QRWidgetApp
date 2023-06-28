@@ -63,7 +63,7 @@ public class QRCodeGenerator {
     }
 
     public func generateQRCode(
-        from string: String,
+        from codeData: CodeModel.DataType,
         size: CGSize = QRCodeGenerator.defaultQRSize,
         foreground: CGColor,
         background: CGColor,
@@ -71,72 +71,87 @@ public class QRCodeGenerator {
         codeType: CodeType,
         logoImage: UIImage? = nil
     ) -> UIImage? {
-        let data = Data(string.utf8)
-        guard var image = createCIImage(data: data, codeType: codeType, errorCorrectionLevel: errorCorrectionLevel) else { return nil }
+        let filter: CIFilter?
+        switch codeData {
+        case let .combined(_, descriptor), let .descriptor(descriptor):
+            filter = makeCIFilter(inputBarcodeDescriptor: descriptor)
 
-        if let colorImgae = updateColor(image: image, foreground: foreground, background: background) {
-            image = colorImgae
+        case let .string(stringPayload):
+            let data = Data(stringPayload.utf8)
+            filter = makeCIFilter(data: data, codeType: codeType)
         }
 
-        print("QR original size: \(image.extent.size)")
-
-        ///scale to width:height
-        let scaleW = size.width / image.extent.size.width
-        let scaleH = size.height / image.extent.size.height
-        let transform = CGAffineTransform(scaleX: scaleW, y: scaleH)
-        image = image.transformed(by: transform)
-
-        if let logo = logoImage, let newImage = addLogo(image: image, logo: logo) {
-            image = newImage
+        guard let filter else { return nil }
+        applyCorrectionLevel(filter: filter, codeType: codeType, errorCorrectionLevel: errorCorrectionLevel)
+        return filter.outputImage.flatMap {
+            convertToImage(ciImage: $0, size: size, foreground: foreground, background: background)
         }
-
-        guard let cgimg = context.createCGImage(image, from: image.extent) else {
-            return nil
-        }
-
-        return UIImage(cgImage: cgimg)
     }
 
     private func updateColor(image: CIImage, foreground: CGColor, background: CGColor) -> CIImage? {
         let colorFilter = CIFilter.falseColor()
-        colorFilter.setValue(image, forKey: kCIInputImageKey)
-        colorFilter.setValue(CIColor(cgColor: foreground), forKey: "inputColor0")
-        colorFilter.setValue(CIColor(cgColor: background), forKey: "inputColor1")
+        colorFilter.inputImage = image
+        colorFilter.color0 = CIColor(cgColor: foreground)
+        colorFilter.color1 = CIColor(cgColor: background)
         return colorFilter.outputImage
     }
 
-    private func createCIImage(data: Data, codeType: CodeType, errorCorrectionLevel: String) -> CIImage? {
+    private func makeCIFilter(data: Data, codeType: CodeType) -> CIFilter? {
         switch codeType {
         case .qr:
             let filter = CIFilter.qrCodeGenerator()
             filter.setDefaults()
-            filter.setValue(data, forKey: "inputMessage")
-            filter.setValue(errorCorrectionLevel, forKey: "inputCorrectionLevel")
-            //https://www.qrcode.com/en/about/error_correction.html
-            return filter.outputImage
+            filter.message = data
+            return filter
+
         case .aztec:
             let filter = CIFilter.aztecCodeGenerator()
             filter.setDefaults()
-            filter.setValue(data, forKey: "inputMessage")
-            // TODO: Add Correctness level support:
-            // https://developer.apple.com/library/archive/documentation/GraphicsImaging/Reference/CoreImageFilterReference/index.html#//apple_ref/doc/filter/ci/CIAztecCodeGenerator
-//            filter.setValue(errorCorrectionLevel, forKey: "inputCorrectionLevel")
-            //https://www.qrcode.com/en/about/error_correction.html
-            return filter.outputImage
+            filter.message = data
+            return filter
         }
     }
 
-    private func addLogo(image: CIImage, logo: UIImage) -> CIImage? {
-        guard let logo = logo.cgImage else {
-            return image
+    private func makeCIFilter(inputBarcodeDescriptor: CIBarcodeDescriptor) -> CIFilter? {
+        guard let filter = CIFilter(name: "CIBarcodeGenerator") else {
+            return nil
         }
-        let combinedFilter = CIFilter.sourceOverCompositing()
-        let ciLogo = CIImage(cgImage: logo)
+        filter.setDefaults()
+        filter.setValue(inputBarcodeDescriptor, forKey: "inputBarcodeDescriptor")
+        return filter
+    }
 
-        let centerTransform = CGAffineTransform(translationX: image.extent.midX - (ciLogo.extent.size.width / 2), y: image.extent.midY - (ciLogo.extent.size.height / 2))
+    private func applyCorrectionLevel<FilterType: CIFilter>(filter: FilterType, codeType: CodeType, errorCorrectionLevel: String) {
+        switch codeType {
+        case .qr:
+            //https://www.qrcode.com/en/about/error_correction.html
+            (filter as? CIQRCodeGenerator)?.correctionLevel = errorCorrectionLevel
+        case .aztec:
+            // TODO: Add Correctness level support:
+            // https://developer.apple.com/library/archive/documentation/GraphicsImaging/Reference/CoreImageFilterReference/index.html#//apple_ref/doc/filter/ci/CIAztecCodeGenerator
+            //            filter.setValue(errorCorrectionLevel, forKey: "inputCorrectionLevel")
+            break
+        }
+    }
 
-        combinedFilter.setValue(ciLogo.transformed(by: centerTransform), forKey: "inputImage")
-        combinedFilter.setValue(image, forKey: "inputBackgroundImage")
-        return combinedFilter.outputImage
+    private func convertToImage(ciImage: CIImage, size: CGSize, foreground: CGColor, background: CGColor) -> UIImage? {
+        var resultImage = ciImage
+        if let colorImage = updateColor(image: ciImage, foreground: foreground, background: background) {
+            resultImage = colorImage
+        }
+
+        print("QR original size: \(resultImage.extent.size)")
+
+        ///scale to width:height
+        let scaleW = size.width / resultImage.extent.size.width
+        let scaleH = size.height / resultImage.extent.size.height
+        let transform = CGAffineTransform(scaleX: scaleW, y: scaleH)
+        resultImage = resultImage.transformed(by: transform)
+
+        guard let cgimg = context.createCGImage(resultImage, from: resultImage.extent) else {
+            return nil
+        }
+
+        return UIImage(cgImage: cgimg)
     }
 }

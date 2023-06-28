@@ -12,7 +12,10 @@ extension CodeModelDto {
     init(model: CodeModel) {
         self.id = model.id
         self.dateCreated = model.dateCreated
-        self.data = model.data
+
+        self.stringPayload = model.data.stringPayload
+        self.descriptor = model.data.descriptor
+
         self.type = model.type
         self.label = model.label
         self.errorCorrectionLevel = model.errorCorrectionLevel
@@ -26,7 +29,7 @@ extension CodeModelDto {
         CodeModel(
             id: self.id,
             dateCreated: self.dateCreated,
-            data: self.data,
+            data: .init(stringPayload: self.stringPayload, descriptor: self.descriptor),
             type: self.type,
             label: self.label,
             errorCorrectionLevel: self.errorCorrectionLevel,

@@ -27,6 +27,12 @@ struct QRCodeDataView: View {
                 .multilineTextAlignment(.leading)
                 .lineLimit(4)
                 .foregroundColor(Color.primary)
+
+        case .binary:
+            Text("Binary content")
+                .multilineTextAlignment(.leading)
+                .lineLimit(4)
+                .foregroundColor(Color.primary)
         }
     }
 }

@@ -1,12 +1,51 @@
-
-import Foundation
+#if os(watchOS)
+#else
 import UIKit
+import CoreImage
 
 public struct CodeModel: Identifiable, Equatable {
+
+    public enum DataType: Equatable {
+        case string(String)
+        case descriptor(CIBarcodeDescriptor)
+        case combined(String, CIBarcodeDescriptor)
+
+        public var stringPayload: String? {
+            switch self {
+            case let .string(stringPayload), let .combined(stringPayload, _):
+                return stringPayload
+            default:
+                return nil
+            }
+        }
+
+        public var descriptor: CIBarcodeDescriptor? {
+            switch self {
+            case let .descriptor(descriptor), let .combined(_, descriptor):
+                return descriptor
+            default:
+                return nil
+            }
+        }
+
+        public init(stringPayload: String?, descriptor: CIBarcodeDescriptor?) {
+            switch (stringPayload, descriptor) {
+            case let (.some(stringPayloadUnwrapped), .some(descriptorUnwrapped)):
+                self = .combined(stringPayloadUnwrapped, descriptorUnwrapped)
+            case let (.some(stringPayloadUnwrapped), .none):
+                self = .string(stringPayloadUnwrapped)
+            case let (.none, .some(descriptorUnwrapped)):
+                self = .descriptor(descriptorUnwrapped)
+            default:
+                fatalError("At least one parameter should not be null")
+            }
+        }
+    }
+
     public init(
         id: UUID = UUID(),
         dateCreated: Date = Date(),
-        data: String,
+        data: DataType,
         type: CodeType,
         label: String = "",
         errorCorrectionLevel: ErrorCorrection = .default,
@@ -29,7 +68,7 @@ public struct CodeModel: Identifiable, Equatable {
 
     public var id: UUID
     public var dateCreated: Date
-    public var data: String
+    public var data: DataType
     public let type: CodeType
     public var label: String = ""
     public var batchId: UUID?
@@ -44,7 +83,7 @@ public extension CodeModel {
     static let zero = CodeModel(
         id: UUID(),
         dateCreated: Date(),
-        data: "https://www.figma.com",
+        data: .string("https://www.figma.com"),
         type: .qr,
         label: "Ticket",
         errorCorrectionLevel: ErrorCorrection.default,
@@ -74,3 +113,5 @@ public enum ErrorCorrection: String, Codable, CaseIterable, Hashable {
 
     public static let `default` = ErrorCorrection.Q
 }
+#endif
+
