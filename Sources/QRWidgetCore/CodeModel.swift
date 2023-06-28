@@ -77,6 +77,20 @@ public struct CodeModel: Identifiable, Equatable {
     public var errorCorrectionLevel: ErrorCorrection = .default
     public var backgroundColor: UIColor?
     public var foregroundColor: UIColor?
+
+    // Used for Aztec codes only
+    public func descriptorRawBytes() -> Data? {
+        let descriptor = data.descriptor
+        switch type {
+        case .aztec:
+            guard let aztecDescriptor = descriptor as? CIAztecCodeDescriptor else {
+                return nil
+            }
+            return aztecDescriptor.errorCorrectedPayload
+        default:
+            return nil
+        }
+    }
 }
 
 public extension CodeModel {

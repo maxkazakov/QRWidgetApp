@@ -29,7 +29,7 @@ class QRCodesRepository {
                     let qrModel = qrModelDto.makeModel()
                     qrModels.append(qrModel)
                 }
-            }            
+            }
             logMessage("QRCodes Repo: Loaded from disc. Count: \(qrModels.count)")
             return qrModels
         } catch {

@@ -77,7 +77,7 @@ public class QRCodeGenerator {
             filter = makeCIFilter(inputBarcodeDescriptor: descriptor)
 
         case let .string(stringPayload):
-            let data = Data(stringPayload.utf8)
+            let data = Data(stringPayload.utf8)          
             filter = makeCIFilter(data: data, codeType: codeType)
         }
 

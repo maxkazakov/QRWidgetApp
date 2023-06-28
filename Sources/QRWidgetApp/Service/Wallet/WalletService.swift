@@ -5,6 +5,8 @@ import QRWidgetCore
 
 public typealias PassSerialNumber = String
 
+struct WalletServiceError: Error {}
+
 class WalletService {
 
     private let queue = DispatchQueue(label: "WalletQueue", qos: .background)
@@ -28,8 +30,19 @@ class WalletService {
 
     func createPass(code: CodeModel) -> AnyPublisher<PKPass, Error> {
         let serialNumber = allWalletPasses[code.id] ?? UUID().uuidString
+        let data: WalletPassInputParams.DataType
+        if let stringPayload = code.data.stringPayload {
+            data = .string(stringPayload)
+        } else {
+            return Fail(error: WalletServiceError()).eraseToAnyPublisher()
+        }
         return walletPassEnvironment.createPass(
-            WalletPassInputParams(serialNumber: serialNumber, data: code.data.stringPayload ?? "", label: code.label)
+            WalletPassInputParams(
+                serialNumber: serialNumber,
+                data: data,
+                label: code.label,
+                codeType: code.type
+            )
         )
     }
 

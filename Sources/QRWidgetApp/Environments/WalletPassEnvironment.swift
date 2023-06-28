@@ -8,23 +8,31 @@
 import Foundation
 import PassKit
 import Combine
+import QRWidgetCore
 
 public struct WalletPassInputParams {
-    public init(serialNumber: String, data: String, label: String) {
+
+    public enum DataType {
+        case string(String)
+    }
+
+    public init(serialNumber: String, data: DataType, label: String, codeType: CodeType) {
         self.serialNumber = serialNumber
         self.data = data
         self.label = label
+        self.codeType = codeType
     }
 
     public let serialNumber: String
-    public let data: String
+    public let data: DataType
     public let label: String
+    public let codeType: CodeType
 }
 
 public struct WalletPassEnvironment {
-
-    public init(passIdentifier: @escaping () -> String,
-                createPass: @escaping (WalletPassInputParams) -> AnyPublisher<PKPass, Error>
+    public init(
+        passIdentifier: @escaping () -> String,
+        createPass: @escaping (WalletPassInputParams) -> AnyPublisher<PKPass, Error>
     ) {
         self.createPass = createPass
         self.passIdentifier = passIdentifier
