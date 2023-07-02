@@ -3,6 +3,47 @@ import UIKit
 import Combine
 import WidgetKit
 import QRWidgetCore
+import Dependencies
+
+struct CodesService {
+    var createNewQrCode: (_ stringPayload: String?, _ descriptor: CIBarcodeDescriptor?, _ type: CodeType, _ batchId: UUID?) -> CodeModel
+    var addNewQrCodes: (_ qrModels: [CodeModel]) -> Void
+    var changeQRLabel: (_ id: UUID, _ newLabel: String) -> Void
+    var changeQRAppearance: (_ id: UUID, _ errorCorrectionLevel: ErrorCorrection, _ foreground: UIColor?, _ background: UIColor?) -> Void
+    var updateQR: (_ qrModel: CodeModel) -> Void
+    var getQR: (_ id: UUID) -> CodeModel?
+    var removeQR: (_ id: UUID) -> Void
+    var allQrCodes: () -> [CodeModel]
+}
+
+extension CodesService {
+    static let live = {
+        let _live = generalAssembly.qrCodesService
+        return CodesService(
+            createNewQrCode: _live.createNewQrCode(stringPayload:descriptor:type:batchId:),
+            addNewQrCodes: _live.addNewQrCodes(qrModels:),
+            changeQRLabel: _live.changeQRLabel(id:newLabel:),
+            changeQRAppearance: _live.changeQRAppearance(id:errorCorrectionLevel:foreground:background:),
+            updateQR: _live.updateQR,
+            getQR: _live.getQR(id:),
+            removeQR: _live.removeQR(id:),
+            allQrCodes: {
+                _live.qrCodesPublisher.value
+            }
+        )
+    }()
+}
+
+extension DependencyValues {
+    var codesService: CodesService {
+        get { self[CodesServiceKey.self] }
+        set { self[CodesServiceKey.self] = newValue }
+    }
+}
+
+private enum CodesServiceKey: DependencyKey {
+    static let liveValue = CodesService.live
+}
 
 class QRCodesService {
     private let repository: QRCodesRepository
@@ -39,7 +80,7 @@ class QRCodesService {
 
     @discardableResult
     func createNewQrCode(stringPayload: String?, descriptor: CIBarcodeDescriptor?, type: CodeType, batchId: UUID? = nil) -> CodeModel {
-        let data = CodeModel.DataType(stringPayload: stringPayload, descriptor: descriptor)        
+        let data = CodeModel.DataType(stringPayload: stringPayload, descriptor: descriptor)
         let qrCode = CodeModel(data: data, type: type, batchId: batchId)
         addNew(qrModel: qrCode)
         return qrCode

@@ -33,7 +33,7 @@ public struct QRCodeTileView: View {
             background: background,
             errorCorrectionLevel: errorCorrectionLevel
         )
-        flipEnabled = false
+        flipEnabled = true
     }
 
     public init(

@@ -39,7 +39,8 @@ let package = Package(
         .package(url: "https://github.com/sanzaru/SimpleToast.git", .upToNextMajor(from: "0.6.2")),
         .package(url: "https://github.com/efremidze/Haptica", .upToNextMajor(from: "3.0.3")),
         .package(url: "https://github.com/airbnb/lottie-ios", branch: "master"),
-        .package(url: "https://github.com/pointfreeco/swiftui-navigation", from: "0.4.2")
+        .package(url: "https://github.com/pointfreeco/swiftui-navigation", from: "0.4.2"),
+        .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "0.5.1")
 
     ],
     targets: [
@@ -52,7 +53,8 @@ let package = Package(
                 "CodeCreation",
                 .product(name: "SimpleToast", package: "SimpleToast"),
                 .product(name: "Haptica", package: "Haptica"),
-                .product(name: "Lottie", package: "lottie-ios")
+                .product(name: "Lottie", package: "lottie-ios"),
+                .product(name: "Dependencies", package: "swift-dependencies"),
             ],
             exclude: ["swiftgen.yml"],
             resources: [.process("Resources/LottieAnimations")]

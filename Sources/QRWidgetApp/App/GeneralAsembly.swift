@@ -31,9 +31,13 @@ class GeneralAssembly {
     lazy var walletService = WalletService(userDefaults: userDefaultsStorage,
                                            walletPassEnvironment: appEnvironment.walletPassEnvironment,
                                            analyticsEnvironment: appEnvironment.analyticsEnvironment)
-    lazy var qrCodesService = QRCodesService(repository: qrCodesRepository,
-                                             walletService: walletService,
-                                             favotitesService: favoritesService)
+
+    lazy var qrCodesService = QRCodesService(
+        repository: qrCodesRepository,
+        walletService: walletService,
+        favotitesService: favoritesService
+    )
+
     lazy var widgetsService = WidgetsService(qrCodesService: qrCodesService, favoritesService: favoritesService)
     lazy var favoritesService = FavoritesService()
     lazy var settingsService = SettingsService(storage: userDefaultsStorage)
@@ -130,9 +134,10 @@ class GeneralAssembly {
 
     // Beautify
     func makeBeautifyModule(qrModel: CodeModel) -> Module {
-        let beautifyViewModel = BeautifyQRViewModel(qrModel: qrModel,
-                                                    qrCodesService: qrCodesService,
-                                                    sendAnalytics: appEnvironment.analyticsEnvironment.sendAnalyticsEvent)
+        let beautifyViewModel = BeautifyQRViewModel(
+            qrModel: qrModel,
+            sendAnalytics: appEnvironment.analyticsEnvironment.sendAnalyticsEvent
+        )
         let beautifyView = BeautifyQRView(viewModel: beautifyViewModel)
             .injectAnalyticsSender(appEnvironment.analyticsEnvironment.sendAnalyticsEvent)
             .anyView

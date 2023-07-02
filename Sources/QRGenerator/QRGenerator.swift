@@ -18,7 +18,6 @@ public func generateQRCode(from string: String) -> UIImage {
             return UIImage(cgImage: cgimg)
         }
     }
-
     return UIImage(systemName: "xmark.circle") ?? UIImage()
 }
 
@@ -77,7 +76,7 @@ public class QRCodeGenerator {
             filter = makeCIFilter(inputBarcodeDescriptor: descriptor)
 
         case let .string(stringPayload):
-            let data = Data(stringPayload.utf8)          
+            let data = Data(stringPayload.utf8)
             filter = makeCIFilter(data: data, codeType: codeType)
         }
 
@@ -125,7 +124,7 @@ public class QRCodeGenerator {
         switch codeType {
         case .qr:
             //https://www.qrcode.com/en/about/error_correction.html
-            (filter as? CIQRCodeGenerator)?.correctionLevel = errorCorrectionLevel
+            filter.setValue(errorCorrectionLevel, forKey: "inputCorrectionLevel")
         case .aztec:
             // TODO: Add Correctness level support:
             // https://developer.apple.com/library/archive/documentation/GraphicsImaging/Reference/CoreImageFilterReference/index.html#//apple_ref/doc/filter/ci/CIAztecCodeGenerator

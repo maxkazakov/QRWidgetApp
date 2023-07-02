@@ -1,9 +1,3 @@
-//
-//  BeautifyQRCode.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 04.01.2022.
-//
 
 import SwiftUI
 import QRWidgetCore
@@ -109,5 +103,20 @@ struct BeautifyQRView: View {
         } else {
             Image(systemName: "lock.fill")
         }
+    }
+}
+
+import QRWidgetCore
+
+struct BeautifyQRView_Previews: PreviewProvider {
+    static var previews: some View {
+        BeautifyQRView(
+            viewModel: BeautifyQRViewModel(
+                qrModel: CodeModel(data: .string("something"), type: .qr),
+                sendAnalytics: { event, params in
+
+                }
+            )
+        )
     }
 }

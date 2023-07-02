@@ -1,23 +1,18 @@
-//
-//  BeautifyQRViewModel.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 04.01.2022.
-//
 
 import SwiftUI
 import QRWidgetCore
 import QRGenerator
+import Dependencies
 
 class BeautifyQRViewModel: ViewModel {
 
-    let qrCodesService: QRCodesService
+    @Dependency(\.codesService) var codesService
     private let sendAnalytics: SendAnalyticsAction
 
-    public init(qrModel: CodeModel,
-                qrCodesService: QRCodesService,
-                sendAnalytics: @escaping SendAnalyticsAction) {
-        self.qrCodesService = qrCodesService
+    public init(
+        qrModel: CodeModel,
+        sendAnalytics: @escaping SendAnalyticsAction
+    ) {
         self.sendAnalytics = sendAnalytics
 
         self.qrModel = qrModel
@@ -77,11 +72,11 @@ class BeautifyQRViewModel: ViewModel {
     }
 
     private func saveChanges() {
-        qrCodesService.changeQRAppearance(
-            id: qrModel.id,            
-            errorCorrectionLevel: self.errorCorrectionLevel,
-            foreground: isForegroundColorStayedDefault ? nil : UIColor(cgColor: self.foregroundColor),
-            background: isBackgroundColorStayedDefault ? nil : UIColor(cgColor: self.backgroundColor)
+        codesService.changeQRAppearance(
+            qrModel.id,
+            errorCorrectionLevel,
+            isForegroundColorStayedDefault ? nil : UIColor(cgColor: self.foregroundColor),
+            isBackgroundColorStayedDefault ? nil : UIColor(cgColor: self.backgroundColor)
         )
     }
 
