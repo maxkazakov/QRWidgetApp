@@ -1,6 +1,6 @@
 import SwiftUI
 import Combine
-import QRGenerator
+import CodeImageGenerator
 
 class QRCodeTileViewModel: ObservableObject {
     @Published var coloredQrImage: UIImage?
@@ -41,7 +41,7 @@ class QRCodeTileViewModel: ObservableObject {
             Future<QRGeneratorResult, Never> { promise in
                 var newQrColoredImage: UIImage?
                 if viewData.foreground != CGColor.qr.defaultForeground || viewData.background != CGColor.qr.defaultBackground {
-                    newQrColoredImage = QRCodeGenerator.shared.generateQRCode(
+                    newQrColoredImage = CodeGenerator.shared.generateQRCode(
                         from: viewData.data,
                         foreground: viewData.foreground,
                         background: viewData.background,
@@ -49,7 +49,7 @@ class QRCodeTileViewModel: ObservableObject {
                         codeType: viewData.codeType
                     )
                 }
-                let newBlackAndWhiteQrImage = QRCodeGenerator.shared.generateQRCode(
+                let newBlackAndWhiteQrImage = CodeGenerator.shared.generateQRCode(
                     from: viewData.data,
                     foreground: CGColor.qr.defaultForeground,
                     background: CGColor.qr.defaultBackground,

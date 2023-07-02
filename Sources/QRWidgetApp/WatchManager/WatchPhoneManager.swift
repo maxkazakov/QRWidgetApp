@@ -10,7 +10,7 @@ import WatchConnectivity
 import Combine
 import UIKit
 import QRWidgetCore
-import QRGenerator
+import CodeImageGenerator
 
 final class WatchPhoneManager: NSObject {
 
@@ -48,7 +48,7 @@ final class WatchPhoneManager: NSObject {
     func onFavoritesChanged(qrModels: [CodeModel]) {
         Logger.debugLog(message: "WatchPhoneManager. On favorite changed called")
         let transferableModels: [CodeTransferData] = qrModels.enumerated().compactMap { orderIdx, model in
-            guard let qrImage = QRCodeGenerator.shared.generateQRCode(from: model, size: .init(width: 300, height: 300), useCustomColorsIfPossible: false)
+            guard let qrImage = CodeGenerator.shared.generateQRCode(from: model, size: .init(width: 300, height: 300), useCustomColorsIfPossible: false)
             else {
                 return nil
             }

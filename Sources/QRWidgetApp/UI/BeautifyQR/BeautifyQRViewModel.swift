@@ -1,7 +1,7 @@
 
 import SwiftUI
 import QRWidgetCore
-import QRGenerator
+import CodeImageGenerator
 import Dependencies
 
 class BeautifyQRViewModel: ViewModel {

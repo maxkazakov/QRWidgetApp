@@ -8,7 +8,7 @@
 import SwiftUI
 import Combine
 import QRWidgetCore
-import QRGenerator
+import CodeImageGenerator
 
 class ShareMenuViewModel: ViewModel {
 
@@ -28,7 +28,7 @@ class ShareMenuViewModel: ViewModel {
 
     func shareAsImage(_ qrModel: CodeModel) {
         sendAnalytics(.tapShareAsImage, ["source": source.rawValue])
-        guard let image = QRCodeGenerator.shared.generateQRCode(from: qrModel, useCustomColorsIfPossible: false) else {
+        guard let image = CodeGenerator.shared.generateQRCode(from: qrModel, useCustomColorsIfPossible: false) else {
             return
         }
         self.share(items: [image])

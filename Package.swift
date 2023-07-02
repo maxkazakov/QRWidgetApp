@@ -19,8 +19,8 @@ let package = Package(
             targets: ["QRWidgetCore"]
         ),
         .library(
-            name: "QRGenerator",
-            targets: ["QRGenerator"]
+            name: "CodeImageGenerator",
+            targets: ["CodeImageGenerator"]
         ),
         .library(
             name: "CodeCreation",
@@ -40,14 +40,15 @@ let package = Package(
         .package(url: "https://github.com/efremidze/Haptica", .upToNextMajor(from: "3.0.3")),
         .package(url: "https://github.com/airbnb/lottie-ios", branch: "master"),
         .package(url: "https://github.com/pointfreeco/swiftui-navigation", from: "0.4.2"),
-        .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "0.5.1")
+        .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "0.5.1"),
+        .package(url: "https://github.com/dagronf/qrcode.git", from: "15.1.0")
 
     ],
     targets: [
         .target(
             name: "QRWidgetApp",
             dependencies: [
-                "QRGenerator",
+                "CodeImageGenerator",
                 "QRWidgetCore",
                 "QRCodeUI",
                 "CodeCreation",
@@ -65,12 +66,16 @@ let package = Package(
             exclude: ["swiftgen.yml"]
         ),
         .target(
-            name: "QRGenerator",
-            dependencies: ["QRWidgetCore"]
+            name: "CodeImageGenerator",
+            dependencies: [
+                "QRWidgetCore",
+                .product(name: "Dependencies", package: "swift-dependencies"),
+                .product(name: "QRCode", package: "qrcode"),
+            ]
         ),
         .target(
             name: "QRCodeUI",
-            dependencies: ["QRWidgetCore", "QRGenerator"],
+            dependencies: ["QRWidgetCore", "CodeImageGenerator"],
             exclude: ["swiftgen.yml"]
         ),
         .target(

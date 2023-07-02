@@ -6,40 +6,15 @@ import CoreImage.CIFilterBuiltins
 #endif
 import QRWidgetCore
 
-let context = CIContext()
-let filter = CIFilter.qrCodeGenerator()
-
-public func generateQRCode(from string: String) -> UIImage {
-    let data = Data(string.utf8)
-    filter.setValue(data, forKey: "inputMessage")
-
-    if let outputImage = filter.outputImage {
-        if let cgimg = context.createCGImage(outputImage, from: outputImage.extent) {
-            return UIImage(cgImage: cgimg)
-        }
-    }
-    return UIImage(systemName: "xmark.circle") ?? UIImage()
-}
-
-
-public extension CGColor {
-    struct QRColor {
-        public let defaultBackground = CGColor(red: 1, green: 1, blue: 1, alpha: 1)
-        public let defaultForeground = CGColor(red: 0, green: 0, blue: 0, alpha: 1)
-    }
-    static let qr = QRColor()
-}
-
-
-public class QRCodeGenerator {
-    public static let shared = QRCodeGenerator()
+public class CodeGenerator {
+    public static let shared = CodeGenerator()
     public static let defaultQRSize = CGSize(width: 300, height: 300)
 
     private let context = CIContext()
 
     public func generateQRCode(
         from qrModel: CodeModel,
-        size: CGSize = QRCodeGenerator.defaultQRSize,
+        size: CGSize = CodeGenerator.defaultQRSize,
         useCustomColorsIfPossible: Bool
     ) -> UIImage? {
         let foregroundColor = useCustomColorsIfPossible
@@ -63,7 +38,7 @@ public class QRCodeGenerator {
 
     public func generateQRCode(
         from codeData: CodeModel.DataType,
-        size: CGSize = QRCodeGenerator.defaultQRSize,
+        size: CGSize = CodeGenerator.defaultQRSize,
         foreground: CGColor,
         background: CGColor,
         errorCorrectionLevel: String,
@@ -86,6 +61,8 @@ public class QRCodeGenerator {
             convertToImage(ciImage: $0, size: size, foreground: foreground, background: background)
         }
     }
+
+    // MARK: - Private
 
     private func updateColor(image: CIImage, foreground: CGColor, background: CGColor) -> CIImage? {
         let colorFilter = CIFilter.falseColor()
@@ -153,4 +130,12 @@ public class QRCodeGenerator {
 
         return UIImage(cgImage: cgimg)
     }
+}
+
+public extension CGColor {
+    struct QRColor {
+        public let defaultBackground = CGColor(red: 1, green: 1, blue: 1, alpha: 1)
+        public let defaultForeground = CGColor(red: 0, green: 0, blue: 0, alpha: 1)
+    }
+    static let qr = QRColor()
 }
