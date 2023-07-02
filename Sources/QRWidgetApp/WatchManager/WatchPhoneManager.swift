@@ -11,7 +11,7 @@ import Combine
 import UIKit
 import QRWidgetCore
 import CodeImageGenerator
-
+import Dependencies
 final class WatchPhoneManager: NSObject {
 
     private let qrService: QRCodesService
@@ -19,6 +19,7 @@ final class WatchPhoneManager: NSObject {
     private let decoder = JSONDecoder()
     private var cancellableSet = Set<AnyCancellable>()
     private var sessionStatePublisher = PassthroughSubject<WCSessionActivationState, Never>()
+    @Dependency(\.codeGenerator) var codeGenerator
 
     private let transferDataQueue = DispatchQueue(label: "WatchPhoneManager")
 
@@ -48,7 +49,11 @@ final class WatchPhoneManager: NSObject {
     func onFavoritesChanged(qrModels: [CodeModel]) {
         Logger.debugLog(message: "WatchPhoneManager. On favorite changed called")
         let transferableModels: [CodeTransferData] = qrModels.enumerated().compactMap { orderIdx, model in
-            guard let qrImage = CodeGenerator.shared.generateQRCode(from: model, size: .init(width: 300, height: 300), useCustomColorsIfPossible: false)
+            guard let qrImage = codeGenerator.generateCodeFromModel(
+                model,
+                .init(width: 300, height: 300),
+                false
+            )
             else {
                 return nil
             }

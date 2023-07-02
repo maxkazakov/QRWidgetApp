@@ -1,12 +1,14 @@
 import SwiftUI
 import Combine
 import CodeImageGenerator
+import Dependencies
 
 class QRCodeTileViewModel: ObservableObject {
     @Published var coloredQrImage: UIImage?
     @Published var blackAndWhiteQRImage: UIImage?
     @Published var flipped = false
     @Published var isLoading = false
+    @Dependency(\.codeGenerator) var codeGenerator
 
     private var prevData = CurrentValueSubject<QRCodeTileViewData?, Never>(nil)
     private var cancellableSet: Set<AnyCancellable> = []
@@ -37,24 +39,24 @@ class QRCodeTileViewModel: ObservableObject {
     }
 
     private func generateQr(data viewData: QRCodeTileViewData) -> AnyPublisher<QRGeneratorResult, Never> {
-        Deferred {
+        Deferred { [codeGenerator] in
             Future<QRGeneratorResult, Never> { promise in
                 var newQrColoredImage: UIImage?
                 if viewData.foreground != CGColor.qr.defaultForeground || viewData.background != CGColor.qr.defaultBackground {
-                    newQrColoredImage = CodeGenerator.shared.generateQRCode(
-                        from: viewData.data,
-                        foreground: viewData.foreground,
-                        background: viewData.background,
-                        errorCorrectionLevel: viewData.errorCorrectionLevel.rawValue,
-                        codeType: viewData.codeType
+                    newQrColoredImage = codeGenerator.generateCode(
+                        viewData.data,
+                        viewData.foreground,
+                        viewData.background,
+                        viewData.errorCorrectionLevel,
+                        viewData.codeType
                     )
                 }
-                let newBlackAndWhiteQrImage = CodeGenerator.shared.generateQRCode(
-                    from: viewData.data,
-                    foreground: CGColor.qr.defaultForeground,
-                    background: CGColor.qr.defaultBackground,
-                    errorCorrectionLevel: viewData.errorCorrectionLevel.rawValue,
-                    codeType: viewData.codeType
+                let newBlackAndWhiteQrImage = codeGenerator.generateCode(
+                    viewData.data,
+                    CGColor.qr.defaultForeground,
+                    CGColor.qr.defaultBackground,
+                    viewData.errorCorrectionLevel,
+                    viewData.codeType
                 )!
                 let result = QRGeneratorResult(blackAndWhiteImage: newBlackAndWhiteQrImage, coloredImage: newQrColoredImage ?? newBlackAndWhiteQrImage)
                 promise(.success(result))

@@ -5,7 +5,8 @@ import QRWidgetCore
 import UIKit
 
 struct QRCodeStyle {
-    
+    var foregroundColor: CGColor
+    var backgroundColor: CGColor
 }
 
 struct QRCodeImageGenerationInfo {
@@ -22,8 +23,12 @@ struct QRCodeGenerator {
 extension QRCodeGenerator {
     static let live: QRCodeGenerator = {
         QRCodeGenerator(generateImage: { info in
+            let style = info.style
             let doc = QRCode.Document(utf8String: info.data)
             doc.errorCorrection = info.errorCorrectessLevel.toQRCodeErrorCorrection()
+            doc.design.style.onPixels = QRCode.FillStyle.Solid(style.foregroundColor)
+            doc.design.backgroundColor(style.backgroundColor)
+
             let generated = doc.uiImage(info.size)
             return generated!
         })
