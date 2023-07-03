@@ -23,6 +23,7 @@ extension CodeModelDto {
         self.backgroundColor = model.backgroundColor
         self.batchId = model.batchId
         self.isMy = model.isMy
+        self.qrStyle = model.qrStyle
     }
     
     func makeModel() -> CodeModel {
@@ -36,7 +37,8 @@ extension CodeModelDto {
             backgroundColor: self.backgroundColor,
             foregroundColor: self.foregroundColor,
             batchId: self.batchId,
-            isMy: self.isMy
+            isMy: self.isMy,
+            qrStyle: self.qrStyle
         )
     }
 }

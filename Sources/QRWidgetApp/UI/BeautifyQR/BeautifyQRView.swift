@@ -23,10 +23,36 @@ struct BeautifyQRView: View {
                                 codeType: viewModel.qrModel.type,
                                 foreground: viewModel.foregroundColor,
                                 background: viewModel.backgroundColor,
-                                errorCorrectionLevel: viewModel.errorCorrectionLevel)
+                                errorCorrectionLevel: viewModel.errorCorrectionLevel,
+                                qrStyle: viewModel.qrStyle
+                            )
                             Spacer()
                         }
                         .padding(.vertical, 16)
+                    }
+
+                    if viewModel.showQRSpecificSettings {
+                        Section(
+                            content: {
+                                Picker("Eye", selection: $viewModel.qrStyle.eye) {
+                                    ForEach(QRStyle.Eye.allCases) { eye in
+                                        Text(eye.description).tag(eye)
+                                    }
+                                }
+
+                                Picker("Pixels", selection: $viewModel.qrStyle.onPixels) {
+                                    ForEach(QRStyle.OnPixels.allCases) { onPixels in
+                                        Text(onPixels.description).tag(onPixels)
+                                    }
+                                }
+                            },
+                            header: {
+                                Label(
+                                    title: { Text("Shapes") },
+                                    icon: { lockView }
+                                )
+                            }
+                        )
                     }
 
                     Section(

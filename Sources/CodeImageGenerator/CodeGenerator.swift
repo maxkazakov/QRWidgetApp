@@ -14,7 +14,8 @@ public struct CodeGenerator {
         _ foreground: CGColor,
         _ background: CGColor,
         _ errorCorrectionLevel: ErrorCorrection,
-        _ codeType: CodeType
+        _ codeType: CodeType,
+        _ qrStyle: QRStyle?
     ) -> UIImage?
 }
 
@@ -40,7 +41,8 @@ public extension CodeGenerator {
             foregroundColor,
             backgroundColor,
             model.errorCorrectionLevel,
-            model.type
+            model.type,
+            model.qrStyle
         )
     }
 
@@ -56,7 +58,8 @@ public extension CodeGenerator {
         _ foreground: CGColor,
         _ background: CGColor,
         _ errorCorrectionLevel: ErrorCorrection,
-        _ codeType: CodeType
+        _ codeType: CodeType,
+        _ qrStyle: QRStyle?
     ) -> UIImage? {
         self.generateCode(
             data,
@@ -64,7 +67,8 @@ public extension CodeGenerator {
             foreground,
             background,
             errorCorrectionLevel,
-            codeType
+            codeType,
+            qrStyle
         )
     }
 }

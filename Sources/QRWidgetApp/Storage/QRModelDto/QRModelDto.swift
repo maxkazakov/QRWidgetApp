@@ -3,30 +3,6 @@ import UIKit
 import QRWidgetCore
 
 struct CodeModelDto: Codable {
-    init(
-        id: UUID,
-        dateCreated: Date,
-        stringPayload: String?,
-        descriptor: CIBarcodeDescriptor?,
-        type: CodeType,
-        label: String,
-        errorCorrectionLevel: ErrorCorrection,
-        backgroundColor: UIColor? = nil,
-        foregroundColor: UIColor? = nil,
-        batchId: UUID? = nil,
-        isMy: Bool
-    ) {
-        self.id = id
-        self.dateCreated = dateCreated
-        self.stringPayload = stringPayload
-        self.descriptor = descriptor
-        self.type = type
-        self.label = label
-        self.errorCorrectionLevel = errorCorrectionLevel
-        self.backgroundColor = backgroundColor
-        self.foregroundColor = foregroundColor
-        self.isMy = isMy
-    }
 
     let version = currentVersion
     let id: UUID
@@ -42,6 +18,7 @@ struct CodeModelDto: Codable {
 
     var batchId: UUID?
     var isMy: Bool
+    var qrStyle: QRStyle?
     
     enum CodingKeys: CodingKey {
         case version
@@ -57,6 +34,7 @@ struct CodeModelDto: Codable {
         case stringPayload
         case descriptor
         case type
+        case qrStyle
     }
 
     func encode(to encoder: Encoder) throws {
@@ -85,6 +63,10 @@ struct CodeModelDto: Codable {
         if let foregroundColor = foregroundColor {
             let foregroundColorData = try NSKeyedArchiver.archivedData(withRootObject: foregroundColor, requiringSecureCoding: false)
             try container.encode(foregroundColorData, forKey: .foregroundColor)
+        }
+
+        if let qrStyle {
+            try container.encode(qrStyle, forKey: .qrStyle)
         }
     }
 
@@ -132,6 +114,7 @@ struct CodeModelDto: Codable {
 
         self.batchId = try container.decodeIfPresent(UUID.self, forKey: .batchId)
         self.isMy = try container.decodeIfPresent(Bool.self, forKey: .isMy) ?? false
+        self.qrStyle = try container.decodeIfPresent(QRStyle.self, forKey: .qrStyle)
     }
 }
 

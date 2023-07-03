@@ -1,7 +1,7 @@
 import UIKit
 import Contacts
 
-public enum QRCodeType: Int, CaseIterable, Hashable, Identifiable {
+public enum CodeContentType: Int, CaseIterable, Hashable, Identifiable {
     public var id: Int {
         rawValue
     }
@@ -22,12 +22,12 @@ public enum QRCodeType: Int, CaseIterable, Hashable, Identifiable {
     }
 }
 
-public enum QRCodeDataType {
+public enum CodeContent {
     case rawText(String)
     case url(URL)
     case binary
 
-    public static func make(from stringPayload: String?) -> QRCodeDataType {
+    public static func make(from stringPayload: String?) -> CodeContent {
         guard let stringPayload else {
             return .binary
         }
@@ -48,7 +48,7 @@ public enum QRCodeDataType {
         }
     }
 
-    public var type: QRCodeType {
+    public var type: CodeContentType {
         switch self {
         case .rawText:
             return .rawText

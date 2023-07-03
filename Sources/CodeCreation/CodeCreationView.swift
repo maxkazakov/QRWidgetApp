@@ -58,7 +58,7 @@ public struct CodeCreationView: View {
                     //                            }
                     //                        }
                 }, header: {
-                    Text(QRCodeType.rawText.title)
+                    Text(CodeContentType.rawText.title)
                 })
             }
             CaseLet(/QRFormData.url) { url in
@@ -66,7 +66,7 @@ public struct CodeCreationView: View {
                     TextEditor(text: url)
                         .focused($focus, equals: .first)
                 }, header: {
-                    Text(QRCodeType.url.title)
+                    Text(CodeContentType.url.title)
                 })
             }
         })

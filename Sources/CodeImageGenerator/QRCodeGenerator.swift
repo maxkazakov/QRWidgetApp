@@ -4,16 +4,13 @@ import QRCode
 import QRWidgetCore
 import UIKit
 
-struct QRCodeStyle {
-    var foregroundColor: CGColor
-    var backgroundColor: CGColor
-}
-
 struct QRCodeImageGenerationInfo {
     let data: String
     let size: CGSize
     let errorCorrectessLevel: ErrorCorrection
-    let style: QRCodeStyle
+    let foregroundColor: CGColor
+    let backgroundColor: CGColor
+    let qrStyle: QRStyle?
 }
 
 struct QRCodeGenerator {
@@ -23,16 +20,76 @@ struct QRCodeGenerator {
 extension QRCodeGenerator {
     static let live: QRCodeGenerator = {
         QRCodeGenerator(generateImage: { info in
-            let style = info.style
             let doc = QRCode.Document(utf8String: info.data)
             doc.errorCorrection = info.errorCorrectessLevel.toQRCodeErrorCorrection()
-            doc.design.style.onPixels = QRCode.FillStyle.Solid(style.foregroundColor)
-            doc.design.backgroundColor(style.backgroundColor)
+            doc.design.style.onPixels = QRCode.FillStyle.Solid(info.foregroundColor)
+            doc.design.backgroundColor(info.backgroundColor)
+
+            if let qrStyle = info.qrStyle {
+                doc.applyStyle(qrStyle)
+            }
 
             let generated = doc.uiImage(info.size)
             return generated!
         })
     }()
+}
+
+private extension QRCode.Document {
+    func applyStyle(_ qrStyle: QRStyle) {
+        func getEyeType() -> QRCodeEyeShapeGenerator {
+            switch qrStyle.eye {
+            case .square:
+                return QRCode.EyeShape.Square()
+            case .circle:
+                return QRCode.EyeShape.Circle()
+            case .roundedRect:
+                return QRCode.EyeShape.RoundedRect()
+            case .roundedOuter:
+                return QRCode.EyeShape.RoundedOuter()
+            case .roundedPointingIn:
+                return QRCode.EyeShape.RoundedPointingIn()
+            case .leaf:
+                return QRCode.EyeShape.Leaf()
+            case .squircle:
+                return QRCode.EyeShape.Squircle()
+            case .barsHorizontal:
+                return QRCode.EyeShape.BarsHorizontal()
+            case .barsVertical:
+                return QRCode.EyeShape.BarsVertical()
+            case .pixels:
+                return QRCode.EyeShape.Pixels()
+            case .corneredPixels:
+                return QRCode.EyeShape.CorneredPixels()
+            case .edges:
+                return QRCode.EyeShape.Edges()
+            case .shield:
+                return QRCode.EyeShape.Shield()
+            }
+        }
+
+        func getOnPixelsType() -> QRCodePixelShapeGenerator {
+            switch qrStyle.onPixels {
+            case .square: return QRCode.PixelShape.Square()
+            case .circle: return QRCode.PixelShape.Circle()
+            case .curvePixel: return QRCode.PixelShape.CurvePixel()
+            case .roundedRect: return QRCode.PixelShape.RoundedRect()
+            case .horizontal: return QRCode.PixelShape.Horizontal()
+            case .vertical: return QRCode.PixelShape.Vertical()
+            case .roundedPath: return QRCode.PixelShape.RoundedPath()
+            case .roundedEndIndent: return QRCode.PixelShape.RoundedEndIndent()
+            case .squircle: return QRCode.PixelShape.Squircle()
+            case .pointy: return QRCode.PixelShape.Pointy()
+            case .sharp: return QRCode.PixelShape.Sharp()
+            case .star: return QRCode.PixelShape.Star()
+            case .flower: return QRCode.PixelShape.Flower()
+            case .shiny: return QRCode.PixelShape.Shiny()
+            }
+        }
+
+        design.shape.eye = getEyeType()
+        design.shape.onPixels = getOnPixelsType()
+    }
 }
 
 extension ErrorCorrection {

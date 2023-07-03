@@ -48,7 +48,8 @@ class QRCodeTileViewModel: ObservableObject {
                         viewData.foreground,
                         viewData.background,
                         viewData.errorCorrectionLevel,
-                        viewData.codeType
+                        viewData.codeType,
+                        viewData.qrStyle
                     )
                 }
                 let newBlackAndWhiteQrImage = codeGenerator.generateCode(
@@ -56,7 +57,8 @@ class QRCodeTileViewModel: ObservableObject {
                     CGColor.qr.defaultForeground,
                     CGColor.qr.defaultBackground,
                     viewData.errorCorrectionLevel,
-                    viewData.codeType
+                    viewData.codeType,
+                    viewData.qrStyle
                 )!
                 let result = QRGeneratorResult(blackAndWhiteImage: newBlackAndWhiteQrImage, coloredImage: newQrColoredImage ?? newBlackAndWhiteQrImage)
                 promise(.success(result))

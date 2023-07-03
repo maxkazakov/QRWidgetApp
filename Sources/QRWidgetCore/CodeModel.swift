@@ -52,7 +52,8 @@ public struct CodeModel: Identifiable, Equatable {
         backgroundColor: UIColor? = nil,
         foregroundColor: UIColor? = nil,
         batchId: UUID? = nil,
-        isMy: Bool = false
+        isMy: Bool = false,
+        qrStyle: QRStyle? = nil
     ) {
         self.id = id
         self.dateCreated = dateCreated
@@ -64,6 +65,7 @@ public struct CodeModel: Identifiable, Equatable {
         self.foregroundColor = foregroundColor
         self.batchId = batchId
         self.isMy = isMy
+        self.qrStyle = qrStyle
     }
 
     public var id: UUID
@@ -77,6 +79,7 @@ public struct CodeModel: Identifiable, Equatable {
     public var errorCorrectionLevel: ErrorCorrection = .default
     public var backgroundColor: UIColor?
     public var foregroundColor: UIColor?
+    public var qrStyle: QRStyle?
 
     // Used for Aztec codes only
     public func descriptorRawBytes() -> Data? {
@@ -102,7 +105,8 @@ public extension CodeModel {
         label: "Ticket",
         errorCorrectionLevel: ErrorCorrection.default,
         backgroundColor: nil,
-        foregroundColor: nil
+        foregroundColor: nil,
+        qrStyle: nil
     )
 }
 

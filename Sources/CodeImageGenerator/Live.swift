@@ -10,16 +10,15 @@ extension CodeGenerator {
         let qrGenerator = QRCodeGenerator.live
 
         return CodeGenerator(
-            generateCode: { data, size, foreground, background, errorCorrectionLevel, codeType in
+            generateCode: { data, size, foreground, background, errorCorrectionLevel, codeType, qrStyle in
             if codeType == .qr, let stringPayload = data.stringPayload {
                 let info = QRCodeImageGenerationInfo(
                     data: stringPayload,
                     size: size,
                     errorCorrectessLevel: errorCorrectionLevel,
-                    style: QRCodeStyle(
-                        foregroundColor: foreground,
-                        backgroundColor: background
-                    )
+                    foregroundColor: foreground,
+                    backgroundColor: background,
+                    qrStyle: qrStyle
                 )
                 return qrGenerator.generateImage(info)
             } else {

@@ -9,7 +9,7 @@ struct CodesService {
     var createNewQrCode: (_ stringPayload: String?, _ descriptor: CIBarcodeDescriptor?, _ type: CodeType, _ batchId: UUID?) -> CodeModel
     var addNewQrCodes: (_ qrModels: [CodeModel]) -> Void
     var changeQRLabel: (_ id: UUID, _ newLabel: String) -> Void
-    var changeQRAppearance: (_ id: UUID, _ errorCorrectionLevel: ErrorCorrection, _ foreground: UIColor?, _ background: UIColor?) -> Void
+    var changeQRAppearance: (_ id: UUID, _ errorCorrectionLevel: ErrorCorrection, _ foreground: UIColor?, _ background: UIColor?, _ qrStyle: QRStyle?) -> Void
     var updateQR: (_ qrModel: CodeModel) -> Void
     var getQR: (_ id: UUID) -> CodeModel?
     var removeQR: (_ id: UUID) -> Void
@@ -23,7 +23,7 @@ extension CodesService {
             createNewQrCode: _live.createNewQrCode(stringPayload:descriptor:type:batchId:),
             addNewQrCodes: _live.addNewQrCodes(qrModels:),
             changeQRLabel: _live.changeQRLabel(id:newLabel:),
-            changeQRAppearance: _live.changeQRAppearance(id:errorCorrectionLevel:foreground:background:),
+            changeQRAppearance: _live.changeQRAppearance(id:errorCorrectionLevel:foreground:background:qrStyle:),
             updateQR: _live.updateQR,
             getQR: _live.getQR(id:),
             removeQR: _live.removeQR(id:),
@@ -81,7 +81,7 @@ class QRCodesService {
     @discardableResult
     func createNewQrCode(stringPayload: String?, descriptor: CIBarcodeDescriptor?, type: CodeType, batchId: UUID? = nil) -> CodeModel {
         let data = CodeModel.DataType(stringPayload: stringPayload, descriptor: descriptor)
-        let qrCode = CodeModel(data: data, type: type, batchId: batchId)
+        let qrCode = CodeModel(data: data, type: type, batchId: batchId, qrStyle: nil)
         addNew(qrModel: qrCode)
         return qrCode
     }
@@ -104,11 +104,12 @@ class QRCodesService {
         updateQR(qrModel)
     }
 
-    func changeQRAppearance(id: UUID, errorCorrectionLevel: ErrorCorrection, foreground: UIColor?, background: UIColor?) {
+    func changeQRAppearance(id: UUID, errorCorrectionLevel: ErrorCorrection, foreground: UIColor?, background: UIColor?, qrStyle: QRStyle?) {
         guard var qrModel = getQR(id: id) else { return }
         qrModel.errorCorrectionLevel = errorCorrectionLevel
         qrModel.foregroundColor = foreground
         qrModel.backgroundColor = background
+        qrModel.qrStyle = qrStyle
 
         updateQR(qrModel)
     }

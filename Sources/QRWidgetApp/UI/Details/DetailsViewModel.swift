@@ -29,7 +29,7 @@ class DetailsViewModel: ViewModel {
         self.options = options
         self.sendAnalytics = sendAnalytics
 
-        self.qrDataType = QRCodeDataType.make(from: qrModel.data.stringPayload)
+        self.qrDataType = CodeContent.make(from: qrModel.data.stringPayload)
         self.qrModel = qrModel
         self.qrId = qrModel.id
 
@@ -53,7 +53,7 @@ class DetailsViewModel: ViewModel {
     }
 
     let qrId: UUID
-    let qrDataType: QRCodeDataType
+    let qrDataType: CodeContent
 
     func remove() {
         router.dismissByItself(completion: nil)

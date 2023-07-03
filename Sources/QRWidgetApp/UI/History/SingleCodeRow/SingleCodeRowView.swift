@@ -49,7 +49,7 @@ struct SingleCodeRowView_Previews: PreviewProvider {
     static var previews: some View {
         SingleCodeRowView(
             model: SingleCodeRowUIModel(
-                model: CodeModel.init(data: .string("something"), type: .aztec),
+                model: CodeModel.init(data: .string("something"), type: .aztec, qrStyle: nil),
                 isFavorite: false
             ),
             viewModel: SingleCodeRowViewModel(id: UUID(), favoritesService: FavoritesService())

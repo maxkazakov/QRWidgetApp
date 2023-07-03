@@ -9,6 +9,7 @@ struct QRCodeTileViewData: Equatable {
     let foreground: CGColor
     let background: CGColor
     let errorCorrectionLevel: ErrorCorrection
+    let qrStyle: QRStyle?
 }
 
 public struct QRCodeTileView: View {
@@ -24,14 +25,16 @@ public struct QRCodeTileView: View {
          codeType: CodeType,
          foreground: CGColor = .qr.defaultForeground,
          background: CGColor = .qr.defaultBackground,
-         errorCorrectionLevel: ErrorCorrection = .default
+         errorCorrectionLevel: ErrorCorrection = .default,
+         qrStyle: QRStyle? = nil
     ) {
         self.data = QRCodeTileViewData(
             data: data,
             codeType: codeType,
             foreground: foreground,
             background: background,
-            errorCorrectionLevel: errorCorrectionLevel
+            errorCorrectionLevel: errorCorrectionLevel,
+            qrStyle: qrStyle
         )
         flipEnabled = true
     }
@@ -61,7 +64,8 @@ public struct QRCodeTileView: View {
             codeType: model.type,
             foreground: foregroundColor,
             background: backgroundColor,
-            errorCorrectionLevel: model.errorCorrectionLevel
+            errorCorrectionLevel: model.errorCorrectionLevel,
+            qrStyle: model.qrStyle
         )
         flipEnabled = proVersionActivated
             && (model.foregroundColor != nil || model.backgroundColor != nil)

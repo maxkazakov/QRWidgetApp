@@ -9,7 +9,7 @@ import XCTestDynamicOverlay
 final public class CodeCreationFlowModel: ObservableObject {
 
     public var onCodeCreatoinFinished: (CodeModel) -> Void = unimplemented("SelectingCodeTypeModel.onCodeCreatoinFinished")
-    @Published var codeTypes: [QRCodeType] = [QRCodeType.rawText, QRCodeType.binary]
+    @Published var codeTypes: [CodeContentType] = [CodeContentType.rawText, CodeContentType.binary]
 
     @Published var qrDataType: QRFormData = .rawText("") {
         didSet {
@@ -23,7 +23,7 @@ final public class CodeCreationFlowModel: ObservableObject {
     }
     @Published var qrData: String = ""
     @Published var canCreate = false
-    @Published var type: QRCodeType? {
+    @Published var type: CodeContentType? {
         didSet {
             focus = .first
             switch type {
@@ -38,11 +38,11 @@ final public class CodeCreationFlowModel: ObservableObject {
     }
     @Published var focus: CodeCreationView.Field? = .first
 
-    public init(type: QRCodeType? = nil) {
+    public init(type: CodeContentType? = nil) {
         self.type = type
     }
 
     func onTapDone() {
-        onCodeCreatoinFinished(CodeModel(data: .string(qrData), type: .qr, isMy: true))
+        onCodeCreatoinFinished(CodeModel(data: .string(qrData), type: .qr, isMy: true, qrStyle: nil))
     }
 }

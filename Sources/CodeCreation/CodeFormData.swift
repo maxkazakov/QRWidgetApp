@@ -9,7 +9,7 @@ enum QRFormData {
         qrData() != nil
     }
 
-    func qrData() -> QRCodeDataType? {
+    func qrData() -> CodeContent? {
         switch self {
         case let .rawText(text):
             if text.isEmpty {

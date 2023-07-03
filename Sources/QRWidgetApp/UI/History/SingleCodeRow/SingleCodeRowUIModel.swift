@@ -6,7 +6,7 @@ struct SingleCodeRowUIModel {
     let id: UUID
     let label: String
     let codeType: CodeType
-    let qrData: QRCodeDataType
+    let qrData: CodeContent
     var isFavorite: Bool
     let date: Date
     let isMy: Bool
@@ -18,7 +18,7 @@ extension SingleCodeRowUIModel {
             id: model.id,
             label: model.label,
             codeType: model.type,
-            qrData: QRCodeDataType.make(from: model.data.stringPayload),
+            qrData: CodeContent.make(from: model.data.stringPayload),
             isFavorite: isFavorite,
             date: model.dateCreated,
             isMy: model.isMy

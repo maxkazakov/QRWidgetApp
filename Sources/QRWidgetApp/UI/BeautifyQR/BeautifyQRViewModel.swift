@@ -19,6 +19,9 @@ class BeautifyQRViewModel: ViewModel {
         self.foregroundColor = qrModel.foregroundColor?.cgColor ?? .qr.defaultForeground
         self.backgroundColor = qrModel.backgroundColor?.cgColor ?? .qr.defaultBackground
         self.errorCorrectionLevel = qrModel.errorCorrectionLevel
+
+        self.qrStyle = qrModel.qrStyle ?? QRStyle()
+
         super.init()
 
         $backgroundColor
@@ -45,11 +48,16 @@ class BeautifyQRViewModel: ViewModel {
 
     @Published var foregroundColor: CGColor
     @Published var backgroundColor: CGColor
+    @Published var qrStyle: QRStyle
 
     @Published var errorCorrectionLevel: ErrorCorrection {
         didSet {
             sendAnalytics(.tapChangeErrorCorrectionLevel, ["level": errorCorrectionLevel.title])
         }
+    }
+
+    var showQRSpecificSettings: Bool {
+        qrModel.data.stringPayload != nil && qrModel.type == .qr
     }
 
     func cancel() {
@@ -76,7 +84,8 @@ class BeautifyQRViewModel: ViewModel {
             qrModel.id,
             errorCorrectionLevel,
             isForegroundColorStayedDefault ? nil : UIColor(cgColor: self.foregroundColor),
-            isBackgroundColorStayedDefault ? nil : UIColor(cgColor: self.backgroundColor)
+            isBackgroundColorStayedDefault ? nil : UIColor(cgColor: self.backgroundColor),
+            qrStyle
         )
     }
 

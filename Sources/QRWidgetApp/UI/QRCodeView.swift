@@ -4,7 +4,7 @@ import QRWidgetCore
 
 struct QRCodeDataView: View {
 
-    let type: QRCodeDataType
+    let type: CodeContent
     @Environment(\.sendAnalyticsEvent) var sendAnalyticsEvent
 
     var body: some View {
@@ -38,7 +38,7 @@ struct QRCodeDataView: View {
 }
 
 struct QRCodeView: View {
-    let type: QRCodeDataType
+    let type: CodeContent
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
