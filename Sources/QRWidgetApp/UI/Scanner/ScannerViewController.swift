@@ -1,10 +1,3 @@
-//
-//  CodeScanner.swift
-//  https://github.com/twostraws/CodeScanner
-//
-//  Created by Paul Hudson on 14/12/2021.
-//  Copyright © 2021 Paul Hudson. All rights reserved.
-//
 
 import AVFoundation
 import UIKit
@@ -76,7 +69,7 @@ extension CodeScannerView {
         
         public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
             isGalleryShowing = false
-
+            dismiss(animated: true, completion: nil)
         }
 
         #if targetEnvironment(simulator)
@@ -104,8 +97,6 @@ extension CodeScannerView {
             stackView.addArrangedSubview(label)
             stackView.addArrangedSubview(button)
 
-//            view.addSubview(stackView)
-
             let image = Asset.qrTemplate.image
             let imageView = UIImageView(image: image)
             imageView.contentMode = .scaleAspectFill
@@ -120,12 +111,6 @@ extension CodeScannerView {
             ])
 
             addviewfinder()
-//            NSLayoutConstraint.activate([
-//                button.heightAnchor.constraint(equalToConstant: 50),
-//                stackView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
-//                stackView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
-//                stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-//            ])
         }
 
         override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
