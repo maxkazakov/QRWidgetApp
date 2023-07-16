@@ -2,6 +2,7 @@
 import UIKit
 import SwiftUI
 import QRWidgetCore
+import CodeImageGenerator
 
 struct QRCodeTileViewData: Equatable {
     let data: CodeModel.DataType
@@ -10,6 +11,17 @@ struct QRCodeTileViewData: Equatable {
     let background: CGColor
     let errorCorrectionLevel: ErrorCorrection
     let qrStyle: QRStyle?
+
+    var isDefaultSettings: Bool {
+        if foreground != CGColor.qr.defaultForeground || background != CGColor.qr.defaultBackground {
+            return false
+        }
+        if let qrStyle,
+           qrStyle.eye != .default || qrStyle.onPixels != .default {
+            return false
+        }
+        return true
+    }
 }
 
 public struct QRCodeTileView: View {
@@ -18,7 +30,6 @@ public struct QRCodeTileView: View {
     @StateObject var viewModel = QRCodeTileViewModel()
 
     let data: QRCodeTileViewData
-    let flipEnabled: Bool
 
     public init(
          data: CodeModel.DataType,
@@ -36,39 +47,20 @@ public struct QRCodeTileView: View {
             errorCorrectionLevel: errorCorrectionLevel,
             qrStyle: qrStyle
         )
-        flipEnabled = true
     }
 
     public init(
         model: CodeModel,
-        proVersionActivated: Bool,
-        forcedForegroundColor: UIColor? = nil,
-        forcedBackgroundColor: UIColor? = nil
+        proVersionActivated: Bool
     ) {
-        let foregroundColor: CGColor
-        if let forcedForegroundColor {
-            foregroundColor = forcedForegroundColor.cgColor
-        } else {
-            foregroundColor = model.foregroundColor(isProActivated: proVersionActivated)
-        }
-
-        let backgroundColor: CGColor
-        if let forcedBackgroundColor {
-            backgroundColor = forcedBackgroundColor.cgColor
-        } else {
-            backgroundColor = model.backgroundColor(isProActivated: proVersionActivated)
-        }
-
         self.data = QRCodeTileViewData(
             data: model.data,
             codeType: model.type,
-            foreground: foregroundColor,
-            background: backgroundColor,
+            foreground: model.foregroundColor(isProActivated: proVersionActivated),
+            background: model.backgroundColor(isProActivated: proVersionActivated),
             errorCorrectionLevel: model.errorCorrectionLevel,
-            qrStyle: model.qrStyle
+            qrStyle: model.qrStyle(isProActivated: proVersionActivated)
         )
-        flipEnabled = proVersionActivated
-            && (model.foregroundColor != nil || model.backgroundColor != nil)
     }
 
     public var body: some View {
@@ -82,14 +74,14 @@ public struct QRCodeTileView: View {
                     .opacity(viewModel.flipped ? 1.0 : 0.0)
             }
 
-            if let coloredImage = viewModel.coloredQrImage {
+            if let coloredImage = viewModel.modifiedAppearanceImage {
                 Image(uiImage: coloredImage)
                     .decorateQr(backgroundColor: data.background, isDarkScheme: colorScheme == .dark)
                     .flipRotate(flipDegrees)
                     .opacity(viewModel.flipped ? 0.0 : 1.0)
             }
 
-            if viewModel.isLoading, viewModel.coloredQrImage == nil {
+            if viewModel.isLoading, viewModel.modifiedAppearanceImage == nil {
                 ZStack {
                     Image(uiImage: Asset.placeholder.image)
                         .renderingMode(.template)
@@ -102,7 +94,7 @@ public struct QRCodeTileView: View {
         }
         .animation(.easeInOut(duration: 0.5), value: viewModel.flipped)
         .onTapGesture {
-            guard flipEnabled, viewModel.coloredQrImage != nil else { return }
+            guard viewModel.flipEnabled, viewModel.modifiedAppearanceImage != nil else { return }
             self.viewModel.flipped.toggle()
         }
         .onAppear(perform: {
@@ -153,7 +145,10 @@ extension CodeModel {
         return backgroundColor?.cgColor ?? CGColor.qr.defaultBackground
     }
 
-    var hasChangedColors: Bool {
-        return backgroundColor != nil || foregroundColor != nil
+    func qrStyle(isProActivated: Bool) -> QRStyle? {
+        guard isProActivated else {
+            return nil
+        }
+        return self.qrStyle
     }
 }

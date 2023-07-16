@@ -4,9 +4,10 @@ import CodeImageGenerator
 import Dependencies
 
 class QRCodeTileViewModel: ObservableObject {
-    @Published var coloredQrImage: UIImage?
+    @Published var modifiedAppearanceImage: UIImage?
     @Published var blackAndWhiteQRImage: UIImage?
     @Published var flipped = false
+    @Published var flipEnabled = false
     @Published var isLoading = false
     @Dependency(\.codeGenerator) var codeGenerator
 
@@ -28,8 +29,9 @@ class QRCodeTileViewModel: ObservableObject {
             .sink(receiveValue: { [weak self] result in
                 guard let self = self else { return }
                 self.blackAndWhiteQRImage = result.blackAndWhiteImage
-                self.coloredQrImage = result.coloredImage
+                self.modifiedAppearanceImage = result.modifiedAppearanceImage
                 self.isLoading = false
+                self.flipEnabled = result.flipEnabled
             })
             .store(in: &cancellableSet)
     }
@@ -41,9 +43,10 @@ class QRCodeTileViewModel: ObservableObject {
     private func generateQr(data viewData: QRCodeTileViewData) -> AnyPublisher<QRGeneratorResult, Never> {
         Deferred { [codeGenerator] in
             Future<QRGeneratorResult, Never> { promise in
-                var newQrColoredImage: UIImage?
-                if viewData.foreground != CGColor.qr.defaultForeground || viewData.background != CGColor.qr.defaultBackground {
-                    newQrColoredImage = codeGenerator.generateCode(
+                var modifiedAppearanceImage: UIImage?
+                let isSettingsModified = !viewData.isDefaultSettings
+                if isSettingsModified {
+                    modifiedAppearanceImage = codeGenerator.generateCode(
                         viewData.data,
                         viewData.foreground,
                         viewData.background,
@@ -58,9 +61,13 @@ class QRCodeTileViewModel: ObservableObject {
                     CGColor.qr.defaultBackground,
                     viewData.errorCorrectionLevel,
                     viewData.codeType,
-                    viewData.qrStyle
+                    nil
                 )!
-                let result = QRGeneratorResult(blackAndWhiteImage: newBlackAndWhiteQrImage, coloredImage: newQrColoredImage ?? newBlackAndWhiteQrImage)
+                let result = QRGeneratorResult(
+                    blackAndWhiteImage: newBlackAndWhiteQrImage,
+                    modifiedAppearanceImage: modifiedAppearanceImage ?? newBlackAndWhiteQrImage,
+                    flipEnabled: isSettingsModified
+                )
                 promise(.success(result))
             }
         }
@@ -71,5 +78,6 @@ class QRCodeTileViewModel: ObservableObject {
 
 struct QRGeneratorResult {
     let blackAndWhiteImage: UIImage
-    let coloredImage: UIImage
+    let modifiedAppearanceImage: UIImage
+    let flipEnabled: Bool
 }

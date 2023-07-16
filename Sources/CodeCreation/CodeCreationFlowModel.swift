@@ -9,7 +9,7 @@ import XCTestDynamicOverlay
 final public class CodeCreationFlowModel: ObservableObject {
 
     public var onCodeCreatoinFinished: (CodeModel) -> Void = unimplemented("SelectingCodeTypeModel.onCodeCreatoinFinished")
-    @Published var codeTypes: [CodeContentType] = [CodeContentType.rawText, CodeContentType.binary]
+    @Published var codeTypes: [CodeContentType] = [CodeContentType.rawText, CodeContentType.url]
 
     @Published var qrDataType: QRFormData = .rawText("") {
         didSet {

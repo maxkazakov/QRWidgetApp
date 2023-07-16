@@ -35,6 +35,10 @@ public extension CodeGenerator {
         ? (model.backgroundColor?.cgColor ?? CGColor.qr.defaultBackground)
         : CGColor.qr.defaultBackground
 
+        let style: QRStyle? = useCustomColorsIfPossible
+        ? model.qrStyle
+        : nil
+
         return generateCode(
             model.data,
             size,
@@ -42,7 +46,7 @@ public extension CodeGenerator {
             backgroundColor,
             model.errorCorrectionLevel,
             model.type,
-            model.qrStyle
+            style
         )
     }
 

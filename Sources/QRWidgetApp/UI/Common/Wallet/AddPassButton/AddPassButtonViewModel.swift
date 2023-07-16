@@ -33,6 +33,7 @@ class AddToWalletButtonViewModel: ViewModel {
         sendAnalyticsEvent(.appleWalletClick, nil)
         status = .loading
         walletService.createPass(code: qrModel)
+            .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [sendAnalyticsEvent] in
                 if case let .failure(error) = $0 {
                     self.status = .notLoading
