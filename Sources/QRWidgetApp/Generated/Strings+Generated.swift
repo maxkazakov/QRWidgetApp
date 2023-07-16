@@ -57,7 +57,7 @@ internal enum L10n {
   }
 
   internal enum CreateNewQrCodeButton {
-    /// Create
+    /// Create QR
     internal static let title = L10n.tr("Localizable", "createNewQrCodeButton.title")
   }
 
@@ -82,6 +82,11 @@ internal enum L10n {
       /// Tap on QR-code to see standard QR-code colors
       internal static let text = L10n.tr("Localizable", "flipperQr.info.text")
     }
+  }
+
+  internal enum Group {
+    /// Group
+    internal static let navigationTitle = L10n.tr("Localizable", "group.navigationTitle")
   }
 
   internal enum History {
@@ -110,7 +115,7 @@ internal enum L10n {
       /// You didn't create any code yet
       internal static let title = L10n.tr("Localizable", "myCodes.empty.title")
       internal enum CreateNew {
-        /// Create
+        /// Create QR
         internal static let button = L10n.tr("Localizable", "myCodes.empty.createNew.button")
       }
     }
@@ -226,6 +231,13 @@ internal enum L10n {
     }
   }
 
+  internal enum QrStyle {
+    /// Eye
+    internal static let eye = L10n.tr("Localizable", "qrStyle.eye")
+    /// Pixels
+    internal static let pixels = L10n.tr("Localizable", "qrStyle.pixels")
+  }
+
   internal enum QrType {
     /// Text
     internal static let text = L10n.tr("Localizable", "qrType.text")
@@ -234,7 +246,7 @@ internal enum L10n {
   }
 
   internal enum Scanner {
-    /// QR-code not found
+    /// Code was not found
     internal static let qrNotFound = L10n.tr("Localizable", "scanner.qrNotFound")
     /// Batch Scan
     internal static let scanButton = L10n.tr("Localizable", "scanner.scanButton")

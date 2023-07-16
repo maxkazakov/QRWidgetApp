@@ -20,7 +20,7 @@ struct BatchCodesView: View {
             .buttonStyle(PlainButtonStyle())
             .listStyle(InsetGroupedListStyle())
         }
-        .navigationTitle(viewModel.title)
+        .navigationTitle(L10n.Group.navigationTitle)
         .onAppear(perform: { viewModel.onAppear() })
         .onChange(of: selectedQRId, perform: {
             if $0 != nil {

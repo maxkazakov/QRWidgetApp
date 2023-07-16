@@ -21,10 +21,6 @@ class BatchCodesViewModel: ViewModel {
     @Published var codes: [SingleCodeRowUIModel] = []
     @Published var isLoading = false
 
-    var title: String {
-        "Batch"
-    }
-
     func remove(_ indexSet: IndexSet) {
         for index in indexSet {
             codesService.removeQR(id: codes[index].id)

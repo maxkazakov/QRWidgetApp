@@ -12,9 +12,10 @@ extension CodeGenerator {
         return CodeGenerator(
             generateCode: { data, size, foreground, background, errorCorrectionLevel, codeType, qrStyle in
             if codeType == .qr, let stringPayload = data.stringPayload {
+                let scaledSize = CGSize(width: size.width * UIScreen.main.scale, height: size.height * UIScreen.main.scale)
                 let info = QRCodeImageGenerationInfo(
                     data: stringPayload,
-                    size: size,
+                    size: scaledSize,
                     errorCorrectessLevel: errorCorrectionLevel,
                     foregroundColor: foreground,
                     backgroundColor: background,
@@ -119,7 +120,7 @@ public class CodeGeneratorLive {
             resultImage = colorImage
         }
 
-        print("QR original size: \(resultImage.extent.size)")
+        print("original code image size: \(resultImage.extent.size)")
 
         ///scale to width:height
         let scaleW = size.width / resultImage.extent.size.width

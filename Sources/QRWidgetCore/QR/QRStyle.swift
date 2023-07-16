@@ -31,32 +31,19 @@ public struct QRStyle: Equatable {
 
         public var description: String {
             switch self {
-            case .square:
-                return "Square"
-            case .circle:
-                return "Circle"
-            case .roundedRect:
-                return "Rounded rectangle"
-            case .roundedOuter:
-                return "Rounded outer"
-            case .roundedPointingIn:
-                return "Rounded pointing in"
-            case .leaf:
-                return "Leaf"
-            case .squircle:
-                return "Squircle"
-            case .barsHorizontal:
-                return "Bars horizontal"
-            case .barsVertical:
-                return "Bars vertical"
-            case .pixels:
-                return "Pixels"
-            case .corneredPixels:
-                return "Cornered pixels"
-            case .edges:
-                return "Edges"
-            case .shield:
-                return "Shield"
+            case .square: return L10n.QrStyle.Eye.square
+            case .circle: return L10n.QrStyle.Eye.circle
+            case .roundedRect: return L10n.QrStyle.Eye.roundedRect
+            case .roundedOuter: return L10n.QrStyle.Eye.roundedOuter
+            case .roundedPointingIn: return L10n.QrStyle.Eye.roundedPointingIn
+            case .leaf: return L10n.QrStyle.Eye.leaf
+            case .squircle: return L10n.QrStyle.Eye.squircle
+            case .barsHorizontal: return L10n.QrStyle.Eye.barsHorizontal
+            case .barsVertical: return L10n.QrStyle.Eye.barsVertical
+            case .pixels: return L10n.QrStyle.Eye.pixels
+            case .corneredPixels: return L10n.QrStyle.Eye.corneredPixels
+            case .edges: return L10n.QrStyle.Eye.edges
+            case .shield: return L10n.QrStyle.Eye.shield
             }
         }
     }
@@ -69,9 +56,6 @@ public struct QRStyle: Equatable {
         case square = 0
         case circle
         case curvePixel
-        case roundedRect
-        case horizontal
-        case vertical
         case roundedPath
         case roundedEndIndent
         case squircle
@@ -85,20 +69,17 @@ public struct QRStyle: Equatable {
 
         public var description: String {
             switch self {
-            case .square: return "Square"
-            case .circle: return "Circle"
-            case .curvePixel: return "Curve pixel"
-            case .roundedRect: return "Rounded rect"
-            case .horizontal: return "Horizontal"
-            case .vertical: return "Vertical"
-            case .roundedPath: return "Rounded path"
-            case .roundedEndIndent: return "Rounded end indent"
-            case .squircle: return "Squircle"
-            case .pointy: return "Pointy"
-            case .sharp: return "Sharp"
-            case .star: return "Star"
-            case .flower: return "Flower"
-            case .shiny: return "Shiny"
+            case .square: return L10n.QrStyle.Pixels.square
+            case .circle: return L10n.QrStyle.Pixels.circle
+            case .curvePixel: return L10n.QrStyle.Pixels.curvePixel
+            case .roundedPath: return L10n.QrStyle.Pixels.roundedPath
+            case .roundedEndIndent: return L10n.QrStyle.Pixels.roundedEndIndent
+            case .squircle: return L10n.QrStyle.Pixels.squircle
+            case .pointy: return L10n.QrStyle.Pixels.pointy
+            case .sharp: return L10n.QrStyle.Pixels.sharp
+            case .star: return L10n.QrStyle.Pixels.star
+            case .flower: return L10n.QrStyle.Pixels.flower
+            case .shiny: return L10n.QrStyle.Pixels.shiny
             }
         }
     }

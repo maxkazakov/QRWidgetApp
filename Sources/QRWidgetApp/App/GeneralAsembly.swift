@@ -173,10 +173,10 @@ class GeneralAssembly {
     }
 
     // Main Details View
-    func makeShareView(parentRouter: Router, qrModel: CodeModel, source: AnalyticsSource.Share, customButton: (() -> AnyView)? = nil) -> some View {
+    func makeShareView(parentRouter: Router, qrModel: CodeModel, source: AnalyticsSource.Share) -> some View {
         let viewModel = ShareMenuViewModel(source: source, sendAnalytics: appEnvironment.analyticsEnvironment.sendAnalyticsEvent)
         viewModel.router = parentRouter
-        let view = ShareMenuView(qrModel: qrModel, customButton: customButton, viewModel: viewModel)
+        let view = ShareMenuView(qrModel: qrModel, viewModel: viewModel)
         return view
     }
 

@@ -23,14 +23,16 @@ class ShareMenuViewModel: ViewModel {
     }
 
     func shareAsText(_ qrModel: CodeModel) {
+        guard let text = qrModel.data.stringPayload else {
+            return
+        }
         sendAnalytics(.tapShareAsString, ["source": source.rawValue])
-        let text = qrModel.data
         self.share(items: [text])
     }
 
     func shareAsImage(_ qrModel: CodeModel) {
         sendAnalytics(.tapShareAsImage, ["source": source.rawValue])
-        guard let image = codeGenerator.generateCodeFromModel(qrModel, false) else {
+        guard let image = codeGenerator.generateCodeFromModel(qrModel, true) else {
             return
         }
         self.share(items: [image])

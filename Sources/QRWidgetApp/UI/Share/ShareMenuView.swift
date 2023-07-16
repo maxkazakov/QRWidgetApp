@@ -1,37 +1,38 @@
-//
-//  ShareMenu.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 23.04.2022.
-//
 
 import SwiftUI
 import QRWidgetCore
 
-struct ShareMenuView: View {    
+struct ShareMenuView: View {
     let qrModel: CodeModel
-    var customButton: (() -> AnyView)? = nil
     @StateObject var viewModel: ShareMenuViewModel
 
     var body: some View {
-        Menu {
-            Button(L10n.Sharing.asImage, action: { viewModel.shareAsImage(qrModel) })
-            Button(L10n.Sharing.asText, action: { viewModel.shareAsText(qrModel) })
-        } label: {
-            button
-        }
-        .onTapGesture {
-            viewModel.trackTapShare()
+        if qrModel.data.stringPayload != nil {
+            Menu {
+                Button(L10n.Sharing.asImage, action: { viewModel.shareAsImage(qrModel) })
+                Button(L10n.Sharing.asText, action: { viewModel.shareAsText(qrModel) })
+            } label: {
+                button
+            }
+            .onTapGesture {
+                viewModel.trackTapShare()
+            }
+        } else {
+            Button(
+                action: {
+                    viewModel.shareAsImage(qrModel)
+                    viewModel.trackTapShare()
+                },
+                label: {
+                    button
+                }
+            )
         }
     }
 
     @ViewBuilder
     var button: some View {
-        if let custom = customButton?() {
-            custom
-        } else {
-            defaultButton
-        }
+        defaultButton
     }
 
     @ViewBuilder

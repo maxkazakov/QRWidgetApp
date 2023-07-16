@@ -34,13 +34,13 @@ struct BeautifyQRView: View {
                     if viewModel.showQRSpecificSettings {
                         Section(
                             content: {
-                                Picker("Eye", selection: $viewModel.qrStyle.eye) {
+                                Picker(L10n.QrStyle.eye, selection: $viewModel.qrStyle.eye) {
                                     ForEach(QRStyle.Eye.allCases) { eye in
                                         Text(eye.description).tag(eye)
                                     }
                                 }
 
-                                Picker("Pixels", selection: $viewModel.qrStyle.onPixels) {
+                                Picker(L10n.QrStyle.pixels, selection: $viewModel.qrStyle.onPixels) {
                                     ForEach(QRStyle.OnPixels.allCases) { onPixels in
                                         Text(onPixels.description).tag(onPixels)
                                     }
