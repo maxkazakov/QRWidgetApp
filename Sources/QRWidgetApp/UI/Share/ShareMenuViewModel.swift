@@ -31,11 +31,29 @@ class ShareMenuViewModel: ViewModel {
     }
 
     func shareAsImage(_ qrModel: CodeModel) {
-        sendAnalytics(.tapShareAsImage, ["source": source.rawValue])
-        guard let image = codeGenerator.generateCodeFromModel(qrModel, true) else {
-            return
+        do {
+            sendAnalytics(.tapShareAsImage, ["source": source.rawValue])
+            let tempDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
+            let fileName: String
+            if !qrModel.label.isEmpty {
+                fileName = qrModel.label
+            } else {
+                fileName = qrModel.id.uuidString
+            }
+            let targetURL = tempDirectoryURL.appendingPathComponent(fileName).appendingPathExtension("jpeg")
+            if FileManager.default.fileExists(atPath: targetURL.path) {
+                try FileManager.default.removeItem(atPath: targetURL.path)
+            }
+            guard let image = codeGenerator.generateCodeFromModel(qrModel, true),
+                  let jpegImageData = image.jpegData(compressionQuality: 1.0)
+            else {
+                return
+            }
+            try jpegImageData.write(to: targetURL)
+            share(items: [targetURL as NSURL])
+        }  catch {
+            print("Failed to share file. Error = \(error)")
         }
-        self.share(items: [image])
     }
 
     func trackTapShare() {
