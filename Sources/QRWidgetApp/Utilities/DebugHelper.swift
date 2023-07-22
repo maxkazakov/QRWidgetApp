@@ -29,18 +29,40 @@ class DebugHelper {
             dateCreated: todayDate.addingTimeInterval(-1),
             data: .string(ticket),
             type: .qr,
-            label: "Movie ticket",
-            backgroundColor: UIColor.white,
-            foregroundColor: UIColor(hexString: "01098C")
+            label: L10n.Debug.Qr.moveTicket,
+            errorCorrectionLevel: .H,
+            backgroundColor: UIColor(hexString: "D6E1FC"),
+            foregroundColor: UIColor(hexString: "2253CA"),
+            qrStyle: QRStyle(eye: .squircle, onPixels: .circle)
         )
-        let qrCode_2 = CodeModel(dateCreated: todayDate.addingTimeInterval(-2), data: .string(appstore), type: .qr, label: "QR codes app",
-                               backgroundColor: UIColor(hexString: "012F7B"),
-                               foregroundColor: UIColor(hexString: "FEC700"))
-        let qrCode_3 = CodeModel(dateCreated: yesterdayDate.addingTimeInterval(-1), data: .string(flight), type: .qr, label: "Flight to London",
-                               backgroundColor: UIColor.black,
-                               foregroundColor: UIColor(hexString: "FFA7C8"))
-        let qrCode_4 = CodeModel(dateCreated: yesterdayDate.addingTimeInterval(-2), data: .string(appstore), type: .qr, label: "Link to the app")
+        let qrCode_2 = CodeModel(
+            dateCreated: todayDate.addingTimeInterval(-2),
+            data: .string(appstore),
+            type: .qr,
+            label: L10n.Debug.Qr.flight,
+            errorCorrectionLevel: .L,
+            backgroundColor: UIColor(hexString: "3E1156"),
+            foregroundColor: UIColor(hexString: "DE789D"),
+            qrStyle: QRStyle(eye: .circle, onPixels: .pointy)
+        )
+        let qrCode_3 = CodeModel(
+            dateCreated: yesterdayDate.addingTimeInterval(-1),
+            data: .string(flight),
+            type: .qr,
+            label: L10n.Debug.Qr.twitter,
+            errorCorrectionLevel: .L,
+            backgroundColor: UIColor(hexString: "102F77"),
+            foregroundColor: UIColor(hexString: "F6CA44"),
+            qrStyle: QRStyle(eye: .roundedRect, onPixels: .curvePixel)
+        )
+        let qrCode_4 = CodeModel(
+            dateCreated: yesterdayDate.addingTimeInterval(-2),
+            data: .string(appstore),
+            type: .qr,
+            label: L10n.Debug.Qr.linkToApp
+        )
 
+        [qrCode_1, qrCode_2, qrCode_3].forEach { favoritesService.addSavorite(id: $0.id) }
         qrService.addNewQrCodes(qrModels: [qrCode_1, qrCode_2, qrCode_3, qrCode_4])
 
         let batchId = UUID()

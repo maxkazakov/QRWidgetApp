@@ -61,6 +61,19 @@ internal enum L10n {
     internal static let title = L10n.tr("Localizable", "createNewQrCodeButton.title")
   }
 
+  internal enum Debug {
+    internal enum Qr {
+      /// Flight to London
+      internal static let flight = L10n.tr("Localizable", "debug.qr.flight")
+      /// Link to the app
+      internal static let linkToApp = L10n.tr("Localizable", "debug.qr.linkToApp")
+      /// Movie ticket
+      internal static let moveTicket = L10n.tr("Localizable", "debug.qr.moveTicket")
+      /// Twitter profile
+      internal static let twitter = L10n.tr("Localizable", "debug.qr.twitter")
+    }
+  }
+
   internal enum DeleteQr {
     /// Remove
     internal static let buttonTitle = L10n.tr("Localizable", "deleteQr.buttonTitle")
