@@ -97,11 +97,14 @@ class BeautifyQRViewModel: ViewModel {
         backgroundColor == .qr.defaultBackground
     }
 
-    private func checkIfProFeaturesChanged() -> Bool {
+    func checkIfProFeaturesChanged() -> Bool {
         let isColorDefault = foregroundColor == CGColor.qr.defaultForeground
             && backgroundColor == CGColor.qr.defaultBackground
-        let isCoorectionLevelDefault = errorCorrectionLevel == .default
-        let nothingChanged = isColorDefault && isCoorectionLevelDefault
+        let isCorectionLevelDefault = errorCorrectionLevel == .default
+        let isDefaultQRStyle = qrStyle.isDefault
+        let nothingChanged = isColorDefault
+            && isCorectionLevelDefault
+            && isDefaultQRStyle
         return !nothingChanged
     }
 }

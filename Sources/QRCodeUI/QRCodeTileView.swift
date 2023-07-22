@@ -89,7 +89,7 @@ public struct QRCodeTileView: View {
                         .scaledToFit()
                         .foregroundColor(Color(UIColor.systemGray5))
                 }
-                .frame(width: 200, height: 200)
+                .frame(width: 216, height: 216)
             }
         }
         .animation(.easeInOut(duration: 0.5), value: viewModel.flipped)
@@ -103,7 +103,6 @@ public struct QRCodeTileView: View {
         .onChange(of: data, perform: {
             viewModel.update($0)
         })
-        .frame(width: 200, height: 200)
     }
 }
 

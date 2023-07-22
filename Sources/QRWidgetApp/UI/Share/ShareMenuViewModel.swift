@@ -1,9 +1,3 @@
-//
-//  ShareMenuViewModel.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 23.04.2022.
-//
 
 import SwiftUI
 import Combine

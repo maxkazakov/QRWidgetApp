@@ -16,17 +16,29 @@ struct BeautifyQRView: View {
             ZStack {
                 Form {
                     Section {
-                        HStack {
-                            Spacer()
-                            QRCodeTileView(
-                                data: viewModel.qrModel.data,
-                                codeType: viewModel.qrModel.type,
-                                foreground: viewModel.foregroundColor,
-                                background: viewModel.backgroundColor,
-                                errorCorrectionLevel: viewModel.errorCorrectionLevel,
-                                qrStyle: viewModel.qrStyle
-                            )
-                            Spacer()
+                        VStack(spacing: 4) {
+                            HStack {
+                                Spacer()
+                                QRCodeTileView(
+                                    data: viewModel.qrModel.data,
+                                    codeType: viewModel.qrModel.type,
+                                    foreground: viewModel.foregroundColor,
+                                    background: viewModel.backgroundColor,
+                                    errorCorrectionLevel: viewModel.errorCorrectionLevel,
+                                    qrStyle: viewModel.qrStyle
+                                )
+                                Spacer()
+                            }
+                            if viewModel.checkIfProFeaturesChanged() {
+                                HStack(alignment: .top) {
+                                    Image(systemName: "info.circle")
+                                        .imageScale(.small)
+                                    Text(L10n.ChangeAppearance.fliptip)
+                                        .multilineTextAlignment(.center)
+                                        .font(.caption)
+                                }
+                                .foregroundColor(.gray).offset(x: 0, y: 12)
+                            }
                         }
                         .padding(.vertical, 16)
                     }
@@ -138,7 +150,7 @@ struct BeautifyQRView_Previews: PreviewProvider {
     static var previews: some View {
         BeautifyQRView(
             viewModel: BeautifyQRViewModel(
-                qrModel: CodeModel(data: .string("something"), type: .qr),
+                qrModel: CodeModel(data: .string("something"), type: .qr, foregroundColor: .red),
                 sendAnalytics: { event, params in
 
                 }

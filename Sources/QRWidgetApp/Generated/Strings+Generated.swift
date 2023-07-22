@@ -50,6 +50,8 @@ internal enum L10n {
     internal static let colors = L10n.tr("Localizable", "changeAppearance.colors")
     /// Error correction level
     internal static let errorCorrectionLevel = L10n.tr("Localizable", "changeAppearance.errorCorrectionLevel")
+    /// You can tap on the image to make it black and white
+    internal static let fliptip = L10n.tr("Localizable", "changeAppearance.fliptip")
     /// Foreground color
     internal static let foregroundColor = L10n.tr("Localizable", "changeAppearance.foregroundColor")
     /// Appearance

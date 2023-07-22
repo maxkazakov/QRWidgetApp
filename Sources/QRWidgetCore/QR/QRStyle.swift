@@ -86,6 +86,10 @@ public struct QRStyle: Equatable {
 
     public var eye: Eye
     public var onPixels: OnPixels
+
+    public var isDefault: Bool {
+        eye == .default && onPixels == .default
+    }
 }
 
 extension QRStyle: Codable {
