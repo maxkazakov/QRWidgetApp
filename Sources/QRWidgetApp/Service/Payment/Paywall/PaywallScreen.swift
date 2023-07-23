@@ -30,27 +30,6 @@ struct PaywallScreen: View {
 
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: 20) {
-//                        VStack(spacing: 12) {
-//                            Text(L10n.Paywall.freeVersion)
-//                                .font(Font.system(size: 28, weight: .bold, design: .default))
-//                                .foregroundColor(.white)
-//
-//                            HStack {
-//                                VStack(alignment: .leading, spacing: 16) {
-//                                    FeatureView(name: L10n.Paywall.Feature.Scanner.title,
-//                                                subtitle: L10n.Paywall.Feature.Scanner.subtitle,
-//                                                icon: "qrcode.viewfinder")
-//                                    FeatureView(name: L10n.Paywall.Feature.Sharing.title,
-//                                                subtitle: L10n.Paywall.Feature.Sharing.subtitle,
-//                                                icon: "square.and.arrow.up")
-//                                    FeatureView(name: L10n.Paywall.Feature.NoAds.title,
-//                                                subtitle: L10n.Paywall.Feature.NoAds.subtitle,
-//                                                icon: "speaker.slash")
-//                                }
-//                                Spacer()
-//                            }
-//                            .padding(.horizontal, 16)
-//                        }
                         VStack(spacing: 8) {
                             HStack(alignment: .center) {
                                 Image(uiImage: Asset.star.image)

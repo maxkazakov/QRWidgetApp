@@ -1,5 +1,6 @@
 
 import UIKit
+import StoreKit
 
 class RootViewController: UIViewController {
 

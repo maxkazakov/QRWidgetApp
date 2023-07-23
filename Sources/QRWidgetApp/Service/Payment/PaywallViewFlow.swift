@@ -1,9 +1,3 @@
-//
-//  PaywallViewConnector.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 26.10.2021.
-//
 
 import SwiftUI
 

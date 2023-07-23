@@ -18,7 +18,8 @@ class ViewModel: ViewModelProtocol {
     @Published var isProActivated: Bool = false
 
     init() {
-        generalAssembly.appEnvironment.paymentEnvironment.proActivatedPublisher()        
+        let paymentEnvironment = generalAssembly.appEnvironment.paymentEnvironment
+        paymentEnvironment.proActivatedPublisher()
             .sink(receiveValue: { [weak self] isActivated in
                 self?.isProActivated = isActivated
             })

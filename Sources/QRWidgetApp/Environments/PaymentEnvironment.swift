@@ -13,6 +13,7 @@ public enum PaywallSource: String {
     case appleWallet
     case settings
     case scan
+    case randomlyOnStart
 }
 
 public struct PurchasesEnvironment {

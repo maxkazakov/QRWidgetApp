@@ -57,8 +57,9 @@ public class Starter {
         setupAnalyticsUserOptions(codesCount: codesCount)
         startWatchSession()
 
+        let isProActivated = generalAssembly.appEnvironment.paymentEnvironment.isProActivated()
         var needToShowOnboarding = !userDefaultsStorage.onboardingWasShown
-            && !generalAssembly.appEnvironment.paymentEnvironment.isProActivated()
+            && !isProActivated
         //        #if DEBUG
         //        needToShowOnboarding = true
         //        #endif
@@ -73,10 +74,6 @@ public class Starter {
         } else {
             showTabsController()
         }
-
-        // #if !DEBUG
-        tryAskForReview(codesCount: codesCount)
-        // #endif
 
         Logger.debugLog(message: "App Starter: End")
         isAppStartedPublisher.send(true)
@@ -94,14 +91,6 @@ public class Starter {
 
     private func startWatchSession() {
         generalAssembly.watchPhoneManager.startSession()
-    }
-
-    // MARK: - Migrations
-
-    private func tryAskForReview(codesCount: Int) {
-        if let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
-            SKStoreReviewController.requestReview(in: scene)
-        }
     }
 
     func setupWidgets() {

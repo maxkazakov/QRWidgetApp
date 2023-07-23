@@ -35,6 +35,12 @@ struct MainTabView: View {
                 }
                 .tag(Tab.settings)
         }
+        .fullScreenCover(isPresented: $viewModel.presentingPaywall) {
+            generalAssembly.makePaywallView(sourceScreen: .randomlyOnStart)
+        }
+        .onAppear {
+            viewModel.onAppear()
+        }
         .accentColor(.blue)
         .tabViewStyle(.automatic)
     }
