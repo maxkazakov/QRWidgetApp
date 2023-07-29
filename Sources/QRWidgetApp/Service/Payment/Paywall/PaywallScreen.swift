@@ -2,6 +2,7 @@ import SwiftUI
 import Haptica
 import StoreKit
 import Combine
+import Lottie
 
 struct PaywallScreen: View {
     @ObservedObject var viewModel: PaywallViewModel

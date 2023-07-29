@@ -141,6 +141,18 @@ internal enum L10n {
     internal static let allQRCodesInOnePlace = L10n.tr("Localizable", "onboarding.allQRCodesInOnePlace")
     /// QR-code on main screen
     internal static let qrOnMainScreen = L10n.tr("Localizable", "onboarding.qrOnMainScreen")
+    internal enum Step1 {
+      /// Scan, create, customize and store all types of codes
+      internal static let title = L10n.tr("Localizable", "onboarding.step1.title")
+    }
+    internal enum Step2 {
+      /// QR codes widgets on main screen
+      internal static let title = L10n.tr("Localizable", "onboarding.step2.title")
+    }
+    internal enum Step3 {
+      /// Add to Wallet Pass and Apple Watch
+      internal static let title = L10n.tr("Localizable", "onboarding.step3.title")
+    }
   }
 
   internal enum Paywall {

@@ -55,9 +55,11 @@ public enum AnalyticsEvent: String {
 
     // Onboarding
     case showOnboarding
-    case tapContinueOnQrOnMainOnboarding
-    case tapContinueOnAppleWalletPassOnboarding
-    case tapContinueOnAllQRInOncePlaceOnboarding
+
+    case tapContinueOnStep1
+    case tapContinueOnStep2
+    case tapContinueOnStep3
+
     case tapCloseOnPaywallOnboarding
 
     case openDetails

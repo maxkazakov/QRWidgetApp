@@ -1,9 +1,3 @@
-//
-//  OnboardingViewController.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 25.04.2022.
-//
 
 import UIKit
 import SwiftUI
@@ -13,9 +7,12 @@ enum OnboardingPage: Int, Identifiable {
     var id: Int {
         return self.rawValue
     }
+    case step1
+    case step2
+    case step3
     case paywall
 
-    static let orderedPages: [OnboardingPage] = [.paywall]
+    static let orderedPages: [OnboardingPage] = [.step1, .step2, .step3, .paywall]
 }
 
 class OnboardingViewController: UIPageViewController {
@@ -65,6 +62,40 @@ class OnboardingViewController: UIPageViewController {
                     self?.onComplete?()
                 }
             )
+        case .step1:
+            OnboardingPageView(titleText: L10n.Onboarding.Step1.title, image: {
+                Image(uiImage: Asset.Onboarding.step1.image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: UIScreen.main.bounds.size.width - 50)
+
+            }, onTapContinue: { [weak self] in
+                self?.sendAnalytics(.tapContinueOnStep1, nil)
+                self?.goToNextPage()
+            })
+
+        case .step2:
+            OnboardingPageView(titleText: L10n.Onboarding.Step2.title, image: {
+                Image(uiImage: Asset.Onboarding.step2.image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: UIScreen.main.bounds.size.width - 50)
+
+            }, onTapContinue: { [weak self] in
+                self?.sendAnalytics(.tapContinueOnStep2, nil)
+                self?.goToNextPage()
+            })
+        case .step3:
+            OnboardingPageView(titleText: L10n.Onboarding.Step3.title, image: {
+                Image(uiImage: Asset.Onboarding.step3.image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: UIScreen.main.bounds.size.width - 50)
+
+            }, onTapContinue: { [weak self] in
+                self?.sendAnalytics(.tapContinueOnStep3, nil)
+                self?.goToNextPage()
+            })
         }
     }
 

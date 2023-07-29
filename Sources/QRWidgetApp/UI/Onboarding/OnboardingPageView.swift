@@ -1,12 +1,6 @@
-//
-//  OnboardingPageView.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 09.01.2022.
-//
+
 
 import SwiftUI
-//import Lottie
 
 struct OnboardingPageView<CenterImage: View>: View {
     let titleText: String
@@ -16,7 +10,7 @@ struct OnboardingPageView<CenterImage: View>: View {
     var body: some View {
         VStack(spacing: 12) {
             Text(titleText)
-                .font(Font.system(size: 38, weight: .heavy, design: .default))
+                .font(Font.system(size: 34, weight: .heavy, design: .rounded))
                 .foregroundColor(.white)
                 .multilineTextAlignment(.center)
 
@@ -34,37 +28,39 @@ struct OnboardingPageView<CenterImage: View>: View {
                         onTapContinue()
                     }
             })
-            .buttonStyle(MainButtonStyle(titleColor: Asset.primaryColor.color, backgroundColor: .white))
-            .padding(.bottom, 22)
+            .buttonStyle(MainButtonStyle(titleColor: Asset.primaryColor.color, backgroundColor: .white))            
         }
         .padding(.top, 40)
-        .padding(.all)
+        .padding(.horizontal)
+        .padding(.bottom)
         .background(LinearGradient.vertical.ignoresSafeArea())
     }
 }
 
-//struct OnboardingPageView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        Group {
-//            OnboardingPageView(titleText: "QR-code on main screen", image: {
-//                Image.init(uiImage: UIImage(named: "QrImageOnboarding")!)
-//                    .resizable()
-//                    .aspectRatio(contentMode: .fit)
-//                    .frame(maxWidth: 250)
-//
-//            }, onTapContinue: {})
-//            OnboardingPageView(titleText: "Apple Wallet Pass", image: {
-//                LottieView(name: "wallet")
-//                    .aspectRatio(contentMode: .fit)
-//                    .frame(maxWidth: 230)
-//
-//            }, onTapContinue: {})
-//            OnboardingPageView(titleText: "All QR-codes in one place", image: {
-//                LottieView(name: "sittingOnPhone")
-//                    .aspectRatio(contentMode: .fit)
-//                    .frame(maxWidth: 300)
-//
-//            }, onTapContinue: {})
-//        }
-//    }
-//}
+struct OnboardingPageView_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            OnboardingPageView(titleText: "Scan, create, customize and store all types of codes", image: {
+                Image(uiImage: Asset.Onboarding.step1.image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: UIScreen.main.bounds.size.width - 50)
+
+            }, onTapContinue: {})
+            OnboardingPageView(titleText: "QR codes widgets on main screen", image: {
+                Image(uiImage: Asset.Onboarding.step2.image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: UIScreen.main.bounds.size.width - 50)
+
+            }, onTapContinue: {})
+            OnboardingPageView(titleText: "Add to Wallet Pass and Apple Watch", image: {
+                Image(uiImage: Asset.Onboarding.step3.image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: UIScreen.main.bounds.size.width - 50)
+
+            }, onTapContinue: {})
+        }
+    }
+}

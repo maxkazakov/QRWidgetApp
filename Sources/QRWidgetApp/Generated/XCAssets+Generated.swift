@@ -24,6 +24,11 @@ internal enum Asset {
   internal enum Backgrounds {
     internal static let xmaxBranches = ImageAsset(name: "xmax-branches")
   }
+  internal enum Onboarding {
+    internal static let step1 = ImageAsset(name: "Onboarding/step1")
+    internal static let step2 = ImageAsset(name: "Onboarding/step2")
+    internal static let step3 = ImageAsset(name: "Onboarding/step3")
+  }
   internal enum QRColor {
     internal static let xmasBranches = ColorAsset(name: "xmas-branches")
   }
