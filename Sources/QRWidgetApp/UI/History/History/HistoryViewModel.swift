@@ -136,7 +136,7 @@ class HistoryViewModel: ViewModel {
             DispatchQueue.main.async {
                 withAnimation {
                     self.isLoading = false
-                    self.sections = sections
+                    self.sections = sections                    
                 }
             }
         }

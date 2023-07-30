@@ -31,7 +31,7 @@ struct ScannerView: View {
                 isGalleryPresented: $isGalleryPresented) { response in
                     switch response {
                     case .success(let result):
-                        viewModel.codeFound(result)                        
+                        viewModel.codeFound(result)
 
                     case .failure(let error):
                         self.viewModel.failedToRecognize()

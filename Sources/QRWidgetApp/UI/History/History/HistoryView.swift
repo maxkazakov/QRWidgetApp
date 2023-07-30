@@ -23,7 +23,7 @@ struct HistoryView: View {
                                     rowView(item: item)
                                 }
                                 .onDelete { indexSet in
-                                    viewModel.userTappedRemove(indexSet: indexSet, section: section)                                    
+                                    viewModel.userTappedRemove(indexSet: indexSet, section: section)
                                 }
                             },
                             header: {

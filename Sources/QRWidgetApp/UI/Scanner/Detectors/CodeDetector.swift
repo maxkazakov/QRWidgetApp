@@ -4,19 +4,18 @@ import AVFoundation
 
 struct CodeDetectorResult {
     let codeType: AVMetadataObject.ObjectType
-    let descriptor: CIBarcodeDescriptor
+    let descriptor: CIBarcodeDescriptor?
     let stringPayload: String?
 }
 
 class CodeDetector {
 
-    struct AztecCodeDetectorError: Error {
-    }
+    struct CodeDetectorError: Error { }
 
     func find(image: UIImage) async throws -> CodeDetectorResult {
         try await withCheckedThrowingContinuation { continuation in
             guard let cgImage = image.cgImage else {
-                continuation.resume(throwing: AztecCodeDetectorError())
+                continuation.resume(throwing: CodeDetectorError())
                 return
             }
             let orientation = CGImagePropertyOrientation(image.imageOrientation)
@@ -39,25 +38,23 @@ class CodeDetector {
             }
             else {
                 guard let observations = request.results as? [VNBarcodeObservation],
-                      let observation = observations.first(where: { $0.confidence == 1.0 }),
-                      (observation.symbology == .qr || observation.symbology == .aztec),
-                      let barcodeDescriptor = observation.barcodeDescriptor
+                      let observation = observations.max(by: { $0.confidence < $1.confidence }),
+                      let avCodeType = self.mapToAVCodeType(observation.symbology)
                 else {
-                    continuation.resume(throwing: AztecCodeDetectorError())
+                    continuation.resume(throwing: CodeDetectorError())
                     return
                 }
-                let codeType: AVMetadataObject.ObjectType
-                switch observation.symbology {
-                case .aztec:
-                    codeType = .aztec
-                case .qr:
-                    codeType = .qr
-                default:
-                    fatalError()
+
+                let barcodeDescriptor = observation.barcodeDescriptor
+                let stringPayload = observation.payloadStringValue
+                let dataExist = stringPayload != nil || barcodeDescriptor != nil
+                guard dataExist else {
+                    continuation.resume(throwing: CodeDetectorError())
+                    return
                 }
 
                 let result = CodeDetectorResult(
-                    codeType: codeType,
+                    codeType: avCodeType,
                     descriptor: barcodeDescriptor,
                     stringPayload: observation.payloadStringValue
                 )
@@ -65,6 +62,25 @@ class CodeDetector {
             }
         }
         return request
+    }
+
+    private func mapToAVCodeType(_ barcodeSymbology: VNBarcodeSymbology) -> AVMetadataObject.ObjectType? {
+        switch barcodeSymbology {
+        case .aztec:
+            return .aztec
+        case .qr:
+            return .qr
+        case .ean13:
+            return .ean13
+        case .ean8:
+            return .ean8
+        case .code128:
+            return .code128
+        case .code39:
+            return .code39
+        default:
+            return nil
+        }
     }
 }
 

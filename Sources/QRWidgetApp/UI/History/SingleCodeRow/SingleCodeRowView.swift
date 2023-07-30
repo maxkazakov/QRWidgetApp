@@ -14,6 +14,12 @@ struct SingleCodeRowView: View {
                     Text("aztec")
                         .font(.caption)
                 }
+            case .code128, .code39, .ean13, .ean8, .code39Mod43:
+                VStack {
+                    Image(systemName: "barcode")
+                    Text("barcode")
+                        .font(.caption)
+                }
             case .qr:
                 Image(systemName: "qrcode")
             }

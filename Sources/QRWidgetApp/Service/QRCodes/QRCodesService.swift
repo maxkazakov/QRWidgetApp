@@ -122,7 +122,8 @@ class QRCodesService {
     }
 
     func getQR(id: UUID) -> CodeModel? {
-        qrCodesPublisher.value.first { $0.id == id }
+        let codeModel = qrCodesPublisher.value.first { $0.id == id }
+        return codeModel
     }
 
     func removeQR(id: UUID) {

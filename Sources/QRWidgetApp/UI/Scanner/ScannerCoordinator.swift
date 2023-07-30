@@ -1,10 +1,3 @@
-//
-//  CodeScanner.swift
-//  https://github.com/twostraws/CodeScanner
-//
-//  Created by Paul Hudson on 14/12/2021.
-//  Copyright © 2021 Paul Hudson. All rights reserved.
-//
 
 import AVFoundation
 import SwiftUI
@@ -33,12 +26,19 @@ extension CodeScannerView {
             guard isScanActive else { return }
             if let metadataObject = metadataObjects.first {
                 guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
-                guard let descriptor = readableObject.descriptor else { return }
                 guard didFinishScanning == false else { return }
+
+                let stringData = readableObject.stringValue
+                let descriptor = readableObject.descriptor
+
+                let dataExists = stringData != nil || descriptor != nil
+                guard dataExists else {
+                    return
+                }
 
                 let result = ScanResult(
                     descriptor: descriptor,
-                    string: readableObject.stringValue,
+                    string: stringData,
                     type: readableObject.type,
                     source: .camera
                 )

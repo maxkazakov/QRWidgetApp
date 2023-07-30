@@ -55,8 +55,7 @@ public class CodeGeneratorLive {
             filter = makeCIFilter(inputBarcodeDescriptor: descriptor)
 
         case let .string(stringPayload):
-            let data = Data(stringPayload.utf8)
-            filter = makeCIFilter(data: data, codeType: codeType)
+            filter = makeCIFilter(stringPayload: stringPayload, codeType: codeType)
         }
 
         guard let filter else { return nil }
@@ -76,16 +75,32 @@ public class CodeGeneratorLive {
         return colorFilter.outputImage
     }
 
-    private func makeCIFilter(data: Data, codeType: CodeType) -> CIFilter? {
+    private func makeCIFilter(stringPayload: String, codeType: CodeType) -> CIFilter? {
         switch codeType {
         case .qr:
+            guard let data = stringPayload.data(using: .utf8) else {
+                return nil
+            }
             let filter = CIFilter.qrCodeGenerator()
             filter.setDefaults()
             filter.message = data
             return filter
 
         case .aztec:
+            guard let data = stringPayload.data(using: .isoLatin1) else {
+                return nil
+            }
             let filter = CIFilter.aztecCodeGenerator()
+            filter.setDefaults()
+            filter.message = data
+            return filter
+
+        // All barcode images are Code128
+        case .ean13, .ean8, .code128, .code39, .code39Mod43:
+            guard let data = stringPayload.data(using: .ascii) else {
+                return nil
+            }
+            let filter = CIFilter.code128BarcodeGenerator()
             filter.setDefaults()
             filter.message = data
             return filter
@@ -106,10 +121,7 @@ public class CodeGeneratorLive {
         case .qr:
             //https://www.qrcode.com/en/about/error_correction.html
             filter.setValue(errorCorrectionLevel, forKey: "inputCorrectionLevel")
-        case .aztec:
-            // TODO: Add Correctness level support:
-            // https://developer.apple.com/library/archive/documentation/GraphicsImaging/Reference/CoreImageFilterReference/index.html#//apple_ref/doc/filter/ci/CIAztecCodeGenerator
-            //            filter.setValue(errorCorrectionLevel, forKey: "inputCorrectionLevel")
+        default:
             break
         }
     }

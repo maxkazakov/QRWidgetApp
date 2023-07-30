@@ -1,10 +1,3 @@
-//
-//  CodeScanner.swift
-//  https://github.com/twostraws/CodeScanner
-//
-//  Created by Paul Hudson on 14/12/2021.
-//  Copyright © 2021 Paul Hudson. All rights reserved.
-//
 
 import AVFoundation
 import SwiftUI
@@ -31,7 +24,7 @@ public struct ScanResult {
     }
 
     /// The contents of the code.
-    public let descriptor: CIBarcodeDescriptor
+    public let descriptor: CIBarcodeDescriptor?
 
     /// The contents of the code.
     public let string: String?

@@ -1,9 +1,3 @@
-//
-//  ScannerViewModel.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 16.04.2022.
-//
 
 import SwiftUI
 import Combine
@@ -25,7 +19,14 @@ class ScannerViewModel: ViewModel {
     @Published var showBatchScanHint = false
     @Published var showPaywall = false
 
-    var availableCodeTypesForScanning: [AVMetadataObject.ObjectType] = [.qr, .aztec]
+    var availableCodeTypesForScanning: [AVMetadataObject.ObjectType] = [
+        .qr,
+        .aztec,
+        .ean13,
+        .ean8,
+        .code128,
+        .code39
+    ]
 
     var shouldVibrateOnSuccess: Bool {
         settingsService.vibrateOnCodeRecognized
@@ -81,6 +82,7 @@ class ScannerViewModel: ViewModel {
     }
 
     func codeFound(_ scanResult: ScanResult) {
+        print("Core recognized! \(scanResult.descriptor), type: \(type(of: scanResult.descriptor)), data: \(scanResult.string ?? "")")
         guard let codeType = CodeType(avType: scanResult.type) else {
             return
         }
@@ -90,17 +92,6 @@ class ScannerViewModel: ViewModel {
             singleCodeRecognized(result: scanResult, codeType: codeType)
         }
     }
-
-//    func qrCodeFound(data: String, source: ScanResult.Source, type: AVMetadataObject.ObjectType) {
-//        guard let codeType = CodeType(avType: type) else {
-//            return
-//        }
-//        if batchModeOn {
-//            batchScanRecognized(data: data, source: source, codeType: codeType)
-//        } else {
-//            singleCodeRecognized(data: data, source: source, codeType: codeType)
-//        }
-//    }
 
     private func batchScanRecognized(result: ScanResult, codeType: CodeType) {
         sendAnalytics(.qrCodeRecogzined, ["source": mapScanSource(result.source).rawValue, "isBatchMode": true])
@@ -160,6 +151,14 @@ extension CodeType {
             self = .qr
         case .aztec:
             self = .aztec
+        case .ean13:
+            self = .ean13
+        case .ean8:
+            self = .ean8
+        case .code128:
+            self = .code128
+        case .code39:
+            self = .code39        
         default:
             return nil
         }

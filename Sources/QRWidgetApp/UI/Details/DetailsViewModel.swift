@@ -35,6 +35,7 @@ class DetailsViewModel: ViewModel {
 
         super.init()
 
+        // TODO: Remove from init
         setupSubscriptions()
     }
 

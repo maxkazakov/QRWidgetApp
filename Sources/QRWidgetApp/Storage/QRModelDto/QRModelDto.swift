@@ -83,14 +83,8 @@ struct CodeModelDto: Codable {
         } else {
             self.stringPayload = try container.decode(String.self, forKey: .stringPayload)
 
-            if let descriptorData = try? container.decodeIfPresent(Data.self, forKey: .descriptor) {
-                let descriptorClass: CIBarcodeDescriptor.Type
-                switch self.type {
-                case .qr:
-                    descriptorClass = CIQRCodeDescriptor.self
-                case .aztec:
-                    descriptorClass = CIAztecCodeDescriptor.self
-                }
+            if let descriptorData = try? container.decodeIfPresent(Data.self, forKey: .descriptor),
+               let descriptorClass = type.descriptorClass {
                 self.descriptor = try? NSKeyedUnarchiver.unarchivedObject(ofClass: descriptorClass, from: descriptorData)
             } else {
                 self.descriptor = nil
@@ -121,3 +115,17 @@ struct CodeModelDto: Codable {
 extension CodeModelDto {
     static let currentVersion = 3
 }
+
+extension CodeType {
+    var descriptorClass: CIBarcodeDescriptor.Type? {
+        switch self {
+        case .qr:
+            return CIQRCodeDescriptor.self
+        case .aztec:
+            return CIAztecCodeDescriptor.self
+        default:
+            return nil
+        }
+    }
+}
+
