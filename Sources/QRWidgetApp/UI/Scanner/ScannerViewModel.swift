@@ -25,7 +25,8 @@ class ScannerViewModel: ViewModel {
         .ean13,
         .ean8,
         .code128,
-        .code39
+        .code39,
+        .pdf417
     ]
 
     var shouldVibrateOnSuccess: Bool {
@@ -158,7 +159,9 @@ extension CodeType {
         case .code128:
             self = .code128
         case .code39:
-            self = .code39        
+            self = .code39
+        case .pdf417:
+            self = .pdf417
         default:
             return nil
         }

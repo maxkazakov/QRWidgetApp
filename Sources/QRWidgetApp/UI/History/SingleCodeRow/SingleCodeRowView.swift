@@ -22,6 +22,12 @@ struct SingleCodeRowView: View {
                 }
             case .qr:
                 Image(systemName: "qrcode")
+            case .pdf417:
+                VStack {
+                    Image(systemName: "barcode")
+                    Text("pdf417")
+                        .font(.caption)
+                }
             }
 
             VStack(alignment: .leading, spacing: 8) {

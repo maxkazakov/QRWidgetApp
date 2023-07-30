@@ -104,6 +104,15 @@ public class CodeGeneratorLive {
             filter.setDefaults()
             filter.message = data
             return filter
+
+        case .pdf417:
+            guard let data = stringPayload.data(using: .ascii) else {
+                return nil
+            }
+            let filter = CIFilter.pdf417BarcodeGenerator()
+            filter.setDefaults()
+            filter.message = data
+            return filter
         }
     }
 

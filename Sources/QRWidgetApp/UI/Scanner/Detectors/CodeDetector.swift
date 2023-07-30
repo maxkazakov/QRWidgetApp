@@ -47,6 +47,7 @@ class CodeDetector {
 
                 let barcodeDescriptor = observation.barcodeDescriptor
                 let stringPayload = observation.payloadStringValue
+                print("Reading from photo. Stirng = ", stringPayload, ", descriptor = ", barcodeDescriptor)
                 let dataExist = stringPayload != nil || barcodeDescriptor != nil
                 guard dataExist else {
                     continuation.resume(throwing: CodeDetectorError())
@@ -78,6 +79,8 @@ class CodeDetector {
             return .code128
         case .code39:
             return .code39
+        case .pdf417:
+            return .pdf417
         default:
             return nil
         }

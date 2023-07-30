@@ -10,4 +10,5 @@ public enum CodeType: Int, Codable {
     case code128
     case code39
     case code39Mod43
+    case pdf417
 }
