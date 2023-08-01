@@ -89,15 +89,15 @@ class PaywallViewModel: ViewModel {
         self.onClose = onClose
         self.sendAnalyticsEvent = sendAnalyticsEvent
         self.purchasesEnvironment = purchasesEnvironment
+        super.init()
+        
+        self.loadProducts()
     }
 
     var isAlreadyAppeared = false
     func onAppear() {
         guard !isAlreadyAppeared else { return }
         isAlreadyAppeared = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.start()
-        }
     }
 
     override func close() {
@@ -132,7 +132,9 @@ class PaywallViewModel: ViewModel {
             "productId": NSString(string: selectedProduct.id),
             "productType": NSString(string: selectedProduct.type.rawValue)
         ]
-
+        guard !products.isEmpty else {
+            return
+        }
         let type = selectedProduct.type
         selectedProduct.purchase()
             .receive(on: RunLoop.main)
@@ -177,7 +179,7 @@ class PaywallViewModel: ViewModel {
             .store(in: &cancellableSet)
     }
     
-    func start() {
+    func loadProducts() {
         if shownFromOnboarding {
             startTimerForCloseButton()
         }

@@ -79,25 +79,27 @@ struct BeautifyQRView: View {
                             )
                         })
 
-                    Section(
-                        content: {
-                            Picker("", selection: $viewModel.errorCorrectionLevel) {
-                                ForEach(ErrorCorrection.allCases, id: \.rawValue) {
-                                    Text($0.title).tag($0)
+                    if viewModel.showQRSpecificSettings {
+                        Section(
+                            content: {
+                                Picker("", selection: $viewModel.errorCorrectionLevel) {
+                                    ForEach(ErrorCorrection.allCases, id: \.rawValue) {
+                                        Text($0.title).tag($0)
+                                    }
                                 }
+                                .pickerStyle(.segmented)
+                            },
+                            header: {
+                                Label(
+                                    title: { Text(L10n.ChangeAppearance.errorCorrectionLevel) },
+                                    icon: { lockView }
+                                )
+                            },
+                            footer: {
+                                Spacer().frame(height: 60)
                             }
-                            .pickerStyle(.segmented)
-                        },
-                        header: {
-                            Label(
-                                title: { Text(L10n.ChangeAppearance.errorCorrectionLevel) },
-                                icon: { lockView }
-                            )
-                        },
-                        footer: {
-                            Spacer().frame(height: 60)
-                        }
-                    )
+                        )
+                    }
                 }
                 .listStyle(.insetGrouped)
                 .navigationBarItems(

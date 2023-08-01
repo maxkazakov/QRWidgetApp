@@ -82,12 +82,15 @@ struct PaywallScreen: View {
                     VStack(spacing: 20) {
                         ProductsInfoView(viewModel: viewModel)
                             .padding(.horizontal, 12)
+
                         buttonAndTerms()
                     }
                 case .error(let errorMessage):
-                    PaywallOffersErrorView(onClose: { viewModel.close() },
-                                           onRepeat: { viewModel.start() },
-                                           errorMessage: errorMessage)
+                    PaywallOffersErrorView(
+                        onClose: { viewModel.close() },
+                        onRepeat: { viewModel.loadProducts() },
+                        errorMessage: errorMessage
+                    )
                 default:
                     EmptyView()
                 }
@@ -101,19 +104,13 @@ struct PaywallScreen: View {
     @ViewBuilder
     func buttonAndTerms() -> some View {
         VStack(spacing: 8) {
-            if viewModel.state == .loading {
-                ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle(tint: Color.white))
-                    .frame(height: 50)
-            } else {
-                Button(action: {
-                    Haptic.impact(.medium).generate()
-                    viewModel.activate()
-                }, label: {
-                    Text(L10n.continue)
-                })
-                .buttonStyle(MainButtonStyle(titleColor: Asset.primaryColor.color, backgroundColor: .white))
-            }
+            Button(action: {
+                Haptic.impact(.medium).generate()
+                viewModel.activate()
+            }, label: {
+                Text(L10n.continue)
+            })
+            .buttonStyle(MainButtonStyle(titleColor: Asset.primaryColor.color, backgroundColor: .white))
         }
     }
 }

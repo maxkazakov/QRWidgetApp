@@ -60,9 +60,9 @@ public class Starter {
         let isProActivated = generalAssembly.appEnvironment.paymentEnvironment.isProActivated()
         var needToShowOnboarding = !userDefaultsStorage.onboardingWasShown
             && !isProActivated
-        //        #if DEBUG
-        //        needToShowOnboarding = true
-        //        #endif
+        #if DEBUG
+        needToShowOnboarding = true
+        #endif
 
         if needToShowOnboarding {
             let onboardingCompletion = {

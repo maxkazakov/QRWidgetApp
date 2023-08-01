@@ -54,11 +54,16 @@ class GeneralAssembly {
 
     // Payment
     func makePaywallView(sourceScreen: PaywallSource, shownFromOnboarding: Bool = false, onClose: @escaping () -> Void = {}) -> AnyView {
-        PaywallViewFlow(viewModel: PaywallViewModel(source: sourceScreen,
-                                                    purchasesEnvironment: self.appEnvironment.paymentEnvironment,
-                                                    sendAnalyticsEvent: self.appEnvironment.analyticsEnvironment.sendAnalyticsEvent,
-                                                    shownFromOnboarding: shownFromOnboarding,
-                                                    onClose: onClose))
+        
+        PaywallViewFlow(
+            viewModel: PaywallViewModel(
+                source: sourceScreen,
+                purchasesEnvironment: self.appEnvironment.paymentEnvironment,
+                sendAnalyticsEvent: self.appEnvironment.analyticsEnvironment.sendAnalyticsEvent,
+                shownFromOnboarding: shownFromOnboarding,
+                onClose: onClose
+            )
+        )
         .injectAnalyticsSender(appEnvironment.analyticsEnvironment.sendAnalyticsEvent)
         .anyView
     }
