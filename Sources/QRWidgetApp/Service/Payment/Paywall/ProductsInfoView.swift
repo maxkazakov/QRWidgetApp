@@ -1,11 +1,6 @@
-//
-//  ProductsInfoView.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 15.01.2022.
-//
 
 import SwiftUI
+import Combine
 
 struct ProductsInfoView: View {
 
@@ -16,9 +11,27 @@ struct ProductsInfoView: View {
 
     var body: some View {
         if viewModel.products.isEmpty {
+            // TODO: translate
             HStack(spacing: 16) {
-                let mocks = [QRProduct.mock(id: "1"),
-                             QRProduct.mock(id: "2")]
+                let mocks: [QRProduct] = [
+                    .init(
+                        id: "1",
+                        isPopular: true,
+                        title: "7 days Free",
+                        priceInfo: "Then $9.99 / 1 month",
+                        type: .subscription,
+                        purchase: { Just(()).setFailureType(to: PurchasesError.self).eraseToAnyPublisher() }
+                    ),
+                    .init(
+                        id: "2",
+                        isPopular: false,
+                        title: "One time purchase",
+                        priceInfo: "$29.99",
+                        type: .oneTime,
+                        purchase: { Just(()).setFailureType(to: PurchasesError.self).eraseToAnyPublisher() }
+                    )
+                ]
+//                let mocks: [QRProduct] = [.mock(id: "1"), .mock(id: "2")]
                 ForEach(mocks, id: \.id) { product in
                     SubscriptionInfoView(
                         trialText: product.title,
@@ -28,7 +41,7 @@ struct ProductsInfoView: View {
                         titleHeight: $titleHeight,
                         subtitleHeight: $subtitleHeight
                     )
-                    .redacted(reason: .placeholder)
+//                    .redacted(reason: .placeholder)
                 }
             }
             .onPreferenceChange(TitleHeightKey.self) {

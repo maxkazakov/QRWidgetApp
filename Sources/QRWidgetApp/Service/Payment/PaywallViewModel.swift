@@ -90,7 +90,7 @@ class PaywallViewModel: ViewModel {
         self.sendAnalyticsEvent = sendAnalyticsEvent
         self.purchasesEnvironment = purchasesEnvironment
         super.init()
-        
+
         self.loadProducts()
     }
 
@@ -124,6 +124,9 @@ class PaywallViewModel: ViewModel {
     }
     
     func activate() {
+        guard !products.isEmpty else {
+            return
+        }
         sendAnalyticsEvent(.tapActivate, ["source": NSString(string: source.rawValue)])
         state = .loading
 
@@ -132,9 +135,6 @@ class PaywallViewModel: ViewModel {
             "productId": NSString(string: selectedProduct.id),
             "productType": NSString(string: selectedProduct.type.rawValue)
         ]
-        guard !products.isEmpty else {
-            return
-        }
         let type = selectedProduct.type
         selectedProduct.purchase()
             .receive(on: RunLoop.main)
