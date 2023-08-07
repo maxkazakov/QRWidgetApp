@@ -14,12 +14,20 @@ internal enum L10n {
   internal static let activate = L10n.tr("Localizable", "activate")
   /// Cancel
   internal static let cancel = L10n.tr("Localizable", "cancel")
+  /// Code content
+  internal static let codeContent = L10n.tr("Localizable", "codeContent")
+  /// Code type
+  internal static let codeType = L10n.tr("Localizable", "codeType")
   /// Continue
   internal static let `continue` = L10n.tr("Localizable", "continue")
+  /// Done
+  internal static let done = L10n.tr("Localizable", "done")
   /// Repeat
   internal static let `repeat` = L10n.tr("Localizable", "repeat")
   /// Save
   internal static let save = L10n.tr("Localizable", "save")
+  /// Select type
+  internal static let selectQrType = L10n.tr("Localizable", "selectQrType")
 
   internal enum Allcodes {
     internal enum Segment {
@@ -329,9 +337,11 @@ internal enum L10n {
   }
 
   internal enum Sharing {
-    /// As Image
+    /// Image
     internal static let asImage = L10n.tr("Localizable", "sharing.asImage")
-    /// As Text
+    /// PDF
+    internal static let asPdf = L10n.tr("Localizable", "sharing.asPdf")
+    /// Text
     internal static let asText = L10n.tr("Localizable", "sharing.asText")
     /// Share
     internal static let title = L10n.tr("Localizable", "sharing.title")

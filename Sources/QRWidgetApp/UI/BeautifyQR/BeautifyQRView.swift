@@ -12,128 +12,118 @@ struct BeautifyQRView: View {
 
     @ViewBuilder
     var content: some View {
-        NavigationView {
-            ZStack {
-                Form {
-                    Section {
-                        VStack(spacing: 4) {
-                            HStack {
-                                Spacer()
-                                QRCodeTileView(
-                                    data: viewModel.qrModel.data,
-                                    codeType: viewModel.qrModel.type,
-                                    foreground: viewModel.foregroundColor,
-                                    background: viewModel.backgroundColor,
-                                    errorCorrectionLevel: viewModel.errorCorrectionLevel,
-                                    qrStyle: viewModel.qrStyle
-                                )
-                                Spacer()
-                            }
-                            if viewModel.checkIfProFeaturesChanged() {
-                                HStack(alignment: .top) {
-                                    Image(systemName: "info.circle")
-                                        .imageScale(.small)
-                                    Text(L10n.ChangeAppearance.fliptip)
-                                        .multilineTextAlignment(.center)
-                                        .font(.caption)
-                                }
-                                .foregroundColor(.gray).offset(x: 0, y: 12)
-                            }
+        ZStack {
+            Form {
+                Section {
+                    VStack(spacing: 4) {
+                        HStack {
+                            Spacer()
+                            QRCodeTileView(
+                                data: viewModel.qrModel.data,
+                                codeType: viewModel.qrModel.type,
+                                foreground: viewModel.foregroundColor,
+                                background: viewModel.backgroundColor,
+                                errorCorrectionLevel: viewModel.errorCorrectionLevel,
+                                qrStyle: viewModel.qrStyle
+                            )
+                            Spacer()
                         }
-                        .padding(.vertical, 16)
-                    }
-
-                    if viewModel.showQRSpecificSettings {
-                        Section(
-                            content: {
-                                Picker(L10n.QrStyle.eye, selection: $viewModel.qrStyle.eye) {
-                                    ForEach(QRStyle.Eye.allCases) { eye in
-                                        Text(eye.description).tag(eye)
-                                    }
-                                }
-
-                                Picker(L10n.QrStyle.pixels, selection: $viewModel.qrStyle.onPixels) {
-                                    ForEach(QRStyle.OnPixels.allCases) { onPixels in
-                                        Text(onPixels.description).tag(onPixels)
-                                    }
-                                }
-                            },
-                            header: {
-                                Label(
-                                    title: { Text("Shapes") },
-                                    icon: { lockView }
-                                )
+                        if viewModel.checkIfProFeaturesChanged() {
+                            HStack(alignment: .top) {
+                                Image(systemName: "info.circle")
+                                    .imageScale(.small)
+                                Text(L10n.ChangeAppearance.fliptip)
+                                    .multilineTextAlignment(.center)
+                                    .font(.caption)
                             }
-                        )
+                            .foregroundColor(.gray).offset(x: 0, y: 12)
+                        }
                     }
+                    .padding(.vertical, 16)
+                }
 
+                if viewModel.showQRSpecificSettings {
                     Section(
                         content: {
-                            ColorPicker(L10n.ChangeAppearance.foregroundColor, selection: $viewModel.foregroundColor, supportsOpacity: false)
-                            ColorPicker(L10n.ChangeAppearance.backgroundColor, selection: $viewModel.backgroundColor, supportsOpacity: false)
+                            Picker(L10n.QrStyle.eye, selection: $viewModel.qrStyle.eye) {
+                                ForEach(QRStyle.Eye.allCases) { eye in
+                                    Text(eye.description).tag(eye)
+                                }
+                            }
+
+                            Picker(L10n.QrStyle.pixels, selection: $viewModel.qrStyle.onPixels) {
+                                ForEach(QRStyle.OnPixels.allCases) { onPixels in
+                                    Text(onPixels.description).tag(onPixels)
+                                }
+                            }
                         },
                         header: {
                             Label(
-                                title: { Text(L10n.ChangeAppearance.colors) },
+                                title: { Text("Shapes") },
                                 icon: { lockView }
                             )
-                        })
+                        }
+                    )
+                }
 
-                    if viewModel.showQRSpecificSettings {
-                        Section(
-                            content: {
-                                Picker("", selection: $viewModel.errorCorrectionLevel) {
-                                    ForEach(ErrorCorrection.allCases, id: \.rawValue) {
-                                        Text($0.title).tag($0)
-                                    }
-                                }
-                                .pickerStyle(.segmented)
-                            },
-                            header: {
-                                Label(
-                                    title: { Text(L10n.ChangeAppearance.errorCorrectionLevel) },
-                                    icon: { lockView }
-                                )
-                            },
-                            footer: {
-                                Spacer().frame(height: 60)
-                            }
+                Section(
+                    content: {
+                        ColorPicker(L10n.ChangeAppearance.foregroundColor, selection: $viewModel.foregroundColor, supportsOpacity: false)
+                        ColorPicker(L10n.ChangeAppearance.backgroundColor, selection: $viewModel.backgroundColor, supportsOpacity: false)
+                    },
+                    header: {
+                        Label(
+                            title: { Text(L10n.ChangeAppearance.colors) },
+                            icon: { lockView }
                         )
-                    }
-                }
-                .listStyle(.insetGrouped)
-                .navigationBarItems(
-                    leading: Button(L10n.cancel, action: {
-                        viewModel.cancel()
                     })
-                        .foregroundColor(Color.primaryColor)
-                )
 
-                VStack {
-                    Spacer()
-                    Button(action: {
-                        viewModel.save()
-                    }, label: {
-                        Text(L10n.save)
-                            .fontWeight(.semibold)
-                            .font(.body)
-                            .padding(.vertical, 16)
-                            .frame(height: 50)
-                    })
-                        .buttonStyle(MainButtonStyle())
-                        .padding(.horizontal, 16)
-                        .padding(.bottom, 12)
+                if viewModel.showQRSpecificSettings {
+                    Section(
+                        content: {
+                            Picker("", selection: $viewModel.errorCorrectionLevel) {
+                                ForEach(ErrorCorrection.allCases, id: \.rawValue) {
+                                    Text($0.title).tag($0)
+                                }
+                            }
+                            .pickerStyle(.segmented)
+                        },
+                        header: {
+                            Label(
+                                title: { Text(L10n.ChangeAppearance.errorCorrectionLevel) },
+                                icon: { lockView }
+                            )
+                        },
+                        footer: {
+                            Spacer().frame(height: 60)
+                        }
+                    )
                 }
-                .ignoresSafeArea(.keyboard, edges: .bottom)
             }
-            .navigationTitle(L10n.ChangeAppearance.title)
-            .navigationBarTitleDisplayMode(.inline)
+            .listStyle(.insetGrouped)
+
+            VStack {
+                Spacer()
+                Button(action: {
+                    viewModel.save()
+                }, label: {
+                    Text(L10n.save)
+                        .fontWeight(.semibold)
+                        .font(.body)
+                        .padding(.vertical, 16)
+                        .frame(height: 50)
+                })
+                .buttonStyle(MainButtonStyle())
+                .padding(.horizontal, 16)
+                .padding(.bottom, 12)
+            }
+            .ignoresSafeArea(.keyboard, edges: .bottom)
         }
+        .navigationBarTitleDisplayMode(.inline)
         .fullScreenCover(isPresented: $viewModel.showPaywall) {
             generalAssembly.makePaywallView(sourceScreen: .changeAppearance)
         }
-        .navigationViewStyle(.stack)
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationTitle(L10n.ChangeAppearance.title)
     }
 
     @ViewBuilder

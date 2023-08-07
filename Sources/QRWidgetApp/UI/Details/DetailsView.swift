@@ -1,5 +1,6 @@
 
 import SwiftUI
+import SwiftUINavigation
 import QRCodeUI
 
 struct DetailsView: View {
@@ -92,6 +93,21 @@ struct DetailsView: View {
         .fullScreenCover(isPresented: $viewModel.showPaywall) {
             generalAssembly.makePaywallView(sourceScreen: .details)
         }
+        .fullScreenCover(
+            unwrapping: $viewModel.modalDestination,
+            case: /DetailsViewModel.Destination.beautifyQR,
+            content: { $viewModel in
+                NavigationView {
+                    BeautifyQRView(viewModel: viewModel)
+                        .navigationBarItems(
+                            leading: Button(L10n.cancel, action: {
+                                self.viewModel.tapCancelOnBeautifyScreen()
+                            })
+                        )                    
+                }
+                .navigationViewStyle(.stack)
+            }
+        )
         .alert(isPresented: self.$removeConfirmation, content: {
             Alert(
                 title: Text(L10n.DeleteQr.caution),

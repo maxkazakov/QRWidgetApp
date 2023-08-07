@@ -2,12 +2,15 @@
 import SwiftUI
 import QRWidgetCore
 import CodeImageGenerator
+import XCTestDynamicOverlay
 import Dependencies
 
 class BeautifyQRViewModel: ViewModel {
 
     @Dependency(\.codesService) var codesService
     private let sendAnalytics: SendAnalyticsAction
+
+    var onSaveTapped: (_ codeModel: CodeModel) -> Void = unimplemented()
 
     public init(
         qrModel: CodeModel,
@@ -60,33 +63,26 @@ class BeautifyQRViewModel: ViewModel {
         qrModel.data.stringPayload != nil && qrModel.type == .qr
     }
 
-    func cancel() {
-        router.dismissByItself(completion: nil)
-        sendAnalytics(.tapCancelChangeQRAppearance, nil)
-    }
-
     func save() {
         sendAnalytics(.tapSaveChangeQRAppearance, nil)
 
         if isProActivated {
-            saveChanges()
-            router.dismissByItself(completion: nil)
+            saveChanges()            
         } else if checkIfProFeaturesChanged() {
             showPaywall = true
         } else {
             saveChanges()
-            router.dismissByItself(completion: nil)
         }
     }
 
     private func saveChanges() {
-        codesService.changeQRAppearance(
-            qrModel.id,
-            errorCorrectionLevel,
-            isForegroundColorStayedDefault ? nil : UIColor(cgColor: self.foregroundColor),
-            isBackgroundColorStayedDefault ? nil : UIColor(cgColor: self.backgroundColor),
-            qrStyle
-        )
+        var newCodeModel = qrModel
+        newCodeModel.errorCorrectionLevel = errorCorrectionLevel
+        newCodeModel.foregroundColor = isForegroundColorStayedDefault ? nil : UIColor(cgColor: self.foregroundColor)
+        newCodeModel.backgroundColor = isBackgroundColorStayedDefault ? nil : UIColor(cgColor: self.backgroundColor)
+        newCodeModel.qrStyle = qrStyle
+
+        onSaveTapped(newCodeModel)
     }
 
     private var isForegroundColorStayedDefault: Bool {

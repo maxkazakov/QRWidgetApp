@@ -7,14 +7,16 @@ struct CodeDetailsPresentaionOptions {
     let title: String
     let hideCodeImage: Bool
 
-    static let zero = CodeDetailsPresentaionOptions(isPopup: false,
-                                                    title: L10n.QrDetails.title,
-                                                    hideCodeImage: false)
+    static let zero = CodeDetailsPresentaionOptions(
+        isPopup: false,
+        title: L10n.QrDetails.title,
+        hideCodeImage: false
+    )
 }
 
 class DetailsViewModel: ViewModel {
 
-    let qrCodesService: QRCodesService
+    let codesService: QRCodesService
     let favoritesService: FavoritesService
     let options: CodeDetailsPresentaionOptions
     let sendAnalytics: SendAnalyticsAction
@@ -24,7 +26,7 @@ class DetailsViewModel: ViewModel {
                 favoritesService: FavoritesService,
                 options: CodeDetailsPresentaionOptions,
                 sendAnalytics: @escaping SendAnalyticsAction) {
-        self.qrCodesService = qrCodesService
+        self.codesService = qrCodesService
         self.favoritesService = favoritesService
         self.options = options
         self.sendAnalytics = sendAnalytics
@@ -39,17 +41,22 @@ class DetailsViewModel: ViewModel {
         setupSubscriptions()
     }
 
+    enum Destination {
+        case beautifyQR(BeautifyQRViewModel)
+    }
+
     @Published var showPaywall: Bool = false
     @Published var needToClose = false
     @Published var qrModel: CodeModel
     @Published var isFavorite = false
+    @Published var modalDestination: Destination?
 
     var labelBinding: Binding<String> {
         Binding(get: {
             self.qrModel.label
         }, set: {
             self.qrModel.label = $0
-            self.qrCodesService.changeQRLabel(id: self.qrId, newLabel: $0)
+            self.codesService.changeQRLabel(id: self.qrId, newLabel: $0)
         })
     }
 
@@ -60,12 +67,25 @@ class DetailsViewModel: ViewModel {
         router.dismissByItself(completion: nil)
         sendAnalytics(.removePass, nil)
 
-        qrCodesService.removeQR(id: qrId)
+        codesService.removeQR(id: qrId)
     }
 
     func tapChangeAppearance() {
         sendAnalytics(.tapChangeQRAppearance, nil)
-        route(.beautify(qrModel))
+        let beautifyViewModel = BeautifyQRViewModel(
+            qrModel: qrModel,
+            sendAnalytics: sendAnalytics
+        )
+        beautifyViewModel.onSaveTapped = { [weak self, codesService] in
+            codesService.updateQR($0)
+            self?.modalDestination = nil
+        }
+        self.modalDestination = .beautifyQR(beautifyViewModel)
+    }
+
+    func tapCancelOnBeautifyScreen() {
+        sendAnalytics(.tapCancelChangeQRAppearance, nil)
+        modalDestination = nil
     }
 
     func removeOrAddToFavorites() {
@@ -95,7 +115,7 @@ class DetailsViewModel: ViewModel {
     }
 
     private func setupSubscriptions() {
-        qrCodesService.qrCodesPublisher
+        codesService.qrCodesPublisher
             .dropFirst()
             .sink(receiveValue: { [weak self] qrCodes in
                 guard let self = self else { return }

@@ -23,10 +23,6 @@ let package = Package(
             targets: ["CodeImageGenerator"]
         ),
         .library(
-            name: "CodeCreation",
-            targets: ["CodeCreation"]
-        ),
-        .library(
             name: "QRCodeUI",
             targets: ["QRCodeUI"]
         ),
@@ -51,10 +47,10 @@ let package = Package(
                 "CodeImageGenerator",
                 "QRWidgetCore",
                 "QRCodeUI",
-                "CodeCreation",
                 .product(name: "SimpleToast", package: "SimpleToast"),
                 .product(name: "Haptica", package: "Haptica"),
                 .product(name: "Lottie", package: "lottie-ios"),
+                .product(name: "SwiftUINavigation", package: "swiftui-navigation"),
                 .product(name: "Dependencies", package: "swift-dependencies"),
             ],
             exclude: ["swiftgen.yml"],
@@ -76,15 +72,6 @@ let package = Package(
         .target(
             name: "QRCodeUI",
             dependencies: ["QRWidgetCore", "CodeImageGenerator"],
-            exclude: ["swiftgen.yml"]
-        ),
-        .target(
-            name: "CodeCreation",
-            dependencies: [
-                "QRWidgetCore",
-                "QRCodeUI",
-                .product(name: "SwiftUINavigation", package: "swiftui-navigation"),
-            ],
             exclude: ["swiftgen.yml"]
         ),
         .target(
