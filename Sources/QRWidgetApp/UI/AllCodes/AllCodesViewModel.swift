@@ -14,8 +14,9 @@ class AllCodesViewModel: ObservableObject {
         case newCode(CodeCreationFlowModel)
     }
 
-    init(codesService: QRCodesService) {
+    init(codesService: QRCodesService, sendAnalytics: @escaping SendAnalyticsAction) {
         self.codesService = codesService
+        self.sendAnalytics = sendAnalytics
     }
 
     @Published var selectedTab: SelectedTab = .scans
@@ -31,7 +32,8 @@ class AllCodesViewModel: ObservableObject {
         }
     }
 
-    let codesService: QRCodesService
+    private let codesService: QRCodesService
+    private let sendAnalytics: SendAnalyticsAction
 
     lazy var historyViewModel: HistoryViewModel = {
         HistoryViewModel(qrCodesService: codesService, favoritesService: generalAssembly.favoritesService)
@@ -48,6 +50,7 @@ class AllCodesViewModel: ObservableObject {
     }()
 
     func createdNewCodeTapped() {
+        sendAnalytics(.tapCreateNewQR, [:])
         destination = .newCode(CodeCreationFlowModel())
     }
 

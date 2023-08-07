@@ -11,7 +11,10 @@ class MainTabViewModel: ViewModel {
     @Published var presentingPaywall = false
 
     lazy var allCodesTabModel: AllCodesViewModel = {
-        let model = AllCodesViewModel(codesService: generalAssembly.qrCodesService)
+        let model = AllCodesViewModel(
+            codesService: generalAssembly.qrCodesService,
+            sendAnalytics: self.sendAnalytics
+        )
         model.startScanningTapped = { [weak self] in
             self?.currentTab = .scan
         }

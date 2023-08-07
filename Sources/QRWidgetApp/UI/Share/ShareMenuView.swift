@@ -10,6 +10,7 @@ struct ShareMenuView: View {
         if qrModel.data.stringPayload != nil {
             Menu {
                 Button(L10n.Sharing.asImage, action: { viewModel.shareAsImage(qrModel) })
+                Button(L10n.Sharing.asPdf, action: { viewModel.shareAsPdf(qrModel) })
                 Button(L10n.Sharing.asText, action: { viewModel.shareAsText(qrModel) })
             } label: {
                 button

@@ -24,21 +24,15 @@ class ShareMenuViewModel: ViewModel {
         self.share(items: [text])
     }
 
-    func shareAsImage(_ qrModel: CodeModel) {
+    func shareAsImage(_ codeModel: CodeModel) {
         do {
             sendAnalytics(.tapShareAsImage, ["source": source.rawValue])
-            let tempDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-            let fileName: String
-            if !qrModel.label.isEmpty {
-                fileName = qrModel.label
-            } else {
-                fileName = qrModel.id.uuidString
-            }
-            let targetURL = tempDirectoryURL.appendingPathComponent(fileName).appendingPathExtension("jpeg")
+
+            let targetURL = makeTempFilename(for: codeModel, extenstion: "jpeg")
             if FileManager.default.fileExists(atPath: targetURL.path) {
                 try FileManager.default.removeItem(atPath: targetURL.path)
             }
-            guard let image = codeGenerator.generateCodeFromModel(qrModel, true),
+            guard let image = codeGenerator.generateCodeFromModel(codeModel, true),
                   let jpegImageData = image.jpegData(compressionQuality: 1.0)
             else {
                 return
@@ -46,8 +40,42 @@ class ShareMenuViewModel: ViewModel {
             try jpegImageData.write(to: targetURL)
             share(items: [targetURL as NSURL])
         }  catch {
-            print("Failed to share file. Error = \(error)")
+            print("Failed to share JPEG file. Error = \(error)")
         }
+    }
+
+    func shareAsPdf(_ codeModel: CodeModel) {
+        sendAnalytics(.tapShareAsImage, ["source": source.rawValue])
+        do {
+            let targetURL = makeTempFilename(for: codeModel, extenstion: "pdf")
+            if FileManager.default.fileExists(atPath: targetURL.path) {
+                try FileManager.default.removeItem(atPath: targetURL.path)
+            }
+            guard let image = codeGenerator.generateCodeFromModel(codeModel, true) else {
+                return
+            }
+            let imageBounds = CGRect(origin: .zero, size: .init(width: 300, height: 300))
+            let pdfRenderer = UIGraphicsPDFRenderer(bounds: imageBounds)
+            try pdfRenderer.writePDF(to: targetURL) { context in
+                context.beginPage()
+                image.draw(in: imageBounds)
+            }
+            share(items: [targetURL as NSURL])
+        } catch {
+            print("Failed to share PDF file. Error = \(error)")
+        }
+    }
+
+    private func makeTempFilename(for codeModel: CodeModel, extenstion: String) -> URL {
+        let tempDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
+        let fileName: String
+        if !codeModel.label.isEmpty {
+            fileName = codeModel.label
+        } else {
+            fileName = codeModel.id.uuidString
+        }
+        let targetURL = tempDirectoryURL.appendingPathComponent(fileName).appendingPathExtension(extenstion)
+        return targetURL
     }
 
     func trackTapShare() {
