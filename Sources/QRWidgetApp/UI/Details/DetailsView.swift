@@ -41,7 +41,7 @@ struct DetailsView: View {
                             Spacer()
                         }
                     })
-                    .foregroundColor(Color.primaryColor)
+//                    .foregroundColor(Color.primaryColor)
                 }
             )
 
@@ -71,7 +71,7 @@ struct DetailsView: View {
                             Spacer()
                         }
                     })
-                    .foregroundColor(Color.primaryColor)
+//                    .foregroundColor(Color.primaryColor)
 
                     Button(action: {
                         removeConfirmation = true
@@ -103,7 +103,7 @@ struct DetailsView: View {
                             leading: Button(L10n.cancel, action: {
                                 self.viewModel.tapCancelOnBeautifyScreen()
                             })
-                        )                    
+                        )
                 }
                 .navigationViewStyle(.stack)
             }

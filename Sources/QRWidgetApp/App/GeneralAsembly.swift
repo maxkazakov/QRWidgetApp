@@ -7,13 +7,19 @@ var generalAssembly = GeneralAssembly()
 
 class GeneralAssembly {
 
-    lazy var deeplinker = Deeplinker(starter: starter,
-                                     qrCodesService: qrCodesService,
-                                     sendAnalytics: appEnvironment.analyticsEnvironment.sendAnalyticsEvent)
+    lazy var deeplinker = Deeplinker(
+        starter: starter,
+        qrCodesService: qrCodesService,
+        sendAnalytics: appEnvironment.analyticsEnvironment.sendAnalyticsEvent
+    )
 
     // MARK: - Private
 
-    var appEnvironment: AppEnvironment = .unimplemented
+    var appEnvironment: AppEnvironment = .unimplemented {
+        didSet {
+            AnalyticsEnvironment.live = appEnvironment.analyticsEnvironment
+        }
+    }
 
     lazy var starter = Starter(
         rootViewController: rootViewController,
@@ -28,9 +34,11 @@ class GeneralAssembly {
     lazy var userDefaultsStorage = UserDefaultsStorage()
 
     // Services
-    lazy var walletService = WalletService(userDefaults: userDefaultsStorage,
-                                           walletPassEnvironment: appEnvironment.walletPassEnvironment,
-                                           analyticsEnvironment: appEnvironment.analyticsEnvironment)
+    lazy var walletService = WalletService(
+        userDefaults: userDefaultsStorage,
+        walletPassEnvironment: appEnvironment.walletPassEnvironment,
+        analyticsEnvironment: appEnvironment.analyticsEnvironment
+    )
 
     lazy var qrCodesService = QRCodesService(
         repository: qrCodesRepository,
@@ -149,8 +157,10 @@ class GeneralAssembly {
     func makeAddToWalletButton(qrModel: CodeModel) -> some View {
         AddToWalletButton(
             qrModel: qrModel,
-            viewModel: AddToWalletButtonViewModel(walletService: self.walletService,
-                                                  sendAnalyticsEvent: self.appEnvironment.analyticsEnvironment.sendAnalyticsEvent)
+            viewModel: AddToWalletButtonViewModel(
+                walletService: self.walletService,
+                sendAnalyticsEvent: self.appEnvironment.analyticsEnvironment.sendAnalyticsEvent
+            )
         )
     }
 

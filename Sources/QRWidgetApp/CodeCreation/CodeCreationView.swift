@@ -15,30 +15,46 @@ public struct CodeCreationView: View {
     }
 
     public var body: some View {
-        Form {
-            formSection
+        ZStack {
+            Form {
+                formSection
 
-            Section {
-                HStack {
-                    Spacer()
-                    QRCodeTileView(data: .string(model.qrData), codeType: .qr)
-                    Spacer()
+                Section {
+                    HStack {
+                        Spacer()
+                        QRCodeTileView(data: .string(model.qrData), codeType: .qr)
+                        Spacer()
+                    }
+                    .padding(.vertical, 16)
                 }
-                .padding(.vertical, 16)
             }
-        }        
-        .bind(self.$model.focus, to: self.$focus)
-        .navigationTitle(L10n.codeContent)
-        .listStyle(.insetGrouped)
-        .toolbar {
-            ToolbarItem(placement: .confirmationAction) {
-                Button {
-                    model.onTapDone()
-                } label: {
-                    Text(L10n.done)
+            .bind(self.$model.focus, to: self.$focus)
+            .navigationTitle(L10n.codeContent)
+            .listStyle(.insetGrouped)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button {
+                        model.onTapNext()
+                    } label: {
+                        Text(L10n.next)
+                    }
+                    .disabled(!model.canCreate)
                 }
-                .disabled(!model.canCreate)
             }
+
+            NavigationLink(
+                unwrapping: $model.navigationDestination,
+                case: /CodeCreationFlowModel.Destination.beautifying,
+                onNavigate: { _ in
+
+                },
+                destination: { $beautifingViewModel in
+                    BeautifyQRView(viewModel: beautifingViewModel)
+                },
+                label: {
+                    EmptyView()
+                }
+            )
         }
     }
 

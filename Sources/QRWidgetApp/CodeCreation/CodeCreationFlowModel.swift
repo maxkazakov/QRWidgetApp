@@ -37,12 +37,26 @@ final public class CodeCreationFlowModel: ObservableObject {
         }
     }
     @Published var focus: CodeCreationView.Field? = .first
+    @Published var navigationDestination: Destination?
+
+    enum Destination {
+        case beautifying(BeautifyQRViewModel)
+    }
 
     public init(type: CodeContentType? = nil) {
         self.type = type
     }
 
-    func onTapDone() {
-        onCodeCreatoinFinished(CodeModel(data: .string(qrData), type: .qr, isMy: true, qrStyle: nil))
+    func onTapNext() {
+        let codeModel = CodeModel(data: .string(qrData), type: .qr, isMy: true, qrStyle: nil)
+        let viewModel = BeautifyQRViewModel(qrModel: codeModel)
+        viewModel.onSaveTapped = { [weak self] code in
+            self?.onTapSave(code: code)
+        }
+        self.navigationDestination = .beautifying(viewModel)
+    }
+
+    func onTapSave(code: CodeModel) {
+        onCodeCreatoinFinished(code)
     }
 }

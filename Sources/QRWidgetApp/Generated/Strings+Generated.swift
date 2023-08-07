@@ -22,6 +22,8 @@ internal enum L10n {
   internal static let `continue` = L10n.tr("Localizable", "continue")
   /// Done
   internal static let done = L10n.tr("Localizable", "done")
+  /// Next
+  internal static let next = L10n.tr("Localizable", "next")
   /// Repeat
   internal static let `repeat` = L10n.tr("Localizable", "repeat")
   /// Save

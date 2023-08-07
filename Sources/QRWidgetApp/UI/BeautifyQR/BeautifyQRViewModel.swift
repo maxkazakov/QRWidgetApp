@@ -8,16 +8,13 @@ import Dependencies
 class BeautifyQRViewModel: ViewModel {
 
     @Dependency(\.codesService) var codesService
-    private let sendAnalytics: SendAnalyticsAction
+    @Dependency(\.analytics) var analytics
 
     var onSaveTapped: (_ codeModel: CodeModel) -> Void = unimplemented()
 
     public init(
-        qrModel: CodeModel,
-        sendAnalytics: @escaping SendAnalyticsAction
+        qrModel: CodeModel
     ) {
-        self.sendAnalytics = sendAnalytics
-
         self.qrModel = qrModel
         self.foregroundColor = qrModel.foregroundColor?.cgColor ?? .qr.defaultForeground
         self.backgroundColor = qrModel.backgroundColor?.cgColor ?? .qr.defaultBackground
@@ -30,16 +27,16 @@ class BeautifyQRViewModel: ViewModel {
         $backgroundColor
             .dropFirst()
             .debounce(for: 0.5, scheduler: RunLoop.main)
-            .sink(receiveValue: { _ in
-                sendAnalytics(.tapChangeBackgroundColor, nil)
+            .sink(receiveValue: { [analytics] _ in
+                analytics.sendAnalyticsEvent(.tapChangeBackgroundColor, nil)
             })
             .store(in: &cancellableSet)
 
         $foregroundColor
             .dropFirst()
             .debounce(for: 0.5, scheduler: RunLoop.main)
-            .sink(receiveValue: { _ in
-                sendAnalytics(.tapChangeForegroundColor, nil)
+            .sink(receiveValue: { [analytics] _ in
+                analytics.sendAnalyticsEvent(.tapChangeForegroundColor, nil)
             })
             .store(in: &cancellableSet)
     }
@@ -55,7 +52,7 @@ class BeautifyQRViewModel: ViewModel {
 
     @Published var errorCorrectionLevel: ErrorCorrection {
         didSet {
-            sendAnalytics(.tapChangeErrorCorrectionLevel, ["level": errorCorrectionLevel.title])
+            analytics.sendAnalyticsEvent(.tapChangeErrorCorrectionLevel, ["level": errorCorrectionLevel.title])
         }
     }
 
@@ -64,10 +61,10 @@ class BeautifyQRViewModel: ViewModel {
     }
 
     func save() {
-        sendAnalytics(.tapSaveChangeQRAppearance, nil)
+        analytics.sendAnalyticsEvent(.tapSaveChangeQRAppearance, nil)
 
         if isProActivated {
-            saveChanges()            
+            saveChanges()
         } else if checkIfProFeaturesChanged() {
             showPaywall = true
         } else {

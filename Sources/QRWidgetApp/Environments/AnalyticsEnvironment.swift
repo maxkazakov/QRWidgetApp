@@ -1,8 +1,27 @@
 
 import Foundation
+import Dependencies
+import XCTestDynamicOverlay
 
 public typealias SendAnalyticsAction = (_ event: AnalyticsEvent, _ params: [String: Any]?) -> Void
 public typealias SetAnalyticsPropertyAction = (_ key: String, _ value: Any) -> Void
+
+extension DependencyValues {
+    var analytics: AnalyticsEnvironment {
+        get { self[AnalyticsKey.self] }
+        set { self[AnalyticsKey.self] = newValue }
+    }
+}
+
+enum AnalyticsKey: DependencyKey {
+    public static var liveValue: AnalyticsEnvironment {
+        .live
+    }
+}
+
+public extension AnalyticsEnvironment {
+    static var live: AnalyticsEnvironment = .unimplemented
+}
 
 public struct AnalyticsEnvironment {
     public init(sendAnalyticsEvent: @escaping SendAnalyticsAction, setUserProperty: @escaping SetAnalyticsPropertyAction) {
@@ -10,12 +29,12 @@ public struct AnalyticsEnvironment {
         self.setUserProperty = setUserProperty
     }
 
-    let sendAnalyticsEvent: SendAnalyticsAction
-    let setUserProperty: SetAnalyticsPropertyAction
+    var sendAnalyticsEvent: SendAnalyticsAction
+    var setUserProperty: SetAnalyticsPropertyAction
 
     public static let unimplemented = AnalyticsEnvironment(
-        sendAnalyticsEvent: { _, _ in },
-        setUserProperty: { _, _ in }
+        sendAnalyticsEvent: { _, _ in XCTestDynamicOverlay.unimplemented("sendAnalyticsEvent is not implemented") },
+        setUserProperty: { _, _ in XCTestDynamicOverlay.unimplemented("setUserProperty is not implemented") }
     )
 }
 

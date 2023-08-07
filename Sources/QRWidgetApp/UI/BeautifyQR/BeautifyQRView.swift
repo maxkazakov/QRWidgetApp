@@ -142,10 +142,7 @@ struct BeautifyQRView_Previews: PreviewProvider {
     static var previews: some View {
         BeautifyQRView(
             viewModel: BeautifyQRViewModel(
-                qrModel: CodeModel(data: .string("something"), type: .qr, foregroundColor: .red),
-                sendAnalytics: { event, params in
-
-                }
+                qrModel: CodeModel(data: .string("something"), type: .qr, foregroundColor: .red)                
             )
         )
     }

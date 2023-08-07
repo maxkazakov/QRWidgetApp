@@ -73,8 +73,7 @@ class DetailsViewModel: ViewModel {
     func tapChangeAppearance() {
         sendAnalytics(.tapChangeQRAppearance, nil)
         let beautifyViewModel = BeautifyQRViewModel(
-            qrModel: qrModel,
-            sendAnalytics: sendAnalytics
+            qrModel: qrModel
         )
         beautifyViewModel.onSaveTapped = { [weak self, codesService] in
             codesService.updateQR($0)

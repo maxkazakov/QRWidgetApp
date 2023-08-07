@@ -1,9 +1,3 @@
-//
-//  FavoritesService.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 16.04.2022.
-//
 
 import Foundation
 import Combine
