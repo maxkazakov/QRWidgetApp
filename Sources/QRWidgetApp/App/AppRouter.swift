@@ -4,8 +4,7 @@ import SwiftUI
 import QRWidgetCore
 
 enum Route {
-    case onboarding(onComplete: EmptyBlock)
-    case beautify(CodeModel)
+    case onboarding(onComplete: EmptyBlock)    
     case details(CodeModel, options: CodeDetailsPresentaionOptions = .zero, completion: EmptyBlock = {})
     case multipleCodesRecognized(codes: [CodeModel], completion: EmptyBlock)
     case mailToDeveloper(onComplete: (_ sent: Bool) -> Void)
@@ -28,8 +27,6 @@ class AppRouter {
         switch route {
         case let .onboarding(onComplete):
             presentOnboarding(onComplete)
-        case let .beautify(qrModel):
-            presentBeautify(router: router, qrModel: qrModel)
         case let .details(qrModel, options, completion):
             presentDetails(router: router, qrModel: qrModel, options: options, completion: completion)
         case let .multipleCodesRecognized(codes, completion):
@@ -66,13 +63,6 @@ class AppRouter {
         let viewController = generalAssembly.makeOnboardingModule(onComplete: onComplete)
         viewController.modalPresentationStyle = .fullScreen
         rootViewController.present(viewController, animated: false, completion: nil)
-    }
-
-    private func presentBeautify(router: Router, qrModel: CodeModel) {
-        let module = generalAssembly.makeBeautifyModule(qrModel: qrModel)
-        let viewController = module.controller
-        viewController.modalPresentationStyle = .fullScreen
-        router.routerController?.present(module.controller, animated: true, completion: nil)
     }
 
     private func presentDetails(router: Router, qrModel: CodeModel, options: CodeDetailsPresentaionOptions, completion: @escaping EmptyBlock) {

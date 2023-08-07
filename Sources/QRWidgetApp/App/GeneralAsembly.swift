@@ -137,18 +137,6 @@ class GeneralAssembly {
         return onboardingViewController
     }
 
-    // Beautify
-    func makeBeautifyModule(qrModel: CodeModel) -> Module {
-        let beautifyViewModel = BeautifyQRViewModel(
-            qrModel: qrModel,
-            sendAnalytics: appEnvironment.analyticsEnvironment.sendAnalyticsEvent
-        )
-        let beautifyView = BeautifyQRView(viewModel: beautifyViewModel)
-            .injectAnalyticsSender(appEnvironment.analyticsEnvironment.sendAnalyticsEvent)
-            .anyView
-        return Module(router: beautifyViewModel.router, view: beautifyView)
-    }
-
     // Settings
     func makeSettingsModule() -> some View {
         let viewModel = SettingsViewModel(settingsService: settingsService)
