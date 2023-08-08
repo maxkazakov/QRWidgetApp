@@ -1,9 +1,3 @@
-//
-//  SubscriptionInfoView.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 08.01.2022.
-//
 
 import SwiftUI
 

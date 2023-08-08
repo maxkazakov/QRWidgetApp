@@ -121,7 +121,7 @@ extension CodeScannerView {
 
             // Send back their simulated data, as if it was one of the types they were scanning for
             let result = ScanResult(
-                descriptor: CIQRCodeDescriptor(payload: Data(), symbolVersion: 0, maskPattern: 0, errorCorrectionLevel: .levelL)!,
+                descriptor: nil,
                 string: simulatedData,
                 type: delegate?.parent.codeTypes.first ?? .qr,
                 source: .camera

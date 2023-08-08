@@ -1,13 +1,8 @@
-//
-//  PaywallViewModel.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 26.10.2021.
-//
 
 import SwiftUI
 import Combine
 import StoreKit
+import SwiftUINavigation
 
 public enum QRProductType: String {
     case oneTime
@@ -64,24 +59,26 @@ class PaywallViewModel: ViewModel {
 
     @Published var needToClose = false
     @Published var closeButtonIsHidden: Bool = false
-    @Published var state: State = .loading
+    @Published var isLoading = false
+    @Published var alert: Alert?
     @Published var selectedProductIdx: Int = 0
     
-    enum State: Equatable {
-        case succeed
-        case error(String)
-        case loading
-        case data
+    enum Alert: Equatable {
+        case error(AlertState<ErrorAlertAction>)
+    }
+
+    enum ErrorAlertAction: Equatable {
+        case tapDismiss
     }
     
-    init(source: PaywallSource,
-         purchasesEnvironment: PurchasesEnvironment,
-         sendAnalyticsEvent: @escaping SendAnalyticsAction,
-         shownFromOnboarding: Bool = false,
-         state: State = .loading,
-         products: [QRProduct] = [],
-         onClose: (() -> Void)? = nil) {
-        self.state = state
+    init(
+        source: PaywallSource,
+        purchasesEnvironment: PurchasesEnvironment,
+        sendAnalyticsEvent: @escaping SendAnalyticsAction,
+        shownFromOnboarding: Bool = false,
+        products: [QRProduct] = [],
+        onClose: (() -> Void)? = nil
+    ) {
         self.products = products
         self.source = source
         self.shownFromOnboarding = shownFromOnboarding
@@ -94,22 +91,19 @@ class PaywallViewModel: ViewModel {
         self.loadProducts()
     }
 
-    var isAlreadyAppeared = false
-    func onAppear() {
-        guard !isAlreadyAppeared else { return }
-        isAlreadyAppeared = true
+    func tapOkOnAlert() {
+        print("tapOkOnAlert called")
+        self.alert = nil
     }
 
-    override func close() {
+    func tapCloseButton() {
         if shownFromOnboarding {
             sendAnalyticsEvent(.tapCloseOnPaywallOnboarding, nil)
         } else {
             sendAnalyticsEvent(.closePaywall, ["source": NSString(string: self.source.rawValue)])
         }
-        onClose?()
-        needToClose = true
+        closePaywall()
     }
-
     
     var selectedProduct: QRProduct {
         products[selectedProductIdx]
@@ -128,7 +122,7 @@ class PaywallViewModel: ViewModel {
             return
         }
         sendAnalyticsEvent(.tapActivate, ["source": NSString(string: source.rawValue)])
-        state = .loading
+        isLoading = true
 
         let eventParams: [String: AnyObject] = [
             "source": NSString(string: source.rawValue),
@@ -142,27 +136,28 @@ class PaywallViewModel: ViewModel {
                 if case let .failure(error) = $0 {
                     switch error {
                     case .cancelled:
-                        self?.sendAnalyticsEvent(.tapCancelOnPaymentAlert, eventParams)
-                        self?.state = .data
+                        self?.sendAnalyticsEvent(.tapCancelOnPaymentAlert, eventParams)                        
                     default:
-                        self?.state = .error(error.localizedDescription)
+                        self?.showError(message: error.localizedDescription)
                     }
+                    self?.isLoading = false
                 }
             }, receiveValue: { [weak self] _ in
-                self?.state = .succeed
+                self?.isLoading = false
                 switch type {
                 case .oneTime:
                     self?.sendAnalyticsEvent(.activatedOnetimePurchase, eventParams)
                 case .subscription:
                     self?.sendAnalyticsEvent(.activatedSubscription, eventParams)
                 }
+                self?.onPurchaseSuccess()
             })
             .store(in: &cancellableSet)
     }
     
     func restore() {
         sendAnalyticsEvent(.tapRestorePurchase, nil)
-        state = .loading
+        isLoading = true
 
         purchasesEnvironment.restore()
             .receive(on: RunLoop.main)
@@ -170,40 +165,60 @@ class PaywallViewModel: ViewModel {
                 if case let .failure(error) = $0 {
                     let errorString = error.localizedDescription
                     self?.sendAnalyticsEvent(.paywallErrorScreenOpened, nil)
-                    self?.state = .error(errorString)
+                    self?.isLoading = false
+                    self?.showError(message: errorString)
                 }
             },
                   receiveValue: { [weak self] in
-                self?.state = .succeed
+                self?.isLoading = false
+                self?.onPurchaseSuccess()
             })
             .store(in: &cancellableSet)
     }
-    
-    func loadProducts() {
+
+    // MARK: - Private
+
+    private func showError(message: String) {
+        let alertState = AlertState<ErrorAlertAction>(
+            title: TextState("Something went wrong"),
+            message: TextState(message),
+            dismissButton: ButtonState(action: .send(.tapDismiss), label: { TextState("Ok") })
+        )
+        alert = .error(alertState)
+    }
+
+    private func loadProducts() {
         if shownFromOnboarding {
             startTimerForCloseButton()
         }
         sendAnalyticsEvent(.paywallActivateScreenOpened, ["source": NSString(string: self.source.rawValue)])
-        self.state = .loading
 
         purchasesEnvironment.offerings()
+            .retry(10)
             .receive(on: RunLoop.main)
             .sink(receiveCompletion: { [weak self] in
                 if case let .failure(error) = $0 {
                     let errorString = error.localizedDescription
-                    self?.sendAnalyticsEvent(.paywallErrorScreenOpened, nil)
-                    self?.state = .error(errorString)
+                    self?.sendAnalyticsEvent(.paywallErrorScreenOpened, ["error": errorString])
                 }
             }, receiveValue: { [weak self] products in
-                self?.state = .data
                 self?.products = products
             })
             .store(in: &cancellableSet)
     }
 
-    func startTimerForCloseButton() {
+    private func startTimerForCloseButton() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
             self.closeButtonIsHidden = false
         })
+    }
+
+    private func onPurchaseSuccess() {
+        closePaywall()
+    }
+
+    private func closePaywall() {
+        onClose?()
+        needToClose = true
     }
 }

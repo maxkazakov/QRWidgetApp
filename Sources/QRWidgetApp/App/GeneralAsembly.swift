@@ -62,8 +62,7 @@ class GeneralAssembly {
 
     // Payment
     func makePaywallView(sourceScreen: PaywallSource, shownFromOnboarding: Bool = false, onClose: @escaping () -> Void = {}) -> AnyView {
-        
-        PaywallViewFlow(
+        PaywallScreen(
             viewModel: PaywallViewModel(
                 source: sourceScreen,
                 purchasesEnvironment: self.appEnvironment.paymentEnvironment,

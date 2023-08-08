@@ -2,17 +2,18 @@ import SwiftUI
 import Haptica
 import StoreKit
 import Combine
-import Lottie
+import SwiftUINavigation
 
 struct PaywallScreen: View {
-    @ObservedObject var viewModel: PaywallViewModel
+    @StateObject var viewModel: PaywallViewModel
+    @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
         ZStack {
             VStack(spacing: 0) {
                 HStack {
                     Button(action: {
-                        viewModel.close()
+                        viewModel.tapCloseButton()
                     }, label: {
                         Image(systemName: "xmark")
                             .font(.headline)
@@ -77,28 +78,37 @@ struct PaywallScreen: View {
                 .frame(maxWidth: .infinity)
                 .padding(.bottom, 20)
 
-                switch viewModel.state {
-                case .data, .loading:
-                    VStack(spacing: 20) {
-                        ProductsInfoView(viewModel: viewModel)
-                            .padding(.horizontal, 12)
+                VStack(spacing: 20) {
+                    ProductsInfoView(viewModel: viewModel)
+                        .padding(.horizontal, 12)
 
-                        buttonAndTerms()
-                    }
-                case .error(let errorMessage):
-                    PaywallOffersErrorView(
-                        onClose: { viewModel.close() },
-                        onRepeat: { viewModel.loadProducts() },
-                        errorMessage: errorMessage
-                    )
-                default:
-                    EmptyView()
+                    buttonAndTerms()
                 }
+            }
+            .disabled(viewModel.isLoading)
+
+            if viewModel.isLoading {
+                loaderView()
             }
         }
         .padding(.horizontal)
         .padding(.bottom)
         .background(LinearGradient.vertical.ignoresSafeArea())
+        .onChange(of: viewModel.needToClose, perform: {
+            if $0 {
+                presentationMode.wrappedValue.dismiss()
+            }
+        })
+        .alert(
+            unwrapping: $viewModel.alert,
+            case: /PaywallViewModel.Alert.error,
+            action: {
+                switch $0 {
+                case .tapDismiss:
+                    viewModel.tapOkOnAlert()
+                }
+            }
+        )
     }
 
     @ViewBuilder
@@ -112,6 +122,22 @@ struct PaywallScreen: View {
             })
             .buttonStyle(MainButtonStyle(titleColor: Asset.primaryColor.color, backgroundColor: .white))
         }
+    }
+
+    @ViewBuilder
+    func loaderView() -> some View {
+        VStack {
+            ProgressView()
+                .controlSize(.large)
+                .progressViewStyle(.circular)
+                .padding(24)
+
+                .background(
+                    .regularMaterial,
+                    in: RoundedRectangle(cornerRadius: 12, style: .continuous)
+                )
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
@@ -133,11 +159,13 @@ struct PaywallScreen_Previews: PreviewProvider {
 
 extension PaywallViewModel {
     static func makeFailueStub() -> PaywallViewModel {
-        let viewModelStub = PaywallViewModel(source: .onboarding,
-                                             purchasesEnvironment: .unimplemented,
-                                             sendAnalyticsEvent: { _, _ in },
-                                             onClose: {})
-        viewModelStub.state = .error("Failed to load")
+        let viewModelStub = PaywallViewModel(
+            source: .onboarding,
+            purchasesEnvironment: .unimplemented,
+            sendAnalyticsEvent: { _, _ in },
+            onClose: {}
+        )
+//        viewModelStub.alert = .error("Failed to load")
         viewModelStub.products = productStubs
         return viewModelStub
     }
@@ -147,14 +175,14 @@ extension PaywallViewModel {
                                              purchasesEnvironment: .unimplemented,
                                              sendAnalyticsEvent: { _, _ in },
                                              onClose: {})
-        viewModelStub.state = .data
+//        viewModelStub.state = .notLoading
         viewModelStub.products = productStubs
         return viewModelStub
     }
 
     static func makeLoadingStub() -> PaywallViewModel {
         let viewModelStub = PaywallViewModel(source: .onboarding, purchasesEnvironment: .unimplemented, sendAnalyticsEvent: { _,_ in }, onClose: {})
-        viewModelStub.state = .loading
+        viewModelStub.isLoading = true
         return viewModelStub
     }
 }

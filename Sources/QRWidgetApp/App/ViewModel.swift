@@ -8,8 +8,8 @@ protocol ViewModelProtocol: ObservableObject {
 
     func route(_ route: Route)
 
-    func close()
-    func close(completion: EmptyBlock?)
+//    func close()
+//    func close(completion: EmptyBlock?)
 }
 
 
@@ -26,13 +26,13 @@ class ViewModel: ViewModelProtocol {
             .store(in: &cancellableSet)
     }
 
-    func close() {
-        router.dismissByItself()
-    }
-
-    func close(completion: EmptyBlock?) {
-        router.dismissByItself(completion: completion)
-    }
+//    func close() {
+//        router.dismissByItself()
+//    }
+//
+//    func close(completion: EmptyBlock?) {
+//        router.dismissByItself(completion: completion)
+//    }
 
     var router = Router()
     var parentRouter: Router?
