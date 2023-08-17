@@ -85,6 +85,40 @@ public struct CodeCreationView: View {
                     Text(CodeContentType.url.title)
                 })
             }
+            CaseLet(/QRFormData.phone) { phone in
+                Section(content: {
+                    TextField("+49 172 761029", text: phone)
+                        .keyboardType(.phonePad)
+                        .focused($focus, equals: .first)
+                }, header: {
+                    Text(CodeContentType.phone.title)
+                })
+            }
+            CaseLet(/QRFormData.email) { emailFormData in
+                Section(content: {
+                    TextField("example@mail.com", text: emailFormData.email)
+                        .keyboardType(.emailAddress)
+                        .focused($focus, equals: .first)
+                }, header: {
+                    Text(CodeContentType.email.title)
+                })
+
+                Section(content: {
+                    TextEditor(text: emailFormData.subject)
+                }, header: {
+                    Text("Subject")
+                }, footer: {
+                    Text("This field is optional")
+                })
+
+                Section(content: {
+                    TextEditor(text: emailFormData.message)
+                }, header: {
+                    Text("Message")
+                }, footer: {
+                    Text("This field is optional")
+                })
+            }
         })
     }
 }
@@ -93,7 +127,7 @@ struct CreationCodeView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             CodeCreationView()
-                .environmentObject(CodeCreationFlowModel())
+                .environmentObject(CodeCreationFlowModel(type: .phone))
                 .navigationTitle("New code")
         }
     }

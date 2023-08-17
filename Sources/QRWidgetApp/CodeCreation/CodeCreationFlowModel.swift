@@ -9,7 +9,7 @@ import XCTestDynamicOverlay
 final public class CodeCreationFlowModel: ObservableObject {
 
     public var onCodeCreatoinFinished: (CodeModel) -> Void = unimplemented("SelectingCodeTypeModel.onCodeCreatoinFinished")
-    @Published var codeTypes: [CodeContentType] = [CodeContentType.rawText, CodeContentType.url]
+    @Published var codeTypes: [CodeContentType] = [CodeContentType.rawText, .url, .phone, .email]
 
     @Published var qrDataType: QRFormData = .rawText("") {
         didSet {
@@ -31,8 +31,12 @@ final public class CodeCreationFlowModel: ObservableObject {
                 qrDataType = .url("https://")
             case .rawText:
                 qrDataType = .rawText("")
-            default:
-                break
+            case .email:
+                qrDataType = .email(EmailFormData(email: "", subject: "", message: ""))
+            case .phone:
+                qrDataType = .phone("")
+            case .binary, .none:
+                return
             }
         }
     }

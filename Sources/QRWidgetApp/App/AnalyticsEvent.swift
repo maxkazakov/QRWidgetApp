@@ -23,6 +23,8 @@ public enum AnalyticsEvent: String {
     case howToAddButtonClick
 
     case tapQRLink
+    case tapPhoneNumberLink
+    case tapEmailLink
     case tapSettings
     case qrLabelUpdated
 

@@ -8,6 +8,8 @@ public enum CodeContentType: Int, CaseIterable, Hashable, Identifiable {
 
     case rawText = 0
     case url
+    case phone
+    case email
     case binary
 
     public var title: String {
@@ -16,6 +18,10 @@ public enum CodeContentType: Int, CaseIterable, Hashable, Identifiable {
             return L10n.rawText
         case .url:
             return L10n.website
+        case .phone:
+            return "Phone"
+        case .email:
+            return "Email"
         case .binary:
             return "Binary"
         }
@@ -25,16 +31,29 @@ public enum CodeContentType: Int, CaseIterable, Hashable, Identifiable {
 public enum CodeContent {
     case rawText(String)
     case url(URL)
+    case phone(URL)
+    case email(URL)
     case binary
 
     public static func make(from stringPayload: String?) -> CodeContent {
-        guard let stringPayload else {
+        guard var stringPayload else {
             return .binary
         }
+        stringPayload = stringPayload.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        if stringPayload.hasPrefix(CodeContentConstants.tel), let phoneUrl = URL(string: stringPayload) {
+            return .phone(phoneUrl)
+        }
+
+        if stringPayload.hasPrefix(CodeContentConstants.mailto), let emailUrl = URL(string: stringPayload) {
+            return .email(emailUrl)
+        }
+
         if let url = URL(string: stringPayload), stringPayload.isValidURL {
             return .url(url)
         }
-        return .rawText(stringPayload)        
+        
+        return .rawText(stringPayload)
     }
 
     public var qrString: String {
@@ -45,6 +64,10 @@ public enum CodeContent {
             return url.absoluteString
         case .binary:
             return ""
+        case let .phone(phone):
+            return phone.absoluteString
+        case let .email(email):
+            return email.absoluteString
         }
     }
 
@@ -56,8 +79,17 @@ public enum CodeContent {
             return .url
         case .binary:
             return .binary
+        case .phone:
+            return .phone
+        case .email:
+            return .email
         }
     }
+}
+
+private struct CodeContentConstants {
+    static let tel = "tel:"
+    static let mailto = "mailto:"
 }
 
 public extension String {
