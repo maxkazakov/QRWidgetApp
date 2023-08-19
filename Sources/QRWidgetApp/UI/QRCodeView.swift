@@ -4,11 +4,11 @@ import QRWidgetCore
 
 struct QRCodeDataView: View {
 
-    let type: CodeContent
+    let codeContent: CodeContent
     @Environment(\.sendAnalyticsEvent) var sendAnalyticsEvent
 
     var body: some View {
-        switch self.type {
+        switch self.codeContent {
         case let .url(url):
             Button(action: {
                 if UIApplication.shared.canOpenURL(url) {
@@ -60,14 +60,14 @@ struct QRCodeDataView: View {
 }
 
 struct QRCodeView: View {
-    let type: CodeContent
+    let codeContent: CodeContent
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(type.type.title)
+            Text(codeContent.type.title)
                 .foregroundColor(Color.gray)
             HStack {
-                QRCodeDataView(type: type)
+                QRCodeDataView(codeContent: codeContent)
                 Spacer()
             }
         }
@@ -77,10 +77,10 @@ struct QRCodeView: View {
 struct QRCodeDataView_Previews: PreviewProvider {
     static var previews: some View {
         Form {
-            QRCodeView(type: .rawText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."))
-            QRCodeView(type: .url(URL(string: "http://tbilisi.regionshop.biz/sports.html")!))
-            QRCodeView(type: .phone(URL(string: "tel:89273325479")!))
-            QRCodeView(type: .email(URL(string: "mailto:maxkazakov@gmail.com")!))
+            QRCodeView(codeContent: .rawText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."))
+            QRCodeView(codeContent: .url(URL(string: "http://tbilisi.regionshop.biz/sports.html")!))
+            QRCodeView(codeContent: .phone(URL(string: "tel:89273325479")!))
+            QRCodeView(codeContent: .email(URL(string: "mailto:maxkazakov@gmail.com")!))
         }
     }
 }

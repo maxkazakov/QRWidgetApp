@@ -30,7 +30,7 @@ struct DetailsView: View {
 
             Section(
                 content: {
-                    QRCodeView(type: viewModel.qrDataType)
+                    QRCodeView(codeContent: viewModel.qrDataType)
                         .padding(.vertical, 8)
                     CustomTestField(placeholder: L10n.QrDetails.Name.placeholder, text: viewModel.labelBinding)
                     Button(action: {
@@ -41,7 +41,6 @@ struct DetailsView: View {
                             Spacer()
                         }
                     })
-//                    .foregroundColor(Color.primaryColor)
                 }
             )
 

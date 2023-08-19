@@ -12,7 +12,7 @@ public struct CodeCreationFlowView: View {
         NavigationView {
             List {
                 Section(content: {
-                    ForEach(model.codeTypes) { type in
+                    ForEach(model.utilsCodeTypes) { type in
                         NavigationLink(
                             tag: type,
                             selection: $model.type,
@@ -25,7 +25,24 @@ public struct CodeCreationFlowView: View {
                         )
                     }
                 }, header: {
-                    Text(L10n.selectQrType)
+                    Text("Utils")
+                })
+
+                Section(content: {
+                    ForEach(model.contactsCodeTypes) { type in
+                        NavigationLink(
+                            tag: type,
+                            selection: $model.type,
+                            destination: {
+                                CodeCreationView()
+                            },
+                            label: {
+                                Text(type.title)
+                            }
+                        )
+                    }
+                }, header: {
+                    Text("Contacts")
                 })
             }
             .listStyle(.insetGrouped)
@@ -38,6 +55,6 @@ public struct CodeCreationFlowView: View {
 struct CodeCreationFlowView_Previews: PreviewProvider {
     static var previews: some View {
         CodeCreationFlowView()
-            .environmentObject(CodeCreationFlowModel(type: .rawText))
+            .environmentObject(CodeCreationFlowModel(type: nil))
     }
 }

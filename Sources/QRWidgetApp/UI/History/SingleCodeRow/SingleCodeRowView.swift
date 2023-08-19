@@ -37,7 +37,7 @@ struct SingleCodeRowView: View {
                         .font(.body)
                 }
 
-                QRCodeView(type: model.qrData)
+                QRCodeView(codeContent: model.qrData)
                     .allowsHitTesting(false)
             }
             if viewModel.isFavorite {
@@ -61,7 +61,7 @@ struct SingleCodeRowView_Previews: PreviewProvider {
     static var previews: some View {
         SingleCodeRowView(
             model: SingleCodeRowUIModel(
-                model: CodeModel.init(data: .string("something"), type: .aztec, qrStyle: nil),
+                model: CodeModel(data: .string("something"), type: .aztec, qrStyle: nil),
                 isFavorite: false
             ),
             viewModel: SingleCodeRowViewModel(id: UUID(), favoritesService: FavoritesService())
