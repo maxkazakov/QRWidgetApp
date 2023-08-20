@@ -54,9 +54,9 @@ class PaywallViewModel: ViewModel {
     let sendAnalyticsEvent: SendAnalyticsAction
 
     var shownFromOnboarding: Bool = false
-    var products: [QRProduct] = []
     let purchasesEnvironment: PurchasesEnvironment
 
+    @Published var products: [QRProduct] = []
     @Published var needToClose = false
     @Published var closeButtonIsHidden: Bool = false
     @Published var isLoading = false

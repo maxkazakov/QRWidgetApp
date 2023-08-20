@@ -78,10 +78,6 @@ public class Starter {
 
         Logger.debugLog(message: "App Starter: End")
         isAppStartedPublisher.send(true)
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-            self.requestPermission()
-        })
     }
 
     private func showTabsController() {
@@ -124,33 +120,6 @@ public class Starter {
 
         if #available(iOS 15.0, *) {
             UITabBar.appearance().scrollEdgeAppearance = tabAppearance
-        }
-    }
-
-    func requestPermission() {
-        if #available(iOS 14, *) {
-            ATTrackingManager.requestTrackingAuthorization { status in
-                switch status {
-                case .authorized:
-                    // Tracking authorization dialog was shown
-                    // and we are authorized
-                    print("Authorized")
-
-//                    // Now that we are authorized we can get the IDFA
-//                    print(ASIdentifierManager.shared().advertisingIdentifier)
-                case .denied:
-                    // Tracking authorization dialog was
-                    // shown and permission is denied
-                    print("Denied")
-                case .notDetermined:
-                    // Tracking authorization dialog has not been shown
-                    print("Not Determined")
-                case .restricted:
-                    print("Restricted")
-                @unknown default:
-                    print("Unknown")
-                }
-            }
         }
     }
 }
