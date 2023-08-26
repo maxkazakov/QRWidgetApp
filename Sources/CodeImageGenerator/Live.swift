@@ -55,11 +55,14 @@ public class CodeGeneratorLive {
             filter = makeCIFilter(inputBarcodeDescriptor: descriptor)
 
         case let .string(stringPayload):
-            filter = makeCIFilter(stringPayload: stringPayload, codeType: codeType)
+            filter = makeCIFilter(
+                stringPayload: stringPayload,
+                codeType: codeType,
+                qrErrorCorrectionLevel: errorCorrectionLevel
+            )
         }
 
         guard let filter else { return nil }
-        applyCorrectionLevel(filter: filter, codeType: codeType, errorCorrectionLevel: errorCorrectionLevel)
         return filter.outputImage.flatMap {
             convertToImage(ciImage: $0, size: size, foreground: foreground, background: background)
         }
@@ -75,7 +78,7 @@ public class CodeGeneratorLive {
         return colorFilter.outputImage
     }
 
-    private func makeCIFilter(stringPayload: String, codeType: CodeType) -> CIFilter? {
+    private func makeCIFilter(stringPayload: String, codeType: CodeType, qrErrorCorrectionLevel: String) -> CIFilter? {
         switch codeType {
         case .qr:
             guard let data = stringPayload.data(using: .utf8) else {
@@ -84,6 +87,7 @@ public class CodeGeneratorLive {
             let filter = CIFilter.qrCodeGenerator()
             filter.setDefaults()
             filter.message = data
+            filter.correctionLevel = qrErrorCorrectionLevel
             return filter
 
         case .aztec:
@@ -123,16 +127,6 @@ public class CodeGeneratorLive {
         filter.setDefaults()
         filter.setValue(inputBarcodeDescriptor, forKey: "inputBarcodeDescriptor")
         return filter
-    }
-
-    private func applyCorrectionLevel<FilterType: CIFilter>(filter: FilterType, codeType: CodeType, errorCorrectionLevel: String) {
-        switch codeType {
-        case .qr:
-            //https://www.qrcode.com/en/about/error_correction.html
-            filter.setValue(errorCorrectionLevel, forKey: "inputCorrectionLevel")
-        default:
-            break
-        }
     }
 
     private func convertToImage(ciImage: CIImage, size: CGSize, foreground: CGColor, background: CGColor) -> UIImage? {
