@@ -10,24 +10,48 @@ public enum QRProductType: String {
 }
 
 public struct QRProduct: Equatable {
-    public init(id: String, isPopular: Bool, title: String, priceInfo: String, type: QRProductType, purchase: @escaping () -> AnyPublisher<Void, PurchasesError>) {
+    public init(
+        id: String,
+        isPopular: Bool,
+        title: String,
+        subtitle: String,
+        safePercent: Int?,
+        type: QRProductType,
+        purchase: @escaping () -> AnyPublisher<Void, PurchasesError>
+    ) {
         self.id = id
         self.isPopular = isPopular
         self.title = title
-        self.priceInfo = priceInfo
+        self.subtitle = subtitle
         self.type = type
         self.purchase = purchase
+        self.safePercent = safePercent
     }
 
     let id: String
     let isPopular: Bool
     let title: String
-    let priceInfo: String
+    let subtitle: String
+    let safePercent: Int?
     let type: QRProductType
     let purchase: () -> AnyPublisher<Void, PurchasesError>
 
     public static func == (lhs: Self, rhs: Self) -> Bool {
         return lhs.id == rhs.id
+    }
+}
+
+public extension QRProduct {
+    static func mock(id: String) -> QRProduct {
+        QRProduct(
+            id: id,
+            isPopular: true,
+            title: "------------------------------------------------------------",
+            subtitle: "------------------------------------------------------------",
+            safePercent: nil,
+            type: .oneTime,
+            purchase: { Just(()).setFailureType(to: PurchasesError.self).eraseToAnyPublisher() }
+        )
     }
 }
 
@@ -136,7 +160,7 @@ class PaywallViewModel: ViewModel {
                 if case let .failure(error) = $0 {
                     switch error {
                     case .cancelled:
-                        self?.sendAnalyticsEvent(.tapCancelOnPaymentAlert, eventParams)                        
+                        self?.sendAnalyticsEvent(.tapCancelOnPaymentAlert, eventParams)
                     default:
                         self?.showError(message: error.localizedDescription)
                     }

@@ -44,7 +44,7 @@ public extension PurchasesEnvironment {
         proActivatedPublisher: { Just(true).eraseToAnyPublisher() },
         isProActivated: { true },
         offerings: {
-            let products = [QRProduct(id: "1", isPopular: true, title: "Forever", priceInfo: "$15", type: .oneTime, purchase: {
+            let products = [QRProduct(id: "1", isPopular: false, title: "Forever", subtitle: "$15", safePercent: nil, type: .oneTime, purchase: {
                 Fail(error: PurchasesError.custom("Purchasing is not implemented")).eraseToAnyPublisher()
             })]
             return Just(products).setFailureType(to: Error.self).eraseToAnyPublisher()

@@ -39,8 +39,8 @@ struct PaywallScreen: View {
                                     .scaledToFit()
                                     .frame(width: 28, height: 28)
 
-                                Text(L10n.Paywall.proVersion)
-                                    .font(Font.system(size: 28, weight: .bold, design: .default))
+                                Text("Go Premium")
+                                    .font(Font.system(size: 28, weight: .bold, design: .rounded))
                                     .foregroundColor(.white)
                             }
 
@@ -79,8 +79,7 @@ struct PaywallScreen: View {
                 .padding(.bottom, 20)
 
                 VStack(spacing: 20) {
-                    ProductsInfoView(viewModel: viewModel)
-                        .padding(.horizontal, 12)
+                    AvailableProductsView(viewModel: viewModel)
 
                     buttonAndTerms()
                 }
@@ -165,18 +164,20 @@ extension PaywallViewModel {
             sendAnalyticsEvent: { _, _ in },
             onClose: {}
         )
-//        viewModelStub.alert = .error("Failed to load")
         viewModelStub.products = productStubs
         return viewModelStub
     }
 
     static func makeSuccessStub() -> PaywallViewModel {
+        var purchasesEnvironment: PurchasesEnvironment = .unimplemented
+        purchasesEnvironment.offerings = {
+            let products = productStubs
+            return Just(products).setFailureType(to: Error.self).eraseToAnyPublisher()
+        }
         let viewModelStub = PaywallViewModel(source: .onboarding,
-                                             purchasesEnvironment: .unimplemented,
+                                             purchasesEnvironment: purchasesEnvironment,
                                              sendAnalyticsEvent: { _, _ in },
                                              onClose: {})
-//        viewModelStub.state = .notLoading
-        viewModelStub.products = productStubs
         return viewModelStub
     }
 
@@ -191,30 +192,19 @@ private let productStubs: [QRProduct] = [
     .init(
         id: "1",
         isPopular: false,
-        title: "7 days Free",
-        priceInfo: "Then $9.99 1 month",
+        title: "$6.99 / month",
+        subtitle: "after 7 days trial period",
+        safePercent: nil,
         type: .subscription,
         purchase: { Just(()).setFailureType(to: PurchasesError.self).eraseToAnyPublisher() }
     ),
     .init(
         id: "2",
         isPopular: true,
-        title: "One time purchase",
-        priceInfo: "$29.99",
-        type: .oneTime,
+        title: "$29.99 / year",
+        subtitle: "$2.49 / month billed annually",
+        safePercent: 61,
+        type: .subscription,
         purchase: { Just(()).setFailureType(to: PurchasesError.self).eraseToAnyPublisher() }
     )
 ]
-
-extension QRProduct {
-    static func mock(id: String) -> QRProduct {
-        QRProduct(
-            id: id,
-            isPopular: true,
-            title: "------------------------------------------------------------",
-            priceInfo: "------------------------------------------------------------",
-            type: .oneTime,
-            purchase: { Just(()).setFailureType(to: PurchasesError.self).eraseToAnyPublisher() }
-        )
-    }
-}
