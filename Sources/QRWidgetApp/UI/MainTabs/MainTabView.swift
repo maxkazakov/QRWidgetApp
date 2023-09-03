@@ -14,7 +14,8 @@ struct MainTabView: View {
 
     var body: some View {
         TabView(selection: $viewModel.currentTab) {
-            CodeCreationFlowView(model: viewModel.codeCreationModel)
+            CodeCreationFlowView()
+                .environmentObject(viewModel.codeCreationModel)
                 .tabItem {
                     Label("Create QR", systemImage: "plus.circle")
                 }

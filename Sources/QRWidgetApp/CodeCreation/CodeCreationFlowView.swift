@@ -49,6 +49,7 @@ public struct CodeCreationFlowView: View {
             .navigationTitle(L10n.codeType)
             .navigationBarTitleDisplayMode(.inline)
         }
+        .navigationViewStyle(.stack)
     }
 }
 
