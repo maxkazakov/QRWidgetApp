@@ -76,6 +76,8 @@ class GeneralAssembly {
     }
 
     lazy var mainTabViewModel = MainTabViewModel(
+        qrCodeService: qrCodesService,
+        codesService: .live,
         storage: userDefaultsStorage,
         sendAnalytics: appEnvironment.analyticsEnvironment.sendAnalyticsEvent
     )

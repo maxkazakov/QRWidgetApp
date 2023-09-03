@@ -7,6 +7,7 @@ import Dependencies
 
 struct CodesService {
     var createNewQrCode: (_ stringPayload: String?, _ descriptor: CIBarcodeDescriptor?, _ type: CodeType, _ batchId: UUID?) -> CodeModel
+    var addNewCode: (_ qrModels: CodeModel) -> Void
     var addNewQrCodes: (_ qrModels: [CodeModel]) -> Void
     var changeQRLabel: (_ id: UUID, _ newLabel: String) -> Void
     var changeQRAppearance: (_ id: UUID, _ errorCorrectionLevel: ErrorCorrection, _ foreground: UIColor?, _ background: UIColor?, _ qrStyle: QRStyle?) -> Void
@@ -21,6 +22,7 @@ extension CodesService {
         let _live = generalAssembly.qrCodesService
         return CodesService(
             createNewQrCode: _live.createNewQrCode(stringPayload:descriptor:type:batchId:),
+            addNewCode: _live.addNew(qrModel:),
             addNewQrCodes: _live.addNewQrCodes(qrModels:),
             changeQRLabel: _live.changeQRLabel(id:newLabel:),
             changeQRAppearance: _live.changeQRAppearance(id:errorCorrectionLevel:foreground:background:qrStyle:),

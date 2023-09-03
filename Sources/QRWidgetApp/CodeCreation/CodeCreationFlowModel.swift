@@ -5,10 +5,11 @@ import QRCodeUI
 import CasePaths
 import SwiftUINavigation
 import XCTestDynamicOverlay
+import Dependencies
 
-final public class CodeCreationFlowModel: ObservableObject {
+final class CodeCreationFlowModel: ObservableObject {
 
-    public var onCodeCreatoinFinished: (CodeModel) -> Void = unimplemented("SelectingCodeTypeModel.onCodeCreatoinFinished")
+    @Dependency(\.codesService) var codesService
     @Published var utilsCodeTypes: [CodeContentType] = [CodeContentType.rawText, .url]
     @Published var contactsCodeTypes: [CodeContentType] = [CodeContentType.phone, .email]
 
@@ -48,7 +49,7 @@ final public class CodeCreationFlowModel: ObservableObject {
         case beautifying(BeautifyQRViewModel)
     }
 
-    public init(type: CodeContentType? = nil) {
+    init(type: CodeContentType? = nil) {
         self.type = type
     }
 
@@ -62,6 +63,7 @@ final public class CodeCreationFlowModel: ObservableObject {
     }
 
     func onTapSave(code: CodeModel) {
-        onCodeCreatoinFinished(code)
+        self.codesService.addNewCode(code)
+        self.type = nil
     }
 }

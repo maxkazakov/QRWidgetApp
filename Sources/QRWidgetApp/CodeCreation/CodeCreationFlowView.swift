@@ -56,6 +56,6 @@ public struct CodeCreationFlowView: View {
 struct CodeCreationFlowView_Previews: PreviewProvider {
     static var previews: some View {
         CodeCreationFlowView()
-            .environmentObject(CodeCreationFlowModel(type: nil))
+            .environmentObject(CodeCreationFlowModel())
     }
 }

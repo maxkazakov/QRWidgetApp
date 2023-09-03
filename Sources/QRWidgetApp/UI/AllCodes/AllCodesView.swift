@@ -24,24 +24,5 @@ struct AllCodesView: View {
             }
         }
         .navigationTitle(L10n.History.title)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button {
-                    viewModel.createdNewCodeTapped()
-                } label: {
-                    Text(L10n.CreateNewQrCodeButton.title)
-                }
-            }
-        }
-        .sheet(
-            unwrapping: $viewModel.destination,
-            case: /AllCodesViewModel.Destination.newCode,
-            onDismiss: {
-                viewModel.destination = nil
-            },
-            content: { $viewModel in
-                CodeCreationFlowView()
-                    .environmentObject(viewModel)
-            })
     }
 }

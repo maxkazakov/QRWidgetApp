@@ -9,25 +9,22 @@ enum SelectedTab: Int {
 
 class AllCodesViewModel: ObservableObject {
 
-    enum Destination {
-        case newCode(CodeCreationFlowModel)
-    }
-
     init(codesService: QRCodesService, sendAnalytics: @escaping SendAnalyticsAction) {
         self.codesService = codesService
         self.sendAnalytics = sendAnalytics
     }
 
     @Published var selectedTab: SelectedTab = .scans
-    @Published var destination: Destination? {
-        didSet {
-            self.bind()
-        }
-    }
 
     var startScanningTapped: EmptyBlock = unimplemented("AllCodesViewModel.startScanningTapped") {
         didSet {
             historyViewModel.startScanningTapped = startScanningTapped
+        }
+    }
+
+    var createQRTapped: EmptyBlock = unimplemented("AllCodesViewModel.createQRTapped") {
+        didSet {
+            myCodesViewModel.createNewTapped = createQRTapped
         }
     }
 
@@ -43,26 +40,6 @@ class AllCodesViewModel: ObservableObject {
     }()
 
     lazy var myCodesViewModel: MyCodesListViewModel = {
-        var model = MyCodesListViewModel(qrCodesService: codesService)
-        model.createNewTapped = { [weak self] in self?.createdNewCodeTapped() }
-        return model
+        MyCodesListViewModel(qrCodesService: codesService)
     }()
-
-    func createdNewCodeTapped() {
-        sendAnalytics(.tapCreateNewQR, [:])
-        destination = .newCode(CodeCreationFlowModel())
-    }
-
-    func bind() {
-        switch destination {
-        case let .newCode(codeCreationModel):
-            codeCreationModel.onCodeCreatoinFinished = { [weak self] newCode in
-                guard let self else { return }
-                self.codesService.addNew(qrModel: newCode)
-                self.destination = nil
-            }
-        case .none:
-            break
-        }
-    }
 }

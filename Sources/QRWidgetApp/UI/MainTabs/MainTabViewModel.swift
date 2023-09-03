@@ -5,6 +5,10 @@ import Combine
 import StoreKit
 
 class MainTabViewModel: ViewModel {
+
+    let qrCodeService: QRCodesService
+    let codesService: CodesService
+
     let storage: UserDefaultsStorage
     let sendAnalytics: SendAnalyticsAction
     @Published var currentTab: Tab = .scan
@@ -12,21 +16,32 @@ class MainTabViewModel: ViewModel {
 
     lazy var allCodesTabModel: AllCodesViewModel = {
         let model = AllCodesViewModel(
-            codesService: generalAssembly.qrCodesService,
+            codesService: self.qrCodeService,
             sendAnalytics: self.sendAnalytics
         )
         model.startScanningTapped = { [weak self] in
             self?.currentTab = .scan
         }
+        model.createQRTapped = { [weak self] in
+            self?.sendAnalytics(.tapCreateNewQR, [:])
+            self?.currentTab = .create
+        }
         return model
     }()
 
     lazy var codeCreationModel: CodeCreationFlowModel = {
-        let model = CodeCreationFlowModel()        
+        let model = CodeCreationFlowModel()
         return model
     }()
 
-    init(storage: UserDefaultsStorage, sendAnalytics: @escaping SendAnalyticsAction) {
+    init(
+        qrCodeService: QRCodesService,
+        codesService: CodesService,
+        storage: UserDefaultsStorage,
+        sendAnalytics: @escaping SendAnalyticsAction
+    ) {
+        self.qrCodeService = qrCodeService
+        self.codesService = codesService
         self.storage = storage
         self.sendAnalytics = sendAnalytics
         super.init()
