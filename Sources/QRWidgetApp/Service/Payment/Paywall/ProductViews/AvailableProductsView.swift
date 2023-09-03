@@ -8,7 +8,7 @@ struct AvailableProductsView: View {
 
     var body: some View {
         if viewModel.products.isEmpty {
-            HStack(spacing: 16) {
+            VStack(spacing: 16) {
                 let mocks: [QRProduct] = [.mock(id: "1"), .mock(id: "2")]
                 ForEach(mocks, id: \.id) { product in
                     ProductView(
@@ -40,11 +40,23 @@ struct AvailableProductsView: View {
 
 struct ProductInfoFullWidthView_Previews: PreviewProvider {
     static var previews: some View {
-        ZStack {
-            Color(UIColor.purple)
-            AvailableProductsView(viewModel: PaywallViewModel.makeSuccessStub())
-                .padding(.horizontal)
-        }
+        Group {
+            ZStack {
+                Color(UIColor.purple)
+                AvailableProductsView(viewModel: PaywallViewModel.makeSuccessStub())
+                    .padding(.horizontal)
+            }
             .previewLayout(.fixed(width: 300, height: 400))
+
+            ZStack {
+                Color(UIColor.purple)
+                AvailableProductsView(viewModel: PaywallViewModel(source: .onboarding,
+                                                                  purchasesEnvironment: .unimplemented,
+                                                                  sendAnalyticsEvent: { _, _ in },
+                                                                  onClose: {}))
+                    .padding(.horizontal)
+            }
+            .previewLayout(.fixed(width: 300, height: 400))
+        }
     }
 }

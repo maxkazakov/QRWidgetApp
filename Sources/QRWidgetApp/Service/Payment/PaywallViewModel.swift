@@ -46,8 +46,8 @@ public extension QRProduct {
         QRProduct(
             id: id,
             isPopular: true,
-            title: "------------------------------------------------------------",
-            subtitle: "------------------------------------------------------------",
+            title: "-------------------",
+            subtitle: "----------------",
             safePercent: nil,
             type: .oneTime,
             purchase: { Just(()).setFailureType(to: PurchasesError.self).eraseToAnyPublisher() }

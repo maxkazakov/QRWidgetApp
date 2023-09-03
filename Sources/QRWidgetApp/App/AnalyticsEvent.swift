@@ -47,6 +47,7 @@ public enum AnalyticsEvent: String {
     case openScanTab
     case openHistoryTab
     case openSettingsTab
+    case openCreateTab
 
     // Wallet
     case appleWalletClick

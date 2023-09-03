@@ -21,6 +21,11 @@ class MainTabViewModel: ViewModel {
         return model
     }()
 
+    lazy var codeCreationModel: CodeCreationFlowModel = {
+        let model = CodeCreationFlowModel()        
+        return model
+    }()
+
     init(storage: UserDefaultsStorage, sendAnalytics: @escaping SendAnalyticsAction) {
         self.storage = storage
         self.sendAnalytics = sendAnalytics
@@ -78,6 +83,8 @@ class MainTabViewModel: ViewModel {
             sendAnalytics(.openHistoryTab, nil)
         case .settings:
             sendAnalytics(.openSettingsTab, nil)
+        case .create:
+            sendAnalytics(.openCreateTab, nil)
         }
     }
 

@@ -3,10 +3,10 @@ import SwiftUI
 
 enum Tab: Int, Identifiable {
     var id: Int { self.rawValue }
-
-    case scan = 1
-    case history = 2
-    case settings = 3
+    case create = 1
+    case scan = 2
+    case history = 3
+    case settings = 4
 }
 
 struct MainTabView: View {
@@ -14,6 +14,12 @@ struct MainTabView: View {
 
     var body: some View {
         TabView(selection: $viewModel.currentTab) {
+            CodeCreationFlowView(model: viewModel.codeCreationModel)
+                .tabItem {
+                    Label("Create QR", systemImage: "plus.circle")
+                }
+                .tag(Tab.create)
+
             generalAssembly.makeQRCodeScannerView()
                 .tabItem {
                     Label(L10n.Tabs.scan, systemImage: "qrcode.viewfinder")

@@ -44,10 +44,10 @@ public extension PurchasesEnvironment {
         proActivatedPublisher: { Just(true).eraseToAnyPublisher() },
         isProActivated: { true },
         offerings: {
-            let products = [QRProduct(id: "1", isPopular: false, title: "Forever", subtitle: "$15", safePercent: nil, type: .oneTime, purchase: {
-                Fail(error: PurchasesError.custom("Purchasing is not implemented")).eraseToAnyPublisher()
-            })]
-            return Just(products).setFailureType(to: Error.self).eraseToAnyPublisher()
+//            let products = [QRProduct(id: "1", isPopular: false, title: "Forever", subtitle: "$15", safePercent: nil, type: .oneTime, purchase: {
+//                Fail(error: PurchasesError.custom("Purchasing is not implemented")).eraseToAnyPublisher()
+//            })]
+            return Just([]).setFailureType(to: Error.self).eraseToAnyPublisher()
         },
         restore: {
             Fail(error: PurchasesError.custom("Restoring is not implemented")).eraseToAnyPublisher()
