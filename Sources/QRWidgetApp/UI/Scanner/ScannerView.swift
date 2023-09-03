@@ -1,9 +1,3 @@
-//
-//  ScannerView.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 21.02.2022.
-//
 
 import SwiftUI
 import UIKit
@@ -81,7 +75,7 @@ struct ScannerView: View {
         .fullScreenCover(isPresented: $viewModel.showPaywall) {
             generalAssembly.makePaywallView(sourceScreen: .batchScan)
         }
-        .simpleToast(isPresented: $showToast, options: SimpleToastOptions(alignment: .top, hideAfter: 1.5, backdrop: nil, animation: nil, modifierType: .slide)) {
+        .simpleToast(isPresented: $showToast, options: SimpleToastOptions(alignment: .top, hideAfter: 1.5, modifierType: .slide)) {
             toastView
         }
         .onChange(of: isGalleryPresented, perform: {

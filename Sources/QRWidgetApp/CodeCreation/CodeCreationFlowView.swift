@@ -1,6 +1,7 @@
 
 import SwiftUI
 import QRWidgetCore
+import SimpleToast
 
 public struct CodeCreationFlowView: View {
 
@@ -48,8 +49,36 @@ public struct CodeCreationFlowView: View {
             .listStyle(.insetGrouped)
             .navigationTitle(L10n.codeType)
             .navigationBarTitleDisplayMode(.inline)
+            .simpleToast(
+                isPresented: $model.showToast,
+                options: SimpleToastOptions(
+                    alignment: .bottom,
+                    hideAfter: 5,
+                    modifierType: .slide,
+                    dismissOnTap: false
+                )
+            ) {
+                toastView
+            }
         }
         .navigationViewStyle(.stack)
+    }
+
+    @ViewBuilder
+    var toastView: some View {
+        VStack {
+            Button("QR-code created. Tap to open My codes", action: {
+                model.goToMyCodes()
+            })
+        }
+        .padding()
+        .background(
+            Capsule()
+                .foregroundColor(Color.blue)
+        )
+        .foregroundColor(Color.white)
+        .cornerRadius(10)
+        .padding(.bottom, 8)
     }
 }
 

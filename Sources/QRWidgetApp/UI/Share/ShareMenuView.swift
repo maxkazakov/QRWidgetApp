@@ -39,6 +39,5 @@ struct ShareMenuView: View {
     @ViewBuilder
     var defaultButton: some View {
         Label(L10n.Sharing.title, systemImage: "square.and.arrow.up")
-//            .foregroundColor(Color.primaryColor)
     }
 }

@@ -44,6 +44,8 @@ final class CodeCreationFlowModel: ObservableObject {
     }
     @Published var focus: CodeCreationView.Field? = .first
     @Published var navigationDestination: Destination?
+    @Published var showToast = false
+    var lastCreatedCodeId: UUID?
 
     enum Destination {
         case beautifying(BeautifyQRViewModel)
@@ -64,6 +66,13 @@ final class CodeCreationFlowModel: ObservableObject {
 
     func onTapSave(code: CodeModel) {
         self.codesService.addNewCode(code)
+        self.lastCreatedCodeId = code.id
         self.type = nil
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.navigationDestination = nil
+            self.showToast = true
+        }
     }
+
+    var goToMyCodes: () -> Void = unimplemented("goToMyCodes callback is not set")
 }

@@ -1,13 +1,9 @@
-//
-//  SettingsView.swift
-//  QRWidget
-//
-//  Created by Максим Казаков on 01.11.2021.
-//
 
 import SwiftUI
+import SimpleToast
 
 struct SettingsView: View {
+    @State var showToast = false
     @State var cannotFindExpanded = false
     @State var showPaywall: Bool = false
     @StateObject var viewModel: SettingsViewModel
@@ -149,6 +145,15 @@ struct SettingsView: View {
                                 Text("Remove all QR codes")
                             })
                         .foregroundColor(Color.primary)
+
+                        Button(
+                            action: {
+                                showToast = true
+                            },
+                            label: {
+                                Text("Make mock QR codes")
+                            })
+                        .foregroundColor(Color.primary)
                     },
                     header: {
                         Text("Debug")
@@ -161,6 +166,28 @@ struct SettingsView: View {
             .listStyle(.insetGrouped)
             .navigationTitle(L10n.Settings.title)
         }
+        .simpleToast(isPresented: $showToast, options: SimpleToastOptions(alignment: .bottom, hideAfter: 1.5, modifierType: .slide, dismissOnTap: false)) {
+            toastView
+        }
         .navigationViewStyle(.stack)
     }
+
+    #if DEBUG
+    @ViewBuilder
+    var toastView: some View {
+        VStack {
+            Button("QR code created. Tap to show", action: {
+
+            })            
+        }
+        .padding()
+        .background(
+            Capsule()
+                .foregroundColor(Color.blue)
+        )
+        .foregroundColor(Color.white)
+        .cornerRadius(10)
+        .padding(.bottom, 8)
+    }
+    #endif
 }

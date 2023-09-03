@@ -32,7 +32,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/sanzaru/SimpleToast.git", .upToNextMajor(from: "0.6.2")),
+        .package(url: "https://github.com/sanzaru/SimpleToast.git", .upToNextMajor(from: "0.7.2")),
         .package(url: "https://github.com/efremidze/Haptica", .upToNextMajor(from: "3.0.3")),
         .package(url: "https://github.com/airbnb/lottie-ios", branch: "master"),
         .package(url: "https://github.com/pointfreeco/swiftui-navigation", from: "0.4.2"),

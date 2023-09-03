@@ -42,4 +42,8 @@ class AllCodesViewModel: ObservableObject {
     lazy var myCodesViewModel: MyCodesListViewModel = {
         MyCodesListViewModel(qrCodesService: codesService)
     }()
+
+    func goToMyCodes() {
+        selectedTab = .my
+    }
 }

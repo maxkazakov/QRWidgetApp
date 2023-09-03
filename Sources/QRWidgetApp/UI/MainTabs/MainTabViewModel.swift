@@ -31,6 +31,10 @@ class MainTabViewModel: ViewModel {
 
     lazy var codeCreationModel: CodeCreationFlowModel = {
         let model = CodeCreationFlowModel()
+        model.goToMyCodes = { [weak self] in
+            self?.currentTab = .history
+            self?.allCodesTabModel.goToMyCodes()
+        }
         return model
     }()
 

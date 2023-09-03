@@ -113,7 +113,7 @@ struct BeautifyQRView: View {
                         .padding(.vertical, 16)
                         .frame(height: 50)
                 })
-                .buttonStyle(MainButtonStyle())
+                .buttonStyle(MainButtonStyle(backgroundColor: .tintColor))
                 .padding(.horizontal, 16)
                 .padding(.bottom, 12)
             }

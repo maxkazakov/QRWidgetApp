@@ -70,7 +70,6 @@ struct DetailsView: View {
                             Spacer()
                         }
                     })
-//                    .foregroundColor(Color.primaryColor)
 
                     Button(action: {
                         removeConfirmation = true
