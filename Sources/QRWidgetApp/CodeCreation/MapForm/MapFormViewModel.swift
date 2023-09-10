@@ -21,13 +21,20 @@ final class MapFormViewModel: ObservableObject {
         }
     }
 
+    private var locationDataUpdateWorkItem: DispatchWorkItem?
     @Published var mapRegion = MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: 51.507222, longitude: -0.1275),
         span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5)
     )
     {
         didSet {
-            locationData.wrappedValue = .init(latitude: mapRegion.center.latitude, longitude: mapRegion.center.longitude)
+            // workaround for: https://developer.apple.com/forums/thread/718697
+            locationDataUpdateWorkItem?.cancel()
+            let workItem = DispatchWorkItem(block: { [mapRegion] in
+                self.locationData.wrappedValue = .init(latitude: mapRegion.center.latitude, longitude: mapRegion.center.longitude)
+            })
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: workItem)
+            self.locationDataUpdateWorkItem = workItem
         }
     }
 
