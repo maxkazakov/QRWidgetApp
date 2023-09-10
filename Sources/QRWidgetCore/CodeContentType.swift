@@ -53,7 +53,7 @@ public enum CodeContent {
             return .email(emailUrl)
         }
 
-        if stringPayload.hasPrefix(CodeContentConstants.geo), let geoUrl = URL(string: stringPayload) {
+        if stringPayload.hasPrefix("https://maps.google.com/local?q="), let geoUrl = URL(string: stringPayload) {
             return .location(geoUrl)
         }
 

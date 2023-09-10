@@ -54,10 +54,22 @@ enum QRFormData {
             if locationFormData.latitude.isZero || locationFormData.longitude.isZero {
                 return nil
             }
-            guard let geoURL = URL(string: "geo:\(locationFormData.latitude),\(locationFormData.longitude),100") else { return nil }
+            guard let latitudeString = Self.locationFormatter.string(from: NSNumber(value: locationFormData.latitude)),
+                  let longitudeString = Self.locationFormatter.string(from: NSNumber(value: locationFormData.longitude)) else {
+                return nil
+            }
+
+            guard let geoURL = URL(string: "https://maps.google.com/local?q=\(latitudeString),\(longitudeString)") else { return nil }
             return .location(geoURL)
         }
     }
+
+    static let locationFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.decimalSeparator = "."
+        formatter.maximumFractionDigits = 10
+        return formatter
+    }()
 }
 
 struct EmailFormData {

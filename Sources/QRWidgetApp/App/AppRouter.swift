@@ -81,7 +81,7 @@ class AppRouter {
         }
         guard let presentingController = router.routerController else { return }
         let presentCall = { presentingController.present(navigationController, animated: true, completion: nil) }
-        if presentingController.presentedViewController != nil {
+        if presentingController.presentedViewController != nil {            
             presentingController.dismiss(animated: false, completion: presentCall)
         } else {
             presentCall()
