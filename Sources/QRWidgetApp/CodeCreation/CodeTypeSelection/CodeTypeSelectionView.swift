@@ -13,16 +13,9 @@ struct CodeTypeSelectionView: View {
             List {
                 Section(content: {
                     ForEach(model.utilsCodeTypes) { type in
-                        NavigationLink(
-                            unwrapping: $model.navigationDestination,
-                            case: /CodeTypeSelectionViewModel.Destination.codeContentForm
-                        ) { isActive in
-                            model.setNavigationLinkActive(isActive, type: type)
-                        } destination: { $model in
-                            CodeContentFormView(model: model)
-                        } label: {
-                            Text(type.title)
-                        }
+                        Button(type.title, action: {
+                            model.setNavigationLinkActive(type: type)
+                        })
                     }
                 }, header: {
                     Text("Utils")
@@ -30,22 +23,28 @@ struct CodeTypeSelectionView: View {
 
                 Section(content: {
                     ForEach(model.contactsCodeTypes) { type in
-                        
-                        NavigationLink(
-                            unwrapping: $model.navigationDestination,
-                            case: /CodeTypeSelectionViewModel.Destination.codeContentForm
-                        ) { isActive in
-                            model.setNavigationLinkActive(isActive, type: type)
-                        } destination: { $model in
-                            CodeContentFormView(model: model)
-                        } label: {
-                            Text(type.title)
-                        }
+                        Button(type.title, action: {
+                            model.setNavigationLinkActive(type: type)
+                        })
                     }
                 }, header: {
                     Text("Contacts")
                 })
             }
+            .background(
+                NavigationLink(
+                    unwrapping: $model.navigationDestination,
+                    case: /CodeTypeSelectionViewModel.Destination.codeContentForm
+                ) { isActive in
+                    if !isActive {
+                        model.navigationDestination = nil
+                    }
+                } destination: { $model in
+                    CodeContentFormView(model: model)
+                } label: {
+                    EmptyView()
+                }
+            )
             .listStyle(.insetGrouped)
             .navigationTitle(L10n.codeType)
             .navigationBarTitleDisplayMode(.inline)

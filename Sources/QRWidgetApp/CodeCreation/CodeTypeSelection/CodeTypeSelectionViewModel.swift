@@ -23,16 +23,12 @@ final class CodeTypeSelectionViewModel: ObservableObject {
         case codeContentForm(CodeContentFormViewModel)
     }
 
-    func setNavigationLinkActive(_ isActive: Bool, type: CodeContentType) {
-        if isActive {
-            let codeContentFormViewModel = CodeContentFormViewModel(type: type)
-            codeContentFormViewModel.onSaveCode = { [weak self] code in
-                self?.onTapSave(code: code)
-            }
-            navigationDestination = .codeContentForm(codeContentFormViewModel)
-        } else {
-            navigationDestination = nil
+    func setNavigationLinkActive(type: CodeContentType) {
+        let codeContentFormViewModel = CodeContentFormViewModel(type: type)
+        codeContentFormViewModel.onSaveCode = { [weak self] code in
+            self?.onTapSave(code: code)
         }
+        navigationDestination = .codeContentForm(codeContentFormViewModel)
     }
 
     private func onTapSave(code: CodeModel) {
