@@ -7,6 +7,7 @@ enum QRFormData {
     case email(EmailFormData)
     case phone(String)
     case location(LocationFormData)
+    case wifi(WifiFormData)
 
     var isValid: Bool {
         qrData() != nil
@@ -61,6 +62,10 @@ enum QRFormData {
 
             guard let geoURL = URL(string: "https://maps.google.com/local?q=\(latitudeString),\(longitudeString)") else { return nil }
             return .location(geoURL)
+
+        case let .wifi(wifiData):
+            return .wifi("WIFI:S:\(wifiData.ssid);T:\(wifiData.encryption.rawValue);P:\(wifiData.password);;")
+
         }
     }
 
@@ -82,6 +87,8 @@ struct LocationFormData {
     var latitude: Double
     var longitude: Double
 }
+
+typealias WifiFormData = WifiData
 
 func isValidEmail(_ email: String) -> Bool {
     let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"

@@ -13,8 +13,9 @@ final class CodeTypeSelectionViewModel: ObservableObject {
     var goToMyCodes: () -> Void = unimplemented("goToMyCodes callback is not set")
 
     @Dependency(\.codesService) var codesService
-    @Published var utilsCodeTypes: [CodeContentType] = [CodeContentType.rawText, .url]
-    @Published var contactsCodeTypes: [CodeContentType] = [CodeContentType.phone, .email, .location]
+    @Published var generalCodeTypes: [CodeContentType] = [CodeContentType.rawText, .url]
+    @Published var contactsCodeTypes: [CodeContentType] = [CodeContentType.phone, .email]
+    @Published var utilsCodeTypes: [CodeContentType] = [CodeContentType.wifi, .location]
 
     @Published var navigationDestination: Destination?
     @Published var showToast = false

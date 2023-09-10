@@ -12,13 +12,13 @@ struct CodeTypeSelectionView: View {
         NavigationView {
             List {
                 Section(content: {
-                    ForEach(model.utilsCodeTypes) { type in
+                    ForEach(model.generalCodeTypes) { type in
                         Button(type.title, action: {
                             model.setNavigationLinkActive(type: type)
                         })
                     }
                 }, header: {
-                    Text("Utils")
+                    Text("General")
                 })
 
                 Section(content: {
@@ -29,6 +29,16 @@ struct CodeTypeSelectionView: View {
                     }
                 }, header: {
                     Text("Contacts")
+                })
+
+                Section(content: {
+                    ForEach(model.utilsCodeTypes) { type in
+                        Button(type.title, action: {
+                            model.setNavigationLinkActive(type: type)
+                        })
+                    }
+                }, header: {
+                    Text("Utils")
                 })
             }
             .background(

@@ -12,6 +12,7 @@ public enum CodeContentType: Int, CaseIterable, Hashable, Identifiable {
     case email
     case binary
     case location
+    case wifi
 
     public var title: String {
         switch self {
@@ -27,6 +28,8 @@ public enum CodeContentType: Int, CaseIterable, Hashable, Identifiable {
             return "Binary"
         case .location:
             return "Location"
+        case .wifi:
+            return "Wi-Fi"
         }
     }
 }
@@ -38,6 +41,7 @@ public enum CodeContent {
     case email(URL)
     case binary
     case location(URL)
+    case wifi(String)
 
     public static func make(from stringPayload: String?) -> CodeContent {
         guard var stringPayload else {
@@ -55,6 +59,10 @@ public enum CodeContent {
 
         if stringPayload.hasPrefix("https://maps.google.com/local?q="), let geoUrl = URL(string: stringPayload) {
             return .location(geoUrl)
+        }
+
+        if WifiParser().parse(stringPayload) != nil {
+            return .wifi(stringPayload)
         }
 
         if let url = URL(string: stringPayload), stringPayload.isValidURL {
@@ -78,6 +86,8 @@ public enum CodeContent {
             return email.absoluteString
         case let .location(geoUrl):
             return geoUrl.absoluteString
+        case let .wifi(wifi):
+            return wifi
         }
     }
 
@@ -95,16 +105,15 @@ public enum CodeContent {
             return .email
         case .location:
             return .location
+        case .wifi:
+            return .wifi
         }
     }
 }
 
-//CodeContent
-
 private struct CodeContentConstants {
     static let tel = "tel:"
     static let mailto = "mailto:"
-    static let geo = "geo:"
 }
 
 public extension String {

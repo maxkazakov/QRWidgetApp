@@ -1,4 +1,4 @@
-// swift-tools-version: 5.6
+// swift-tools-version: 5.8
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -54,12 +54,18 @@ let package = Package(
                 .product(name: "Dependencies", package: "swift-dependencies"),
             ],
             exclude: ["swiftgen.yml"],
-            resources: [.process("Resources/LottieAnimations")]
+            resources: [.process("Resources/LottieAnimations")],
+            swiftSettings: [
+                .enableUpcomingFeature("BareSlashRegexLiterals")
+            ]
         ),
         .target(
             name: "QRWidgetCore",
             dependencies: [],
-            exclude: ["swiftgen.yml"]
+            exclude: ["swiftgen.yml"],
+            swiftSettings: [
+                .enableUpcomingFeature("BareSlashRegexLiterals")
+            ]
         ),
         .target(
             name: "CodeImageGenerator",
@@ -81,7 +87,10 @@ let package = Package(
 
         .testTarget(
             name: "QRWidgetAppTests",
-            dependencies: ["QRWidgetApp"]
+            dependencies: ["QRWidgetApp"],
+            swiftSettings: [
+                .enableUpcomingFeature("BareSlashRegexLiterals")
+            ]
         ),
     ]
 )

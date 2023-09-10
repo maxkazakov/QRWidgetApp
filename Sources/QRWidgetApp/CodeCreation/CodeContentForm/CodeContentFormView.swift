@@ -117,6 +117,32 @@ public struct CodeContentFormView: View {
                     })
                 }
             }
+            CaseLet(/QRFormData.wifi) { wifiData in
+                Form {
+                    Section(content: {
+                        TextEditor(text: wifiData.ssid)
+                            .focused($focus, equals: .first)
+                    }, header: {
+                        Text("Network name (SSID)")
+                    })
+
+                    Section(content: {
+                        TextEditor(text: wifiData.password)
+                    }, header: {
+                        Text("Password")
+                    })
+
+                    Section(content: {
+                        Picker("Encryption type", selection: wifiData.encryption) {
+                            ForEach(WifiFormData.Encryption.allCases) { encryption in
+                                Text(encryption.description).tag(encryption)
+                            }
+                        }
+                    }, header: {
+                        Text("Encryption")
+                    })
+                }
+            }
         })
     }
 }
@@ -124,7 +150,7 @@ public struct CodeContentFormView: View {
 struct CodeContentFormView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            CodeContentFormView(model: CodeContentFormViewModel(type: .email))                
+            CodeContentFormView(model: CodeContentFormViewModel(type: .email))
                 .navigationTitle("New code")
         }
     }

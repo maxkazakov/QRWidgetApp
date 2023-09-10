@@ -21,7 +21,7 @@ struct QRCodeDataView: View {
                     .lineLimit(2)
             })
 
-        case let .rawText(text):
+        case let .rawText(text), let .wifi(text):
             Text(text)
                 .multilineTextAlignment(.leading)
                 .lineLimit(4)
