@@ -32,17 +32,24 @@ public struct WifiData {
     public var password: String
     public var encryption: Encryption
 
-    public var isWEP: NEHotspotConfiguration {
-        NEHotspotConfiguration(
-            ssid: ssid,
-            passphrase: password,
-            isWEP: self.encryption == .WEP
-        )
+    public var hotspotConfiguration: NEHotspotConfiguration {
+        switch encryption {
+        case .nopass:
+            let configuration = NEHotspotConfiguration(ssid: ssid)
+            return configuration
+        default:
+            return NEHotspotConfiguration(
+                ssid: ssid,
+                passphrase: password,
+                isWEP: self.encryption == .WEP
+            )
+        }
     }
 }
 
 public final class WifiParser {
     private let pattern = #"WIFI:S:(?<ssid>.*);T:(?<type>.*);P:(?<password>.*);;"#
+    public init() {}
 
     public func parse(_ payload: String) -> WifiData? {
         do {

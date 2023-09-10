@@ -4,73 +4,93 @@ import SwiftUINavigation
 import QRWidgetCore
 import SimpleToast
 
+struct CodeTypeSelectionRowView: View {
+    @ObservedObject var model: CodeTypeRowModel
+
+    var body: some View {
+        NavigationLink(
+            unwrapping: $model.navigationDestination,
+            case: /CodeTypeRowModel.Destination.codeContentForm
+        ) { isActive in
+            if !isActive {
+                model.navigationDestination = nil
+            } else {
+                model.setNavigationLinkActive()
+            }
+        } destination: { $model in
+            CodeContentFormView(model: model)
+        } label: {
+            Label(model.type.title, systemImage: model.systemImage)            
+        }
+    }
+}
+
 struct CodeTypeSelectionView: View {
 
     @ObservedObject var model: CodeTypeSelectionViewModel
 
-    var body: some View {
-        NavigationView {
-            List {
-                Section(content: {
-                    ForEach(model.generalCodeTypes) { type in
-                        Button(type.title, action: {
-                            model.setNavigationLinkActive(type: type)
-                        })
-                    }
-                }, header: {
-                    Text("General")
-                })
-
-                Section(content: {
-                    ForEach(model.contactsCodeTypes) { type in
-                        Button(type.title, action: {
-                            model.setNavigationLinkActive(type: type)
-                        })
-                    }
-                }, header: {
-                    Text("Contacts")
-                })
-
-                Section(content: {
-                    ForEach(model.utilsCodeTypes) { type in
-                        Button(type.title, action: {
-                            model.setNavigationLinkActive(type: type)
-                        })
-                    }
-                }, header: {
-                    Text("Utils")
-                })
-            }
-            .background(
-                NavigationLink(
-                    unwrapping: $model.navigationDestination,
-                    case: /CodeTypeSelectionViewModel.Destination.codeContentForm
-                ) { isActive in
-                    if !isActive {
-                        model.navigationDestination = nil
-                    }
-                } destination: { $model in
-                    CodeContentFormView(model: model)
-                } label: {
-                    EmptyView()
+    @ViewBuilder
+    var contentView: some View {
+        List {
+            Section(content: {
+                ForEach(model.generalCodeTypes) { rowModel in
+                    CodeTypeSelectionRowView(model: rowModel)
                 }
-            )
-            .listStyle(.insetGrouped)
-            .navigationTitle(L10n.codeType)
-            .navigationBarTitleDisplayMode(.inline)
-            .simpleToast(
-                isPresented: $model.showToast,
-                options: SimpleToastOptions(
-                    alignment: .bottom,
-                    hideAfter: 5,
-                    modifierType: .slide,
-                    dismissOnTap: false
-                )
-            ) {
-                toastView
-            }
+            }, header: {
+                Text("General")
+            })
+
+            Section(content: {
+                ForEach(model.contactsCodeTypes) { rowModel in
+                    CodeTypeSelectionRowView(model: rowModel)
+                }
+            }, header: {
+                Text("Contacts")
+            })
+
+            Section(content: {
+                ForEach(model.utilsCodeTypes) { rowModel in
+                    CodeTypeSelectionRowView(model: rowModel)
+                }
+            }, header: {
+                Text("Utils")
+            })
         }
-        .navigationViewStyle(.stack)
+    }
+
+    @ViewBuilder
+    func navigationViewWrapper(@ViewBuilder contentView: () -> some View) -> some View {
+        // Pop back doen't work with NavigationStack
+//        if #available(iOS 16.0, *) {
+//            NavigationStack {
+//                contentView()
+//            }
+//        } else {
+            NavigationView {
+                contentView()
+            }
+            .navigationViewStyle(.stack)
+//        }
+    }
+
+    var body: some View {
+        navigationViewWrapper {
+            contentView
+                .listStyle(.insetGrouped)
+                .navigationTitle(L10n.codeType)
+                .navigationBarTitleDisplayMode(.inline)
+                .simpleToast(
+                    isPresented: $model.showToast,
+                    options: SimpleToastOptions(
+                        alignment: .bottom,
+                        hideAfter: 5,
+                        modifierType: .slide,
+                        dismissOnTap: false
+                    )
+                ) {
+                    toastView
+                }
+        }
     }
 
     @ViewBuilder

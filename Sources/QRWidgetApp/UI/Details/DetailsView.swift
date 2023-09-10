@@ -30,7 +30,7 @@ struct DetailsView: View {
 
             Section(
                 content: {
-                    QRCodeView(codeContent: viewModel.qrDataType)
+                    QRCodeView(codeContent: viewModel.qrDataType, isDetailed: true)
                         .padding(.vertical, 8)
                     CustomTestField(placeholder: L10n.QrDetails.Name.placeholder, text: viewModel.labelBinding)
                     Button(action: {

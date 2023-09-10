@@ -3,7 +3,7 @@ import SwiftUI
 
 struct MainButtonStyle: ButtonStyle {
     
-    init(titleColor: UIColor = .white, backgroundColor: UIColor = Asset.primaryColor.color) {
+    init(titleColor: UIColor = .white, backgroundColor: UIColor = .tintColor) {
         self.titleColor = titleColor
         self.backgroundColor = backgroundColor
     }

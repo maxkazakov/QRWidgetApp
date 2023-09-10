@@ -37,7 +37,7 @@ struct SingleCodeRowView: View {
                         .font(.body)
                 }
 
-                QRCodeView(codeContent: model.qrData)
+                QRCodeView(codeContent: model.qrData, isDetailed: false)
                     .allowsHitTesting(false)
             }
             if viewModel.isFavorite {
