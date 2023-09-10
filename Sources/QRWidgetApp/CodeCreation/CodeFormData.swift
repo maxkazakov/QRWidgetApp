@@ -6,6 +6,7 @@ enum QRFormData {
     case url(String)
     case email(EmailFormData)
     case phone(String)
+    case location(LocationFormData)
 
     var isValid: Bool {
         qrData() != nil
@@ -22,7 +23,7 @@ enum QRFormData {
             guard let url = URL(string: urlString), urlString.isValidURL else { return nil }
             return .url(url)
 
-        case let .phone(phone):            
+        case let .phone(phone):
             guard let phoneURL = URL(string: "tel:\(phone)") else { return nil }
             return .phone(phoneURL)
 
@@ -48,6 +49,13 @@ enum QRFormData {
                 return nil
             }
             return .email(fullEmailUrl)
+
+        case let .location(locationFormData):
+            if locationFormData.latitude.isZero || locationFormData.longitude.isZero {
+                return nil
+            }
+            guard let geoURL = URL(string: "geo:\(locationFormData.latitude),\(locationFormData.longitude),100") else { return nil }
+            return .location(geoURL)
         }
     }
 }
@@ -56,6 +64,11 @@ struct EmailFormData {
     var email: String
     var subject: String
     var message: String
+}
+
+struct LocationFormData {
+    var latitude: Double
+    var longitude: Double
 }
 
 func isValidEmail(_ email: String) -> Bool {

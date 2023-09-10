@@ -55,6 +55,18 @@ struct QRCodeDataView: View {
                     .multilineTextAlignment(.leading)
                     .lineLimit(2)
             })
+
+        case let .location(location):
+            Button(action: {
+                if UIApplication.shared.canOpenURL(location) {
+                    UIApplication.shared.open(location, options: [:], completionHandler: nil)
+//                    sendAnalyticsEvent(.tapLocationLink, nil)
+                }
+            }, label: {
+                Text(location.absoluteString)
+                    .multilineTextAlignment(.leading)
+                    .lineLimit(2)
+            })
         }
     }
 }

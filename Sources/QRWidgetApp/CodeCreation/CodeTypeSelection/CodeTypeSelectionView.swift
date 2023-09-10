@@ -1,29 +1,28 @@
 
 import SwiftUI
+import SwiftUINavigation
 import QRWidgetCore
 import SimpleToast
 
-public struct CodeCreationFlowView: View {
+struct CodeTypeSelectionView: View {
 
-    @EnvironmentObject var model: CodeCreationFlowModel
+    @ObservedObject var model: CodeTypeSelectionViewModel
 
-    public init() {}
-
-    public var body: some View {
+    var body: some View {
         NavigationView {
             List {
                 Section(content: {
                     ForEach(model.utilsCodeTypes) { type in
                         NavigationLink(
-                            tag: type,
-                            selection: $model.type,
-                            destination: {
-                                CodeCreationView()
-                            },
-                            label: {
-                                Text(type.title)
-                            }
-                        )
+                            unwrapping: $model.navigationDestination,
+                            case: /CodeTypeSelectionViewModel.Destination.codeContentForm
+                        ) { isActive in
+                            model.setNavigationLinkActive(isActive, type: type)
+                        } destination: { $model in
+                            CodeContentFormView(model: model)
+                        } label: {
+                            Text(type.title)
+                        }
                     }
                 }, header: {
                     Text("Utils")
@@ -31,16 +30,17 @@ public struct CodeCreationFlowView: View {
 
                 Section(content: {
                     ForEach(model.contactsCodeTypes) { type in
+                        
                         NavigationLink(
-                            tag: type,
-                            selection: $model.type,
-                            destination: {
-                                CodeCreationView()
-                            },
-                            label: {
-                                Text(type.title)
-                            }
-                        )
+                            unwrapping: $model.navigationDestination,
+                            case: /CodeTypeSelectionViewModel.Destination.codeContentForm
+                        ) { isActive in
+                            model.setNavigationLinkActive(isActive, type: type)
+                        } destination: { $model in
+                            CodeContentFormView(model: model)
+                        } label: {
+                            Text(type.title)
+                        }
                     }
                 }, header: {
                     Text("Contacts")
@@ -82,9 +82,8 @@ public struct CodeCreationFlowView: View {
     }
 }
 
-struct CodeCreationFlowView_Previews: PreviewProvider {
+struct CodeTypeSelectionView_Previews: PreviewProvider {
     static var previews: some View {
-        CodeCreationFlowView()
-            .environmentObject(CodeCreationFlowModel())
+        CodeTypeSelectionView(model: CodeTypeSelectionViewModel())
     }
 }
