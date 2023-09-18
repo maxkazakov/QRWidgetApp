@@ -13,6 +13,8 @@ public enum CodeContentType: Int, CaseIterable, Hashable, Identifiable {
     case binary
     case location
     case wifi
+    case twitter
+    case facebook
 
     public var title: String {
         switch self {
@@ -30,6 +32,10 @@ public enum CodeContentType: Int, CaseIterable, Hashable, Identifiable {
             return "Location"
         case .wifi:
             return "Wi-Fi"
+        case .twitter:
+            return "Twitter"
+        case .facebook:
+            return "Facebook"
         }
     }
 }
@@ -42,6 +48,8 @@ public enum CodeContent {
     case binary
     case location(URL)
     case wifi(String)
+    case twitter(URL)
+    case facebook(URL)
 
     public static func make(from stringPayload: String?) -> CodeContent {
         guard var stringPayload else {
@@ -59,6 +67,16 @@ public enum CodeContent {
 
         if stringPayload.hasPrefix("https://maps.google.com/local?q="), let geoUrl = URL(string: stringPayload) {
             return .location(geoUrl)
+        }
+
+        if stringPayload.hasPrefix("https://twitter.com") || stringPayload.hasPrefix("https://www.twitter.com"),
+           let twitterUrl = URL(string: stringPayload) {
+            return .twitter(twitterUrl)
+        }
+
+        if stringPayload.hasPrefix("https://facebook.com") || stringPayload.hasPrefix("https://www.facebook.com"),
+           let facebookUrl = URL(string: stringPayload) {
+            return .facebook(facebookUrl)
         }
 
         if WifiParser().parse(stringPayload) != nil {
@@ -88,6 +106,10 @@ public enum CodeContent {
             return geoUrl.absoluteString
         case let .wifi(wifi):
             return wifi
+        case let .twitter(twitterUrl):
+            return twitterUrl.absoluteString
+        case let .facebook(facebookUrl):
+            return facebookUrl.absoluteString
         }
     }
 
@@ -107,6 +129,10 @@ public enum CodeContent {
             return .location
         case .wifi:
             return .wifi
+        case .twitter:
+            return .twitter
+        case .facebook:
+            return .facebook
         }
     }
 }

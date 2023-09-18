@@ -36,6 +36,7 @@ internal enum Asset {
   internal static let checkmark = ImageAsset(name: "checkmark")
   internal static let emptyFav = ImageAsset(name: "emptyFav")
   internal static let emptyHistory = ImageAsset(name: "emptyHistory")
+  internal static let facebook = SymbolAsset(name: "facebook")
   internal static let flashOff = ImageAsset(name: "flashOff")
   internal static let flashOn = ImageAsset(name: "flashOn")
   internal static let gallery = ImageAsset(name: "gallery")
@@ -43,7 +44,9 @@ internal enum Asset {
   internal static let purple1 = ImageAsset(name: "purple 1")
   internal static let qrTemplate = ImageAsset(name: "qrTemplate")
   internal static let star = ImageAsset(name: "star")
+  internal static let twitter = SymbolAsset(name: "twitter")
   internal static let viewfinder = ImageAsset(name: "viewfinder")
+  internal static let whatsapp = SymbolAsset(name: "whatsapp")
   internal static let yellow1 = ImageAsset(name: "yellow 1")
   internal static let yellowOnboarding = ColorAsset(name: "yellowOnboarding")
 }
@@ -150,6 +153,39 @@ internal extension ImageAsset.Image {
     self.init(named: asset.name)
     #endif
   }
+}
+
+internal struct SymbolAsset {
+  internal fileprivate(set) var name: String
+
+  #if os(iOS) || os(tvOS) || os(watchOS)
+  @available(iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+  internal typealias Configuration = UIImage.SymbolConfiguration
+  internal typealias Image = UIImage
+
+  @available(iOS 12.0, tvOS 12.0, watchOS 5.0, *)
+  internal var image: Image {
+    let bundle = BundleToken.bundle
+    #if os(iOS) || os(tvOS)
+    let image = Image(named: name, in: bundle, compatibleWith: nil)
+    #elseif os(watchOS)
+    let image = Image(named: name)
+    #endif
+    guard let result = image else {
+      fatalError("Unable to load symbol asset named \(name).")
+    }
+    return result
+  }
+
+  @available(iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+  internal func image(with configuration: Configuration) -> Image {
+    let bundle = BundleToken.bundle
+    guard let result = Image(named: name, in: bundle, with: configuration) else {
+      fatalError("Unable to load symbol asset named \(name).")
+    }
+    return result
+  }
+  #endif
 }
 
 // swiftlint:disable convenience_type

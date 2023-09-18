@@ -8,6 +8,8 @@ enum QRFormData {
     case phone(String)
     case location(LocationFormData)
     case wifi(WifiFormData)
+    case twitter(String)
+    case facebook(String)
 
     var isValid: Bool {
         qrData() != nil
@@ -20,6 +22,15 @@ enum QRFormData {
                 return nil
             }
             return .rawText(text)
+
+        case let .twitter(urlString):
+            guard let url = URL(string: urlString), urlString.isValidURL else { return nil }
+            return .twitter(url)
+
+        case let .facebook(urlString):
+            guard let url = URL(string: urlString), urlString.isValidURL else { return nil }
+            return .facebook(url)
+
         case let .url(urlString):
             guard let url = URL(string: urlString), urlString.isValidURL else { return nil }
             return .url(url)

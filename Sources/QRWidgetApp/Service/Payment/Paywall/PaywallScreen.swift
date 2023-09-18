@@ -118,7 +118,7 @@ struct PaywallScreen: View {
                 viewModel.activate()
             }, label: {
                 Text(L10n.continue)
-            })
+            })            
             .buttonStyle(MainButtonStyle(titleColor: Asset.primaryColor.color, backgroundColor: .white))
         }
     }

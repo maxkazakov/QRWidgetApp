@@ -79,7 +79,7 @@ struct QRCodeDataView: View {
                     Button(action: {
                         let parcer = WifiParser()
                         if let wifiConfig = parcer.parse(text)?.hotspotConfiguration {
-                            
+
                             NEHotspotConfigurationManager.shared.apply(wifiConfig) { error in
                                 if let error = error {
                                     print("NEHotspotConfigurationManager error:", wifiConfig, error.localizedDescription)
@@ -94,6 +94,29 @@ struct QRCodeDataView: View {
                     .buttonStyle(MainButtonStyle())
                 }
             }
+        case let .twitter(twitterURL):
+            Button(action: {
+                if UIApplication.shared.canOpenURL(twitterURL) {
+                    UIApplication.shared.open(twitterURL, options: [:], completionHandler: nil)
+//                    sendAnalyticsEvent(.tapQRLink, nil)
+                }
+            }, label: {
+                Text(twitterURL.absoluteString)
+                    .multilineTextAlignment(.leading)
+                    .lineLimit(2)
+            })
+
+        case let .facebook(facebookURL):
+            Button(action: {
+                if UIApplication.shared.canOpenURL(facebookURL) {
+                    UIApplication.shared.open(facebookURL, options: [:], completionHandler: nil)
+                    //                    sendAnalyticsEvent(.tapQRLink, nil)
+                }
+            }, label: {
+                Text(facebookURL.absoluteString)
+                    .multilineTextAlignment(.leading)
+                    .lineLimit(2)
+            })
         }
     }
 }

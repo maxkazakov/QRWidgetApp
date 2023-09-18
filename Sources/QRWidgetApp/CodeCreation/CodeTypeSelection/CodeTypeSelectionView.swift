@@ -20,7 +20,28 @@ struct CodeTypeSelectionRowView: View {
         } destination: { $model in
             CodeContentFormView(model: model)
         } label: {
-            Label(model.type.title, systemImage: model.systemImage)            
+            HStack {
+                if let image = self.image {
+                    image
+                        .renderingMode(.template)
+                        .foregroundColor(Color.blue)
+                }
+                Text(model.type.title)
+            }
+        }
+    }
+
+    var image: Image? {
+        switch model.type {
+        case .rawText: return Image(systemName: "textformat.abc")
+        case .url: return Image(systemName: "link")
+        case .phone: return Image(systemName: "phone")
+        case .email: return Image(systemName: "envelope")
+        case .location: return Image(systemName: "mappin")
+        case .wifi: return Image(systemName: "wifi")
+        case .binary: return nil
+        case .twitter: return Image(uiImage: Asset.twitter.image)
+        case .facebook: return Image(uiImage: Asset.facebook.image)
         }
     }
 }
@@ -54,6 +75,14 @@ struct CodeTypeSelectionView: View {
                 }
             }, header: {
                 Text("Utils")
+            })
+
+            Section(content: {
+                ForEach(model.socialsTypes) { rowModel in
+                    CodeTypeSelectionRowView(model: rowModel)
+                }
+            }, header: {
+                Text("Social Media")
             })
         }
     }

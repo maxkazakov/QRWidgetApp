@@ -66,9 +66,32 @@ public struct CodeContentFormView: View {
                 Form {
                     Section(content: {
                         TextEditor(text: url)
+                            .keyboardType(UIKit.UIKeyboardType.URL)
                             .focused($focus, equals: .first)
                     }, header: {
                         Text(CodeContentType.url.title)
+                    })
+                }
+            }
+            CaseLet(/QRFormData.twitter) { url in
+                Form {
+                    Section(content: {
+                        TextEditor(text: url)
+                            .keyboardType(UIKit.UIKeyboardType.URL)
+                            .focused($focus, equals: .first)
+                    }, header: {
+                        Text(CodeContentType.twitter.title)
+                    })
+                }
+            }
+            CaseLet(/QRFormData.facebook) { url in
+                Form {
+                    Section(content: {
+                        TextEditor(text: url)
+                            .keyboardType(UIKit.UIKeyboardType.URL)
+                            .focused($focus, equals: .first)
+                    }, header: {
+                        Text(CodeContentType.facebook.title)
                     })
                 }
             }
@@ -150,7 +173,7 @@ public struct CodeContentFormView: View {
 struct CodeContentFormView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            CodeContentFormView(model: CodeContentFormViewModel(type: .email))
+            CodeContentFormView(model: CodeContentFormViewModel(type: .twitter))
                 .navigationTitle("New code")
         }
     }

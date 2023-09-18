@@ -47,6 +47,10 @@ final class CodeContentFormViewModel: ObservableObject {
             qrFormData = .location(.init(latitude: .zero, longitude: .zero))
         case .wifi:
             qrFormData = .wifi(WifiFormData(ssid: "", password: "", encryption: .nopass))
+        case .twitter:
+            qrFormData = .twitter("")
+        case .facebook:
+            qrFormData = .facebook("")
         case .binary, .none:
             return
         }

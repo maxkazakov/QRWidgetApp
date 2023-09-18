@@ -35,24 +35,6 @@ final class CodeTypeRowModel: ObservableObject, Identifiable {
         }
         navigationDestination = .codeContentForm(codeContentFormViewModel)
     }
-
-    var systemImage: String {
-        switch type {
-        case .rawText: return "textformat.abc"
-        case .url:
-            return "link"
-        case .phone:
-            return "phone"
-        case .email:
-            return "envelope"
-        case .binary:
-            return ""
-        case .location:
-            return "mappin"
-        case .wifi:
-            return "wifi"
-        }
-    }
 }
 
 final class CodeTypeSelectionViewModel: ObservableObject {
@@ -63,6 +45,7 @@ final class CodeTypeSelectionViewModel: ObservableObject {
     @Published var generalCodeTypes: [CodeTypeRowModel]
     @Published var contactsCodeTypes: [CodeTypeRowModel]
     @Published var utilsCodeTypes: [CodeTypeRowModel]
+    @Published var socialsTypes: [CodeTypeRowModel]
     @Published var showToast = false
 
     init() {
@@ -75,8 +58,11 @@ final class CodeTypeSelectionViewModel: ObservableObject {
         self.utilsCodeTypes = [CodeContentType.wifi, .location].map {
             CodeTypeRowModel(type: $0)
         }
+        self.socialsTypes = [CodeContentType.twitter, .facebook].map {
+            CodeTypeRowModel(type: $0)
+        }
         (
-            generalCodeTypes + contactsCodeTypes + utilsCodeTypes
+            generalCodeTypes + contactsCodeTypes + utilsCodeTypes + socialsTypes
         ).forEach {
             $0.onSaveCode = self.onTapSave
         }

@@ -11,7 +11,7 @@ class MainTabViewModel: ViewModel {
 
     let storage: UserDefaultsStorage
     let sendAnalytics: SendAnalyticsAction
-    @Published var currentTab: Tab = .scan
+    @Published var currentTab: Tab = .create
     @Published var presentingPaywall = false
 
     lazy var allCodesTabModel: AllCodesViewModel = {
@@ -111,7 +111,7 @@ class MainTabViewModel: ViewModel {
         if let storedSelectedTab = storage.selectedTab.flatMap({ Tab(rawValue: $0) }) {
             currentTab = storedSelectedTab
         } else {
-            currentTab = .scan
+            currentTab = .create
         }
     }
 }
