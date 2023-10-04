@@ -68,6 +68,7 @@ class ScannerViewModel: ViewModel {
     }
 
     func finishBatchScan() {
+        sendAnalytics(.finishBatchScan, ["codesCount": batchScanResult!.codes.count])
         if batchScanResult!.codes.isEmpty {
             isScanActive = true
             batchScanResult = nil
@@ -95,7 +96,15 @@ class ScannerViewModel: ViewModel {
     }
 
     private func batchScanRecognized(result: ScanResult, codeType: CodeType) {
-        sendAnalytics(.qrCodeRecogzined, ["source": mapScanSource(result.source).rawValue, "isBatchMode": true])
+        sendAnalytics(
+            .qrCodeRecogzined,
+            [
+                AnalyticsParamKey.codeType.rawValue: codeType.description,
+                AnalyticsParamKey.codePayload.rawValue: result.string ?? "",
+                "source": mapScanSource(result.source).rawValue,
+                "isBatchMode": true
+            ]
+        )
         isScanActive = false
         let newQr = qrCodeService.createNewQrCode(
             stringPayload: result.string,
@@ -110,7 +119,14 @@ class ScannerViewModel: ViewModel {
     }
 
     private func singleCodeRecognized(result: ScanResult, codeType: CodeType) {
-        sendAnalytics(.qrCodeRecogzined, ["source": mapScanSource(result.source).rawValue])
+        sendAnalytics(
+            .qrCodeRecogzined,
+            [
+                AnalyticsParamKey.codeType.rawValue: codeType.description,
+                AnalyticsParamKey.codePayload.rawValue: result.string ?? "",
+                "source": mapScanSource(result.source).rawValue
+            ]
+        )
         isScanActive = false
         let newQr = qrCodeService.createNewQrCode(
             stringPayload: result.string,

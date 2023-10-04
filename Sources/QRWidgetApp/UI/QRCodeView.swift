@@ -15,7 +15,7 @@ struct QRCodeDataView: View {
             Button(action: {
                 if UIApplication.shared.canOpenURL(url) {
                     UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                    sendAnalyticsEvent(.tapQRLink, nil)
+                    trackAnalyticsOnClick()
                 }
             }, label: {
                 Text(url.absoluteString)
@@ -38,7 +38,7 @@ struct QRCodeDataView: View {
             Button(action: {
                 if UIApplication.shared.canOpenURL(phone) {
                     UIApplication.shared.open(phone, options: [:], completionHandler: nil)
-                    sendAnalyticsEvent(.tapPhoneNumberLink, nil)
+                    trackAnalyticsOnClick()
                 }
             }, label: {
                 Text(phone.absoluteString)
@@ -50,7 +50,7 @@ struct QRCodeDataView: View {
             Button(action: {
                 if UIApplication.shared.canOpenURL(email) {
                     UIApplication.shared.open(email, options: [:], completionHandler: nil)
-                    sendAnalyticsEvent(.tapEmailLink, nil)
+                    trackAnalyticsOnClick()
                 }
             }, label: {
                 Text(email.absoluteString)
@@ -62,7 +62,7 @@ struct QRCodeDataView: View {
             Button(action: {
                 if UIApplication.shared.canOpenURL(location) {
                     UIApplication.shared.open(location, options: [:], completionHandler: nil)
-//                    sendAnalyticsEvent(.tapLocationLink, nil)
+                    trackAnalyticsOnClick()
                 }
             }, label: {
                 Text(location.absoluteString)
@@ -79,7 +79,7 @@ struct QRCodeDataView: View {
                     Button(action: {
                         let parcer = WifiParser()
                         if let wifiConfig = parcer.parse(text)?.hotspotConfiguration {
-
+                            trackAnalyticsOnClick()
                             NEHotspotConfigurationManager.shared.apply(wifiConfig) { error in
                                 if let error = error {
                                     print("NEHotspotConfigurationManager error:", wifiConfig, error.localizedDescription)
@@ -98,7 +98,7 @@ struct QRCodeDataView: View {
             Button(action: {
                 if UIApplication.shared.canOpenURL(twitterURL) {
                     UIApplication.shared.open(twitterURL, options: [:], completionHandler: nil)
-//                    sendAnalyticsEvent(.tapQRLink, nil)
+                    trackAnalyticsOnClick()
                 }
             }, label: {
                 Text(twitterURL.absoluteString)
@@ -110,7 +110,7 @@ struct QRCodeDataView: View {
             Button(action: {
                 if UIApplication.shared.canOpenURL(facebookURL) {
                     UIApplication.shared.open(facebookURL, options: [:], completionHandler: nil)
-                    //                    sendAnalyticsEvent(.tapQRLink, nil)
+                    trackAnalyticsOnClick()
                 }
             }, label: {
                 Text(facebookURL.absoluteString)
@@ -118,6 +118,16 @@ struct QRCodeDataView: View {
                     .lineLimit(2)
             })
         }
+    }
+
+    private func trackAnalyticsOnClick() {
+        sendAnalyticsEvent(
+            .tapOnLinkFromCodeContent,
+            [
+                AnalyticsParamKey.codeType.rawValue: self.codeContent.type.title,
+                AnalyticsParamKey.codeContentType.rawValue: self.codeContent.qrString,
+            ]
+        )
     }
 }
 

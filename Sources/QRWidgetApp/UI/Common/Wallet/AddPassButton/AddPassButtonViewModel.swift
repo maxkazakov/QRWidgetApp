@@ -59,7 +59,7 @@ class AddToWalletButtonViewModel: ViewModel {
         }
         if walletService.checkPassCreated(pass, qrCode: qrModel) {
             walletService.addPass(qrId: qrModel.id, passId: pass.serialNumber)
-            sendAnalyticsEvent(.failedToCreateAppleWallet, nil)
+            sendAnalyticsEvent(.appleWalletPassAddedToLibrary, nil)
             hasWalletPass = true
         }
     }

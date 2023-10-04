@@ -9,11 +9,8 @@ public enum AnalyticsEvent: String {
     case tapGalleryIcon
     case tapTorchIcon
 
-    case tapCreateNewQR
-    case tapCreateQRFromCamera
-    case tapCreateQRFromGallery
-
     case startBatchScan
+    case finishBatchScan
 
     // History
     case tapHistoryItem
@@ -22,10 +19,7 @@ public enum AnalyticsEvent: String {
     case cannotFindWidgetClick
     case howToAddButtonClick
 
-    case tapQRLink
-    case tapPhoneNumberLink
-    case tapEmailLink
-    case tapSettings
+    case tapOnLinkFromCodeContent
     case qrLabelUpdated
 
     // Paywall
@@ -77,14 +71,16 @@ public enum AnalyticsEvent: String {
     case tapCancelChangeQRAppearance
     case tapSaveChangeQRAppearance
 
-    case flipQrImage
-
     // Share
     case tapShare
     case tapShareAsImage
+    case tapShareAsPdf
     case tapShareAsString
 
-    case asaAttribution = "ASAAttribution"
+    // Create. Not supported
+    case creationFlowTapOnType
+    case creationFlowTapNextOnForm
+    case creationFlowCodeCreated
 }
 
 public enum AnalyticsSource {
@@ -107,4 +103,10 @@ public enum AnalyticsSource {
         case camera
         case gallery
     }
+}
+
+public enum AnalyticsParamKey: String {
+    case codePayload
+    case codeContentType
+    case codeType
 }

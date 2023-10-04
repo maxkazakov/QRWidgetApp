@@ -45,7 +45,7 @@ class ShareMenuViewModel: ViewModel {
     }
 
     func shareAsPdf(_ codeModel: CodeModel) {
-        sendAnalytics(.tapShareAsImage, ["source": source.rawValue])
+        sendAnalytics(.tapShareAsPdf, ["source": source.rawValue])
         do {
             let targetURL = makeTempFilename(for: codeModel, extenstion: "pdf")
             if FileManager.default.fileExists(atPath: targetURL.path) {

@@ -21,6 +21,9 @@ struct PaywallScreen: View {
                             .contentShape(Rectangle())
                             .foregroundColor(Color(UIColor.white.withAlphaComponent(0.5)))
                     })
+                    .opacity(viewModel.closeButtonIsHidden ? 0 : 1)
+                    .animation(.easeInOut(duration: 2), value: viewModel.closeButtonIsHidden)
+
                     Spacer()
                     Button(action: {
                         viewModel.restore()
@@ -98,6 +101,7 @@ struct PaywallScreen: View {
                 presentationMode.wrappedValue.dismiss()
             }
         })
+        .onAppear { viewModel.onAppear() }
         .alert(
             unwrapping: $viewModel.alert,
             case: /PaywallViewModel.Alert.error,
@@ -118,7 +122,7 @@ struct PaywallScreen: View {
                 viewModel.activate()
             }, label: {
                 Text(L10n.continue)
-            })            
+            })
             .buttonStyle(MainButtonStyle(titleColor: Asset.primaryColor.color, backgroundColor: .white))
         }
     }

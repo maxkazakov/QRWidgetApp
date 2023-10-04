@@ -86,7 +86,7 @@ class PaywallViewModel: ViewModel {
     @Published var isLoading = false
     @Published var alert: Alert?
     @Published var selectedProductIdx: Int = 0
-    
+
     enum Alert: Equatable {
         case error(AlertState<ErrorAlertAction>)
     }
@@ -200,6 +200,13 @@ class PaywallViewModel: ViewModel {
             .store(in: &cancellableSet)
     }
 
+    private var wasAppeared = false
+    func onAppear() {
+        guard !wasAppeared else { return }
+        wasAppeared = true
+        startTimerForCloseButton()
+    }
+
     // MARK: - Private
 
     private func showError(message: String) {
@@ -212,9 +219,6 @@ class PaywallViewModel: ViewModel {
     }
 
     private func loadProducts() {
-        if shownFromOnboarding {
-            startTimerForCloseButton()
-        }
         sendAnalyticsEvent(.paywallActivateScreenOpened, ["source": NSString(string: self.source.rawValue)])
 
         purchasesEnvironment.offerings()
@@ -232,7 +236,7 @@ class PaywallViewModel: ViewModel {
     }
 
     private func startTimerForCloseButton() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0, execute: {
             self.closeButtonIsHidden = false
         })
     }

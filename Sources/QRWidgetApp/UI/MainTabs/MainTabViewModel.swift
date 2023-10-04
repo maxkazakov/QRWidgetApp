@@ -22,8 +22,7 @@ class MainTabViewModel: ViewModel {
         model.startScanningTapped = { [weak self] in
             self?.currentTab = .scan
         }
-        model.createQRTapped = { [weak self] in
-            self?.sendAnalytics(.tapCreateNewQR, [:])
+        model.createQRTapped = { [weak self] in            
             self?.currentTab = .create
         }
         return model
