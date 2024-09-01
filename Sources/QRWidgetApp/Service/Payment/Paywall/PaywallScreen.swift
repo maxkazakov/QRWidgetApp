@@ -109,6 +109,8 @@ struct PaywallScreen: View {
                 switch $0 {
                 case .tapDismiss:
                     viewModel.tapOkOnAlert()
+                case .none:
+                    break
                 }
             }
         )

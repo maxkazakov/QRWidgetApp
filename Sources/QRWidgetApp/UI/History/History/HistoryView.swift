@@ -45,6 +45,8 @@ struct HistoryView: View {
             switch action {
             case let .confirmRemoval(indices, section):
                 viewModel.remove(indices, section: section)
+            case .none:
+                break
             }
         }
         .onAppear(perform: { viewModel.onAppear() })
